@@ -1,0 +1,16 @@
+<use   name="FWCore/Framework"/>
+<use   name="FWCore/ServiceRegistry"/>
+<use   name="SimGeneral/HepPDTRecord"/>
+<use   name="SimDataFormats/GeneratorProducts"/>
+<use   name="GeneratorInterface/Core"/>
+<use   name="DataFormats/Common"/>
+<use   name="DataFormats/PatCandidates"/>
+<use   name="DataFormats/Candidate"/>
+<use   name="DataFormats/HepMCCandidate"/>
+<use   name="DataFormats/NanoAOD"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="XTag/XTagProducer"/>
+
+<library file="GlobalJetTagPlugin.cc" name="GlobalJetTagPlugin">
+  <flags EDM_PLUGIN="1"/>
+</library>
