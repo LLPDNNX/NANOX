@@ -1,6 +1,10 @@
 <lcgdict>
     <class name="xtag::GlobalJetTagData"/>
     <class name="edm::Wrapper<xtag::GlobalJetTagData>"/>
-    <class name="std::vector<xtag::GlobalJetTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::GlobalJetTagData>>"/>
+    
+    <class name="xtag::CSVInputTagData"/>
+    <class name="edm::Wrapper<xtag::CSVInputTagData>"/>
+    
+    <class name="xtag::ChargedPFTagData"/>
+    <class name="edm::Wrapper<xtag::ChargedPFTagData>"/>
 </lcgdict>

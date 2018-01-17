@@ -1,5 +1,5 @@
-#ifndef XTAG_DATAFORMATS_GLOBALJETTAGDATA_H
-#define XTAG_DATAFORMATS_GLOBALJETTAGDATA_H
+#ifndef XTAG_DATAFORMATS_CHARGEDPFTAGDATA_H
+#define XTAG_DATAFORMATS_CHARGEDPFTAGDATA_H
 
 #include "XTag/DataFormats/interface/TagData.h"
 #include <iostream>
@@ -7,13 +7,12 @@
 namespace xtag
 {
 
-class GlobalJetTagData:
+class ChargedPFTagData:
     public TagData
 {
     public:
-        std::vector<float> jetPt;
-        std::vector<float> jetEta;
-        
+        std::vector<float> ptrel;
+        std::vector<unsigned int> ncpf;
         /*
         'jet_pt',
         'jet_eta',
@@ -34,11 +33,12 @@ class GlobalJetTagData:
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
-            archive.saveVectorFloat(jetPt,"jetPt");
-            archive.saveVectorFloat(jetEta,"jetEta");
+            archive.saveVectorUInt(ncpf,"ncpf");
+            //archive.saveVectorFloat(jetPt,"jetPt");
+            
         }
         
-        virtual ~GlobalJetTagData()
+        virtual ~ChargedPFTagData()
         {
         }
 };

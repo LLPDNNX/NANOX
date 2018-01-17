@@ -16,8 +16,11 @@ class ArchiveInterface
         ) = 0;
         virtual void saveVectorFloat(
             const std::vector<float>& values, 
-            const std::string& name, 
-            const std::string& sizename
+            const std::string& name
+        ) = 0;
+        virtual void saveVectorUInt(
+            const std::vector<unsigned int>& values, 
+            const std::string& name
         ) = 0;
 };
 

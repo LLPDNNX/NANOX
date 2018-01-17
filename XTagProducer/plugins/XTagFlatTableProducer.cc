@@ -35,13 +35,13 @@ class XTagFlatTableProducer:
         struct TagDataToWrite
         {
             std::string basename;
-            std::vector<std::string> names;
             std::vector<edm::InputTag> inputTags;
             std::vector<edm::EDGetTokenT<edm::View<xtag::TagData>>> tokens;
-
+            bool extend;
             
             TagDataToWrite(const std::string basename):
-                basename(basename)
+                basename(basename),
+                extend(false)
             {
             }
             
@@ -51,12 +51,10 @@ class XTagFlatTableProducer:
             }
             
             void addTagData(
-                const std::string& name,
                 edm::InputTag& inputTag, 
                 edm::EDGetTokenT<edm::View<xtag::TagData>> token
             )
             {
-                names.emplace_back(name);
                 inputTags.emplace_back(inputTag);
                 tokens.emplace_back(token);
             }
@@ -67,28 +65,58 @@ class XTagFlatTableProducer:
             public xtag::ArchiveInterface
         {
             public:
+                //TODO: use a better data structures!!!
+                //NOTE: can only save one FlatTable! per Archive -> need equal length of all elements!
+                //so allow only muliple single values or multiple arrays of same length but never both at once
                 std::unordered_map<std::string,std::vector<float>> data;
+                bool extend_;
+                
+                FlatTableArchive(bool extend=false):
+                    extend_(extend)
+                {
+                }
+                
                 virtual void saveSingleFloat(float value, const std::string& name)
                 {
-                    data[name].push_back(value);
                 }
-                virtual void saveVectorFloat(const std::vector<float>& values, const std::string& name, const std::string& sizename)
+                
+                virtual void saveVectorFloat(const std::vector<float>& values, const std::string& name)
                 {
+                    data[name] = values;
+                }
+                
+                virtual void saveVectorUInt(const std::vector<unsigned int>& values, const std::string& name)
+                {
+                    //TODO
+                    //data[name] = values;
                 }
                 
                 std::unique_ptr<nanoaod::FlatTable> makeTable(const std::string& name)
                 {
+                    unsigned int size = data.begin()!=data.end()?data.begin()->second.size():0;
                     std::unique_ptr<nanoaod::FlatTable> table = std::make_unique<nanoaod::FlatTable>(
-                        data.begin()->second.size(),
+                        size,
                         name, 
-                        false, 
-                        false
+                        false,
+                        extend_
                     );
-                    for (auto pair: data)
+
+                    for (auto nameVectorPair: data)
                     {
+                        if (nameVectorPair.second.size()!=size)
+                        {
+                            throw cms::Exception("Tag data '"+
+                                nameVectorPair.first+
+                                "' with size ("+
+                                std::to_string(nameVectorPair.second.size())+
+                                ") has to be of same size as the table ("+
+                                std::to_string(size)+
+                                ")"
+                            );
+                        }
                         table->addColumn<float>(
-                            pair.first, 
-                            pair.second, 
+                            nameVectorPair.first, 
+                            nameVectorPair.second, 
                             "", 
                             nanoaod::FlatTable::FloatColumn
                         );
@@ -118,18 +146,19 @@ XTagFlatTableProducer::XTagFlatTableProducer(const edm::ParameterSet& iConfig)
     {
         edm::ParameterSet tagDataConfig = tagDataConfigs.getParameter<edm::ParameterSet>(name);
         TagDataToWrite tagDataToWrite(name);
-        std::vector<std::string> tagNames = tagDataConfig.getParameter<std::vector<std::string>>("names");
         std::vector<edm::InputTag> inputTags = tagDataConfig.getParameter<std::vector<edm::InputTag>>("srcs");
-        for (unsigned int i = 0; i < tagNames.size(); ++i)
+        for (unsigned int i = 0; i < inputTags.size(); ++i)
         {
             tagDataToWrite.addTagData(
-                tagNames[i],
                 inputTags[i],
                 consumes<edm::View<xtag::TagData>>(inputTags[i])
             );
-            tagDataToWrite_.emplace_back(std::move(tagDataToWrite));
         }
-        
+        if (tagDataConfig.exists("extend"))
+        {
+            tagDataToWrite.extend = tagDataConfig.getParameter<bool>("extend");
+        }
+        tagDataToWrite_.emplace_back(std::move(tagDataToWrite));
         produces<nanoaod::FlatTable>(name);
     }
 }
@@ -147,17 +176,14 @@ XTagFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
     for (const TagDataToWrite& tagDataToWrite: tagDataToWrite_)
     {
         
-        FlatTableArchive ar;
+        FlatTableArchive ar(tagDataToWrite.extend);
         for (unsigned int idata = 0; idata < tagDataToWrite.size(); ++idata)
         {
             edm::Handle<edm::View<xtag::TagData>> tagDataCollection;
             iEvent.getByToken(tagDataToWrite.tokens[idata], tagDataCollection);
-        
-            for (unsigned int iobs = 0; iobs < tagDataCollection->size(); ++iobs)
-            {
-                const xtag::TagData& tagData = tagDataCollection->at(iobs);
-                tagData.saveTagData(ar);
-            }
+
+            const xtag::TagData& tagData = tagDataCollection->at(0);
+            tagData.saveTagData(ar);
         }
         iEvent.put(std::move(ar.makeTable(tagDataToWrite.basename)),tagDataToWrite.basename);
     }

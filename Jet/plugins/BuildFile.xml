@@ -14,3 +14,11 @@
 <library file="GlobalJetTagPlugin.cc" name="GlobalJetTagPlugin">
   <flags EDM_PLUGIN="1"/>
 </library>
+
+<library file="CSVInputTagPlugin.cc" name="CSVInputTagPlugin">
+  <flags EDM_PLUGIN="1"/>
+</library>
+
+<library file="ChargedPFTagPlugin.cc" name="ChargedPFTagPlugin">
+  <flags EDM_PLUGIN="1"/>
+</library>

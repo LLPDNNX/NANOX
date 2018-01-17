@@ -14,14 +14,14 @@
 
 #include "XTag/XTagProducer/interface/XTagPlugin.h"
 #include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/GlobalJetTagData.h"
+#include "XTag/Jet/interface/ChargedPFTagData.h"
 
 #include <iostream>
 
 namespace xtag
 {
 
-class GlobalJetTagDataPlugin:
+class ChargedPFTagDataPlugin:
     public XTagPlugin
 {
     private:
@@ -29,7 +29,7 @@ class GlobalJetTagDataPlugin:
         edm::EDGetTokenT<edm::View<pat::Jet>> token_;
         
     public:
-        GlobalJetTagDataPlugin(
+        ChargedPFTagDataPlugin(
             const std::string& name, 
             const edm::ParameterSet& pset, 
             edm::ConsumesCollector& collector,
@@ -39,7 +39,7 @@ class GlobalJetTagDataPlugin:
             inputTag_(pset.getParameter<edm::InputTag>("src")),
             token_(collector.consumes<edm::View<pat::Jet>>(inputTag_))
         {
-            prod.produces<std::vector<xtag::GlobalJetTagData>>(name);
+            prod.produces<std::vector<xtag::ChargedPFTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup&) const
@@ -48,15 +48,15 @@ class GlobalJetTagDataPlugin:
             event.getByToken(token_, jetCollection);
             
 
-            std::unique_ptr<std::vector<xtag::GlobalJetTagData>> output(
-                new std::vector<xtag::GlobalJetTagData>(1)
+            std::unique_ptr<std::vector<xtag::ChargedPFTagData>> output(
+                new std::vector<xtag::ChargedPFTagData>(1)
             );
 
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
-                output->at(0).jetPt.push_back(jet.pt());
-                output->at(0).jetEta.push_back(jet.eta());
+                output->at(0).ncpf.push_back(jet.numberOfDaughters());
+                //output->at(0).jetEta.push_back(jet.eta());
             }
             
             event.put(std::move(output),this->name());
@@ -65,5 +65,5 @@ class GlobalJetTagDataPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::GlobalJetTagDataPlugin, "GlobalJetTagData");
+DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::ChargedPFTagDataPlugin, "ChargedPFTagData");
 
