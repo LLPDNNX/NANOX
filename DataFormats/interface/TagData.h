@@ -25,55 +25,51 @@ class Property
 class Accessor
 {
     public:
-        virtual void fill(Property* property, ArrayInterface& array) = 0;
+        virtual void fill(const Property* property, const std::string& name, ArrayInterface& array) = 0;
 };
 
 class ArrayInterface
 {
     public:
         virtual unsigned int size() const = 0;
-        virtual void bookFloat(const std::string& name, Accessor* acc) = 0;
-        virtual void fill(Property* property) = 0;
+        virtual void bookProperty(const std::string& name, std::shared_ptr<Accessor> acc) = 0;
+        virtual void fill(const Property* property) = 0;
+       
+        
+        //for convenience
+        template<class PROPERTY, class TYPE> void bookProperty(const std::string& name,const TYPE PROPERTY::*data);
 };
-
-
 
 template<class PROPERTY, class TYPE>
 class AccessorTmpl:
     public Accessor
 {
     public:
-        TYPE PROPERTY::*data_;
-        AccessorTmpl(TYPE PROPERTY::*data):
+        const TYPE PROPERTY::*data_;
+        AccessorTmpl(const TYPE PROPERTY::*data):
             data_(data)
         {
         }
-        virtual void fill(Property* property, ArrayInterface& array)
+        virtual void fill(const Property* property, const std::string& name, ArrayInterface& array)
         {
-            PROPERTY* obj = dynamic_cast<PROPERTY*>(property);
-            std::cout<<"fill: "<<obj->*data_<<std::endl;
+            const PROPERTY* obj = dynamic_cast<const PROPERTY*>(property);
+            std::cout<<"fill: "<<name<<" = "<<obj->*data_<<std::endl;
+            
         }
 };
 
+template<class PROPERTY, class TYPE> void ArrayInterface::bookProperty(const std::string& name,const TYPE PROPERTY::*data)
+{
+    this->bookProperty(
+        name, 
+        std::shared_ptr<Accessor>(new AccessorTmpl<PROPERTY,TYPE>(data))
+    );
+}
 
 
 class ArchiveInterface
 {
     public:
-        /*
-        virtual void addSingleFloat(
-            float value, 
-            const std::string& name
-        ) = 0;
-        virtual void addVectorFloat(
-            const std::vector<float>& values, 
-            const std::string& name
-        ) = 0;
-        virtual void addVectorUInt(
-            const std::vector<unsigned int>& values, 
-            const std::string& name
-        ) = 0;
-        */
         virtual ArrayInterface& bookArray(
             const std::string& name,
             unsigned int size

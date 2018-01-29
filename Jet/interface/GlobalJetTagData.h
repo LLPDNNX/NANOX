@@ -50,7 +50,8 @@ class GlobalJetTagData:
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
             ArrayInterface& array = archive.bookArray("global",jetData.size());
-            array.bookFloat("pt", new xtag::AccessorTmpl<JetData,float>(&JetData::pt));
+            array.bookProperty("pt", &JetData::pt);
+            array.bookProperty("eta", &JetData::eta);
             for (auto data: jetData)
             {
                 array.fill(&data);

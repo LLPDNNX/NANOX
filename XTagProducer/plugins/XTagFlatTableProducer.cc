@@ -72,7 +72,7 @@ class XTagFlatTableProducer:
                 {
                     protected:
                         unsigned int size_;
-                        std::unordered_map<std::string, xtag::Accessor*> accessors_;
+                        std::unordered_map<std::string, std::shared_ptr<xtag::Accessor>> accessors_;
                     public:
                         FlatTableArray(unsigned int size):
                             size_(size)
@@ -85,16 +85,16 @@ class XTagFlatTableProducer:
                         {
                             return size_;
                         }
-                        virtual void bookFloat(const std::string& name,xtag::Accessor* acc)
+                        virtual void bookProperty(const std::string& name,std::shared_ptr<xtag::Accessor> acc)
                         {
                             accessors_[name]=acc;
                         }
                         
-                        virtual void fill(xtag::Property* property)
+                        virtual void fill(const xtag::Property* property)
                         {
                             for (auto itPair: accessors_)
                             {
-                                itPair.second->fill(property,*this);
+                                itPair.second->fill(property,itPair.first,*this);
                             }
                         }
                 };
