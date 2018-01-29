@@ -49,7 +49,7 @@ class GlobalJetTagData:
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
-            ArrayInterface& array = archive.bookArray("global",jetData.size());
+            ArrayInterface& array = archive.initArray(jetData.size());
             array.bookProperty("pt", &JetData::pt);
             array.bookProperty("eta", &JetData::eta);
             for (auto data: jetData)

@@ -72,14 +72,16 @@ class XTagFlatTableProducer:
                 {
                     protected:
                         unsigned int size_;
+                        unsigned int fillIndex_;
                         std::unordered_map<std::string, std::shared_ptr<xtag::Accessor>> accessors_;
+                        
+                        std::unordered_map<std::string, std::vector<float>> floatData_;
                     public:
                         FlatTableArray(unsigned int size):
-                            size_(size)
+                            size_(size),
+                            fillIndex_(0)
                         {
                         }
-                        
-                        std::unordered_map<std::string,std::vector<float>> floatData_;
                         
                         virtual unsigned int size() const
                         {
@@ -88,6 +90,11 @@ class XTagFlatTableProducer:
                         virtual void bookProperty(const std::string& name,std::shared_ptr<xtag::Accessor> acc)
                         {
                             accessors_[name]=acc;
+                            floatData_.emplace(
+                                std::piecewise_construct,
+                                std::forward_as_tuple(name),
+                                std::make_tuple(size_,0.f)
+                            );
                         }
                         
                         virtual void fill(const xtag::Property* property)
@@ -96,26 +103,53 @@ class XTagFlatTableProducer:
                             {
                                 itPair.second->fill(property,itPair.first,*this);
                             }
+                            fillIndex_++; //TODO: what if user calls this function twice per object?
+                        }
+                        
+                        virtual void fillFloat(const std::string& name, float value)
+                        {
+                            if (fillIndex_>=size_) throw cms::Exception("Attempt to fill array index '"+std::to_string(fillIndex_)+"' which is larger than its size '"+std::to_string(size_)+"'");
+                            floatData_[name][fillIndex_]=value;
+                        }
+                        
+                        std::unique_ptr<nanoaod::FlatTable> makeTable(
+                            const std::string& name, 
+                            bool extend
+                        )
+                        {
+                            std::unique_ptr<nanoaod::FlatTable> table = 
+                                std::make_unique<nanoaod::FlatTable>(
+                                    size_, 
+                                    name, 
+                                    false, 
+                                    extend
+                                );
+                            for (auto floatData: floatData_)
+                            {
+                                table->addColumn<float>(
+                                    floatData.first, 
+                                    floatData.second, 
+                                    "", 
+                                    nanoaod::FlatTable::FloatColumn
+                                );
+                            }
+                            
+                            return std::move(table);
                         }
                 };
 
-                std::unordered_map<std::string,FlatTableArray> arrayData_;
+                std::unique_ptr<FlatTableArray> arrayData_;
                 
                 FlatTableArchive(bool extend)
                 {
                 }
                 
-                virtual xtag::ArrayInterface& bookArray(
-                    const std::string& name,
+                virtual xtag::ArrayInterface& initArray(
                     unsigned int size
                 )
                 {
-                    auto it = arrayData_.emplace(
-                        std::piecewise_construct,
-                        std::forward_as_tuple(name),
-                        std::forward_as_tuple(size)
-                    );
-                    return it.first->second;
+                    arrayData_.reset(new FlatTableArray(size));
+                    return *arrayData_;
                 }
                 
                 
@@ -155,7 +189,7 @@ XTagFlatTableProducer::XTagFlatTableProducer(const edm::ParameterSet& iConfig)
             tagDataToWrite.extend = tagDataConfig.getParameter<bool>("extend");
         }
         tagDataToWrite_.emplace_back(std::move(tagDataToWrite));
-        //produces<nanoaod::FlatTable>(name);
+        produces<nanoaod::FlatTable>(name);
     }
 }
 
@@ -181,7 +215,7 @@ XTagFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
             const xtag::TagData& tagData = tagDataCollection->at(0);
             tagData.saveTagData(ar);
         }
-        //iEvent.put(std::move(ar.makeTable(tagDataToWrite.basename)),tagDataToWrite.basename);
+        iEvent.put(std::move(ar.arrayData_->makeTable(tagDataToWrite.basename,false)),tagDataToWrite.basename);
     }
 /*
     edm::Handle<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexCollection;

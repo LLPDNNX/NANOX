@@ -1,6 +1,8 @@
 #ifndef XTAG_DATAFORMATS_TAGDATA_H
 #define XTAG_DATAFORMATS_TAGDATA_H
 
+#include "FWCore/Utilities/interface/Exception.h"
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -35,6 +37,7 @@ class ArrayInterface
         virtual void bookProperty(const std::string& name, std::shared_ptr<Accessor> acc) = 0;
         virtual void fill(const Property* property) = 0;
        
+        virtual void fillFloat(const std::string& name, float value) = 0;
         
         //for convenience
         template<class PROPERTY, class TYPE> void bookProperty(const std::string& name,const TYPE PROPERTY::*data);
@@ -53,7 +56,8 @@ class AccessorTmpl:
         virtual void fill(const Property* property, const std::string& name, ArrayInterface& array)
         {
             const PROPERTY* obj = dynamic_cast<const PROPERTY*>(property);
-            std::cout<<"fill: "<<name<<" = "<<obj->*data_<<std::endl;
+            if (not obj) throw cms::Exception("Cannot cast property object to type "+std::string(typeid(PROPERTY).name()));
+            array.fillFloat(name,obj->*data_);
             
         }
 };
@@ -70,8 +74,7 @@ template<class PROPERTY, class TYPE> void ArrayInterface::bookProperty(const std
 class ArchiveInterface
 {
     public:
-        virtual ArrayInterface& bookArray(
-            const std::string& name,
+        virtual ArrayInterface& initArray(
             unsigned int size
         ) = 0;
 };
