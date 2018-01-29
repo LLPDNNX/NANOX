@@ -27,6 +27,8 @@
 
 #include "DataFormats/NanoAOD/interface/FlatTable.h"
 
+#include <algorithm>
+
 class XTagFlatTableProducer:
     public edm::stream::EDProducer<>
     
@@ -65,64 +67,58 @@ class XTagFlatTableProducer:
             public xtag::ArchiveInterface
         {
             public:
-                //TODO: use a better data structures!!!
-                //NOTE: can only save one FlatTable! per Archive -> need equal length of all elements!
-                //so allow only muliple single values or multiple arrays of same length but never both at once
-                std::unordered_map<std::string,std::vector<float>> data;
-                bool extend_;
-                
-                FlatTableArchive(bool extend=false):
-                    extend_(extend)
+                class FlatTableArray:
+                    public xtag::ArrayInterface
                 {
-                }
-                
-                virtual void saveSingleFloat(float value, const std::string& name)
-                {
-                }
-                
-                virtual void saveVectorFloat(const std::vector<float>& values, const std::string& name)
-                {
-                    data[name] = values;
-                }
-                
-                virtual void saveVectorUInt(const std::vector<unsigned int>& values, const std::string& name)
-                {
-                    //TODO
-                    //data[name] = values;
-                }
-                
-                std::unique_ptr<nanoaod::FlatTable> makeTable(const std::string& name)
-                {
-                    unsigned int size = data.begin()!=data.end()?data.begin()->second.size():0;
-                    std::unique_ptr<nanoaod::FlatTable> table = std::make_unique<nanoaod::FlatTable>(
-                        size,
-                        name, 
-                        false,
-                        extend_
-                    );
-
-                    for (auto nameVectorPair: data)
-                    {
-                        if (nameVectorPair.second.size()!=size)
+                    protected:
+                        unsigned int size_;
+                        std::unordered_map<std::string, xtag::Accessor*> accessors_;
+                    public:
+                        FlatTableArray(unsigned int size):
+                            size_(size)
                         {
-                            throw cms::Exception("Tag data '"+
-                                nameVectorPair.first+
-                                "' with size ("+
-                                std::to_string(nameVectorPair.second.size())+
-                                ") has to be of same size as the table ("+
-                                std::to_string(size)+
-                                ")"
-                            );
                         }
-                        table->addColumn<float>(
-                            nameVectorPair.first, 
-                            nameVectorPair.second, 
-                            "", 
-                            nanoaod::FlatTable::FloatColumn
-                        );
-                    }
-                    return table;
+                        
+                        std::unordered_map<std::string,std::vector<float>> floatData_;
+                        
+                        virtual unsigned int size() const
+                        {
+                            return size_;
+                        }
+                        virtual void bookFloat(const std::string& name,xtag::Accessor* acc)
+                        {
+                            accessors_[name]=acc;
+                        }
+                        
+                        virtual void fill(xtag::Property* property)
+                        {
+                            for (auto itPair: accessors_)
+                            {
+                                itPair.second->fill(property,*this);
+                            }
+                        }
+                };
+
+                std::unordered_map<std::string,FlatTableArray> arrayData_;
+                
+                FlatTableArchive(bool extend)
+                {
                 }
+                
+                virtual xtag::ArrayInterface& bookArray(
+                    const std::string& name,
+                    unsigned int size
+                )
+                {
+                    auto it = arrayData_.emplace(
+                        std::piecewise_construct,
+                        std::forward_as_tuple(name),
+                        std::forward_as_tuple(size)
+                    );
+                    return it.first->second;
+                }
+                
+                
         };
  
 
@@ -159,7 +155,7 @@ XTagFlatTableProducer::XTagFlatTableProducer(const edm::ParameterSet& iConfig)
             tagDataToWrite.extend = tagDataConfig.getParameter<bool>("extend");
         }
         tagDataToWrite_.emplace_back(std::move(tagDataToWrite));
-        produces<nanoaod::FlatTable>(name);
+        //produces<nanoaod::FlatTable>(name);
     }
 }
 
@@ -185,7 +181,7 @@ XTagFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
             const xtag::TagData& tagData = tagDataCollection->at(0);
             tagData.saveTagData(ar);
         }
-        iEvent.put(std::move(ar.makeTable(tagDataToWrite.basename)),tagDataToWrite.basename);
+        //iEvent.put(std::move(ar.makeTable(tagDataToWrite.basename)),tagDataToWrite.basename);
     }
 /*
     edm::Handle<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexCollection;

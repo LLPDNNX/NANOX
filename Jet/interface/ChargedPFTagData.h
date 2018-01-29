@@ -33,9 +33,8 @@ class ChargedPFTagData:
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
-            archive.saveVectorUInt(ncpf,"ncpf");
-            //archive.saveVectorFloat(jetPt,"jetPt");
-            
+            //archive.saveVectorUInt(ncpf,"ncpf");
+            //archive.saveVectorFloat(ptrel,"cpf_ptrel");
         }
         
         virtual ~ChargedPFTagData()

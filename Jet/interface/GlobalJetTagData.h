@@ -7,12 +7,27 @@
 namespace xtag
 {
 
+
 class GlobalJetTagData:
     public TagData
 {
+    class JetData:
+        public Property
+    {
+        public:
+            float pt;
+            float eta;
+            JetData(float pt, float eta):
+                pt(pt),
+                eta(eta)
+            {
+            }
+            
+        
+    };
+    
     public:
-        std::vector<float> jetPt;
-        std::vector<float> jetEta;
+        std::vector<JetData> jetData;
         
         /*
         'jet_pt',
@@ -34,8 +49,12 @@ class GlobalJetTagData:
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
-            archive.saveVectorFloat(jetPt,"jetPt");
-            archive.saveVectorFloat(jetEta,"jetEta");
+            ArrayInterface& array = archive.bookArray("global",jetData.size());
+            array.bookFloat("pt", new xtag::AccessorTmpl<JetData,float>(&JetData::pt));
+            for (auto data: jetData)
+            {
+                array.fill(&data);
+            }
         }
         
         virtual ~GlobalJetTagData()

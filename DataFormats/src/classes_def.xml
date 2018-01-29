@@ -23,6 +23,9 @@
     <class name="edm::Wrapper<xtag::TagData>"/>
     <class name="std::vector<xtag::TagData>"/>
     <class name="edm::Wrapper<std::vector<xtag::TagData>>"/>
+    
+    <class name="xtag::Property"/>
+    <class name="edm::Wrapper<xtag::Property>"/>
 
 
 </lcgdict>

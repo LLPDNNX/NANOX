@@ -51,14 +51,19 @@ class ChargedPFTagDataPlugin:
             std::unique_ptr<std::vector<xtag::ChargedPFTagData>> output(
                 new std::vector<xtag::ChargedPFTagData>(1)
             );
-
+            /*
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
                 output->at(0).ncpf.push_back(jet.numberOfDaughters());
-                //output->at(0).jetEta.push_back(jet.eta());
+                for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
+                {
+                    const reco::Candidate* constituent = jet.daughter(idaughter);
+                    output->at(0).ncpf.push_back(constituent->pt()/jet.pt());
+                }
+                
             }
-            
+            */
             event.put(std::move(output),this->name());
         }
 };

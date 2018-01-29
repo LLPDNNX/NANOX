@@ -24,6 +24,9 @@ struct dictionary_ra1
     
     xtag::TagData dummy12;
     edm::Wrapper<xtag::TagData> dummy13;
+    
+    xtag::Property dummy14;
+    edm::Wrapper<xtag::Property> dummy15;
 
 };
 

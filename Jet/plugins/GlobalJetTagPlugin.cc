@@ -51,12 +51,11 @@ class GlobalJetTagDataPlugin:
             std::unique_ptr<std::vector<xtag::GlobalJetTagData>> output(
                 new std::vector<xtag::GlobalJetTagData>(1)
             );
-
+            
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
-                output->at(0).jetPt.push_back(jet.pt());
-                output->at(0).jetEta.push_back(jet.eta());
+                output->at(0).jetData.emplace_back(jet.pt(),jet.eta());
             }
             
             event.put(std::move(output),this->name());

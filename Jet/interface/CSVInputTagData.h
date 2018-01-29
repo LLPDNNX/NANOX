@@ -23,6 +23,7 @@ class CSVInputTagData:
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
+            /*
             archive.saveVectorFloat(trackSumJetEtRatio,"trackSumJetEtRatio");
             archive.saveVectorFloat(trackSumJetDeltaR,"trackSumJetDeltaR");
             archive.saveVectorFloat(vertexCategory,"vertexCategory");
@@ -32,6 +33,7 @@ class CSVInputTagData:
             archive.saveVectorFloat(trackSip3dSigAboveCharm,"trackSip3dSigAboveCharm");
             archive.saveVectorFloat(jetNSelectedTracks,"jetNSelectedTracks");
             archive.saveVectorFloat(jetNTracksEtaRel,"jetNTracksEtaRel");
+            */
         }
         
         virtual ~CSVInputTagData()

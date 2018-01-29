@@ -52,7 +52,7 @@ class CSVInputTagDataPlugin:
             std::unique_ptr<std::vector<xtag::CSVInputTagData>> output(
                 new std::vector<xtag::CSVInputTagData>(1)
             );
-
+            /*
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
@@ -98,7 +98,7 @@ class CSVInputTagDataPlugin:
                 output->at(0).trackSip3dValAboveCharm.push_back(trackSip3dValAboveCharm);
                 output->at(0).trackSip3dSigAboveCharm.push_back(trackSip3dSigAboveCharm);
             }
-            
+            */
             event.put(std::move(output),this->name());
         }
 };
