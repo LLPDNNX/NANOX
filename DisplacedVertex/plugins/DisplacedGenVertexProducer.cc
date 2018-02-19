@@ -18,7 +18,13 @@
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
+#include "FWCore/ServiceRegistry/interface/Service.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+
 #include "DataFormats/Math/interface/deltaR.h"
+#include "DataFormats/Math/interface/angle.h"
+
+#include "TTree.h"
 
 using xtag::DisplacedGenVertex;
 using xtag::DisplacedGenVertexCollection;
@@ -98,12 +104,7 @@ DisplacedGenVertexProducer::DisplacedGenVertexProducer(const edm::ParameterSet& 
     _genJetInputTag(iConfig.getParameter<edm::InputTag>("srcGenJets")),
     _genJetToken(consumes<edm::View<reco::GenJet>>(_genJetInputTag))
 {
-    //produces<edm::ValueMap<unsigned int>>("vertexGroupIndex");
     produces<std::vector<DisplacedGenVertex>>();
-    /*
-    produces<edm::ValueMap<double>>("distance");
-    produces<edm::ValueMap<double>>("ctau");
-    */
 }
 
 
@@ -131,7 +132,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
     for (unsigned int igenParticle = 0; igenParticle < genParticleCollection->size(); ++igenParticle)
     {
         const reco::GenParticle& genParticle = genParticleCollection->at(igenParticle);
-        if (genParticle.status()==22)
+        if (genParticle.isHardProcess() and genParticle.numberOfMothers()==2)
         {
             if (!hardInteractionVertex)
             {
@@ -139,10 +140,11 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             }
             else if (distance(*hardInteractionVertex,genParticle.vertex())>10e-10)
             {
+                std::cout<<"pdg="<<genParticle.pdgId()<<"; ";
                 throw cms::Exception("DisplacedGenVertexProducer: multiple hard interaction vertices found!");
             }
         }
-        
+       
         //group particles by vertex position
         bool inserted = false;
         for (unsigned int ivertex = 0; ivertex<displacedGenVertices->size(); ++ivertex)
@@ -166,12 +168,17 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
         }
     }
     
+    if (not hardInteractionVertex)
+    {
+        throw cms::Exception("DisplacedVertexProducer: no hard interaction vertex found in event!");
+    }
+    
     for (unsigned int ivertex = 0; ivertex<displacedGenVertices->size(); ++ivertex)
     {
+        displacedGenVertices->at(ivertex).hardInteraction = *hardInteractionVertex;
         if (hardInteractionVertex and distance(displacedGenVertices->at(ivertex).vertex,*hardInteractionVertex)<10e-10)
         {
             displacedGenVertices->at(ivertex).isHardInteraction=true;
-            break;
         }
     }
     
@@ -184,7 +191,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
         {
             continue;
         }
-        if (not (genParticle.isLastCopy() and displacedDecay(genParticle)))
+        if (not (displacedDecay(genParticle)))
         {
             continue;
         }
@@ -229,61 +236,86 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
     //calculate overlap of gen particles in gen jets with displaced vertices and associate them
     //IMPORTANT: the following will only work if the GenJets were constructed from the SAME GenParticle collection as the DisplacedGenVertices!!!
     //Note: cannot use ghost tagging since jets may not be pointing along long lived particle direction
-
+    //std::cout<<iEvent.id ()<<std::endl;
     for (unsigned int ijet = 0; ijet < genJetCollection->size(); ++ijet)
     {
-        std::vector<unsigned int> matchedVerticesIndices;
+        
+        if (genJetCollection->at(ijet).pt()<20)
+        {
+            continue;
+        }
+        
+        std::unordered_map<unsigned int,unsigned int> particlesPermatchedVerticesIndex;
+        std::unordered_map<unsigned int,reco::Candidate::LorentzVector> p4PermatchedVerticesIndex;
+        //std::vector<std::vector<const reco::GenParticle*>> matchedParticles;
         for (const reco::GenParticle* genParticle: genJetCollection->at(ijet).getGenConstituents())
         {
+            
             auto foundGenParticleIt = genParticleToVertexGroupMap.find((size_t)genParticle); 
             if (foundGenParticleIt!=genParticleToVertexGroupMap.end())
             {
-                if (std::find(matchedVerticesIndices.begin(),matchedVerticesIndices.end(),foundGenParticleIt->second)==matchedVerticesIndices.end())
+                auto vertexIndexIt = particlesPermatchedVerticesIndex.find(foundGenParticleIt->second);
+                
+                if (vertexIndexIt==particlesPermatchedVerticesIndex.end())
                 {
-                    matchedVerticesIndices.push_back(foundGenParticleIt->second);
+                    particlesPermatchedVerticesIndex[foundGenParticleIt->second]=1;
+                    p4PermatchedVerticesIndex[foundGenParticleIt->second] = genParticle->p4();
+                    //matchedParticles.push_back(std::vector<const reco::GenParticle*>({genParticle}));
+                    //break; //gen particles ordered by pt -> so keep only the hardest one
                     //displacedGenVertices->at(foundGenParticleIt->second).genJets.push_back(genJetCollection->ptrAt(ijet)); //no cross cleaning -> multiple jets can originate from one vertex
+                }
+                else
+                {
+                    particlesPermatchedVerticesIndex[foundGenParticleIt->second]+=1;
+                    p4PermatchedVerticesIndex[foundGenParticleIt->second]+=genParticle->p4();
+                    //matchedParticles[vertexIndexIt-matchedVerticesIndices.begin()].push_back(genParticle);
                 }
             }
         }
         
-        if (matchedVerticesIndices.size()==0)
+        //std::cout<<"gen jet pt="<<genJetCollection->at(ijet).pt()<<", eta="<<genJetCollection->at(ijet).eta()<<", phi="<<genJetCollection->at(ijet).phi()<<std::endl;
+        if (particlesPermatchedVerticesIndex.size()==0)
         {
             continue;
         }
-        else if (matchedVerticesIndices.size()==1)
+        else
         {
-            displacedGenVertices->at(matchedVerticesIndices.front()).genJets.push_back(genJetCollection->ptrAt(ijet));
-        }
-        else if (matchedVerticesIndices.size()>=2)
-        {
-            auto displacedVertexIndexIt = std::max_element(matchedVerticesIndices.begin(),matchedVerticesIndices.end(),
-                [&displacedGenVertices](const unsigned int& iv1, const unsigned int& iv2)
-                {
-
-                    const DisplacedGenVertex& v1 = displacedGenVertices->at(iv1);
-                    const DisplacedGenVertex& v2 = displacedGenVertices->at(iv2);
-                    
-                    if (v1.motherLongLivedParticle.isNull() and v2.motherLongLivedParticle.isNull())
-                    {
-                        return false; //arbitrary order
-                    }
-                    else if (v1.motherLongLivedParticle.isNonnull() and v2.motherLongLivedParticle.isNull())
-                    {
-                        return false;
-                    }
-                    else if (v1.motherLongLivedParticle.isNull() and v2.motherLongLivedParticle.isNonnull())
-                    {
-                        return true;
-                    }
-                    
-                    return getHadronFlavor(*v1.motherLongLivedParticle)<getHadronFlavor(*v2.motherLongLivedParticle);
-                }
-            );
+            float maxShared = 0;
+            int maxIndex = -1;
             
-            displacedGenVertices->at(*displacedVertexIndexIt).genJets.push_back(genJetCollection->ptrAt(ijet)); //no cross cleaning -> multiple jets can originate from one vertex
+            //int maxFlavour = 0;
+            //float maxPt = 0;
+            for (const auto& indexPair: particlesPermatchedVerticesIndex)
+            {
+                reco::Candidate::Vector vertexVec =  p4PermatchedVerticesIndex[indexPair.first].Vect();
+                reco::Candidate::Vector jetVec =  genJetCollection->at(ijet).p4().Vect();
+                //calculate projection
+                float shared = vertexVec.Dot(jetVec)/jetVec.mag2();
+                
+                //float pt = p4PermatchedVerticesIndex[indexPair.first].pt();
+   
+                
+                //if (pt>maxPt)
+                if (shared>maxShared)
+                //if (flavour>maxFlavour)
+                {
+                    //maxFlavour = flavour; 
+                    //maxPt= pt;
+                    maxShared = shared;
+                    maxIndex = indexPair.first;
+                }
+            }
+            //std::cout<<"sum: "<<sumF<<std::endl;
+            if (maxIndex>=0)
+            {
+ 
+                displacedGenVertices->at(maxIndex).genJets.push_back(genJetCollection->ptrAt(ijet));
+                displacedGenVertices->at(maxIndex).jetFractions.push_back(maxShared);
+            }
         }
-        
     }
+    
+    
     
     //TODO: collaps vertices if llp is stable particle e.g. proton/pion/kaon
     

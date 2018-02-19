@@ -26,6 +26,7 @@ struct DisplacedGenVertex
     bool isHardInteraction;
     double sharedMassFraction; //fraction of invariant LLP mass carried by its first daughters in vertex
     reco::Candidate::Point vertex;
+    reco::Candidate::Point hardInteraction;
     edm::Ptr<DisplacedGenVertex> motherVertex;
     edm::RefVector<std::vector<DisplacedGenVertex>> daughterVertices;
     
@@ -33,11 +34,13 @@ struct DisplacedGenVertex
     edm::Ptr<reco::GenParticle> motherLongLivedParticle;
     
     edm::PtrVector<reco::GenJet> genJets;
+    std::vector<float> jetFractions; 
     
     DisplacedGenVertex():
         isHardInteraction(false),
         sharedMassFraction(0),
-        vertex(0,0,0)
+        vertex(0,0,0),
+        hardInteraction(0,0,0)
     {
     }
     
