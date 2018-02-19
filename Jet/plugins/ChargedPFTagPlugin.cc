@@ -47,23 +47,27 @@ class ChargedPFTagDataPlugin:
             edm::Handle<edm::View<pat::Jet>> jetCollection;
             event.getByToken(token_, jetCollection);
             
-
             std::unique_ptr<std::vector<xtag::ChargedPFTagData>> output(
                 new std::vector<xtag::ChargedPFTagData>(1)
             );
-            /*
+            
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
-                output->at(0).ncpf.push_back(jet.numberOfDaughters());
+                std::vector<xtag::ChargedPFTagData::Data> data;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
                 {
                     const reco::Candidate* constituent = jet.daughter(idaughter);
-                    output->at(0).ncpf.push_back(constituent->pt()/jet.pt());
+                    if (constituent->charge()==0)
+                    {
+                        continue;
+                    }
+                    data.emplace_back(constituent->pt()/jet.pt());
+                    
                 }
-                
+                output->at(0).jetData.push_back(data);
             }
-            */
+            
             event.put(std::move(output),this->name());
         }
 };

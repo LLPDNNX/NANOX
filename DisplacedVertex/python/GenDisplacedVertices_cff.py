@@ -13,7 +13,7 @@ from RecoJets.JetProducers.ak4GenJets_cfi import ak4GenJets
 genParticlesForGenJets = cms.EDFilter(
     "CandPtrSelector", 
     src = cms.InputTag("genParticlesMerged"),
-    cut = cms.string("status==1 && abs(pdgId) != 12 && abs(pdgId) != 14 && abs(pdgId) != 16")
+    cut = cms.string("status==1 && abs(pdgId) != 12 && abs(pdgId) != 14 && abs(pdgId) != 16 && abs(pdgId) < 1000000")
 )
 
 

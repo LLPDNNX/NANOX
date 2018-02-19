@@ -8,9 +8,11 @@
 #include "FWCore/Framework/interface/stream/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Utilities/interface/Exception.h"
+
 
 #include "XTag/DataFormats/interface/DisplacedGenVertex.h"
 
@@ -36,32 +38,54 @@ class XTagFlatTableProducer:
     private:    
         struct TagDataToWrite
         {
-            std::string basename;
-            std::vector<edm::InputTag> inputTags;
-            std::vector<edm::EDGetTokenT<edm::View<xtag::TagData>>> tokens;
-            bool extend;
+            edm::InputTag inputTag;
+            std::vector<std::string> arrayNames;
+            edm::EDGetTokenT<edm::View<xtag::TagData>> token;
+            std::vector<std::string> tableNames;
             
-            TagDataToWrite(const std::string basename):
-                basename(basename),
-                extend(false)
+            TagDataToWrite(
+                const edm::InputTag& inputTag, 
+                const std::vector<std::string>& arrayNames,
+                edm::ProducerBase& prod,
+                edm::ConsumesCollector collector
+            ):
+                inputTag(inputTag),
+                arrayNames(arrayNames),
+                token(collector.consumes<edm::View<xtag::TagData>>(inputTag))
             {
+                std::string baseName = inputTag.label()+inputTag.instance();
+                for (auto name: arrayNames)
+                {
+                    tableNames.push_back(baseName+name);
+                    prod.produces<nanoaod::FlatTable>(baseName+name);
+                }
             }
             
-            inline unsigned int size() const
+            void put(edm::Event& event, std::vector<std::unique_ptr<nanoaod::FlatTable>>&& tables)
             {
-                return inputTags.size();
+                for (unsigned int iname = 0; iname < arrayNames.size(); ++iname)
+                {
+                    bool inserted = false;
+                    for (auto& table: tables)
+                    {
+                        //table may have moved on already
+                        if (table and table->name()==arrayNames[iname])
+                        {
+                            event.put(std::move(table),tableNames[iname]);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if (not inserted)
+                    {
+                        throw cms::Exception("Requested array with name '"+arrayNames[iname]+"' not found in tables");
+                    }
+                }
             }
             
-            void addTagData(
-                edm::InputTag& inputTag, 
-                edm::EDGetTokenT<edm::View<xtag::TagData>> token
-            )
-            {
-                inputTags.emplace_back(inputTag);
-                tokens.emplace_back(token);
-            }
         };
         std::vector<TagDataToWrite> tagDataToWrite_;
+        
         
         class FlatTableArchive:
             public xtag::ArchiveInterface
@@ -71,15 +95,14 @@ class XTagFlatTableProducer:
                     public xtag::ArrayInterface
                 {
                     protected:
+                        std::string name_;
                         unsigned int size_;
-                        unsigned int fillIndex_;
-                        std::unordered_map<std::string, std::shared_ptr<xtag::Accessor>> accessors_;
                         
                         std::unordered_map<std::string, std::vector<float>> floatData_;
                     public:
-                        FlatTableArray(unsigned int size):
-                            size_(size),
-                            fillIndex_(0)
+                        FlatTableArray(const std::string& name, unsigned int size):
+                            name_(name),
+                            size_(size)
                         {
                         }
                         
@@ -87,9 +110,10 @@ class XTagFlatTableProducer:
                         {
                             return size_;
                         }
-                        virtual void bookProperty(const std::string& name,std::shared_ptr<xtag::Accessor> acc)
+                        
+                        
+                        virtual void bookProperty(const std::string& name)
                         {
-                            accessors_[name]=acc;
                             floatData_.emplace(
                                 std::piecewise_construct,
                                 std::forward_as_tuple(name),
@@ -97,33 +121,20 @@ class XTagFlatTableProducer:
                             );
                         }
                         
-                        virtual void fill(const xtag::Property* property)
+                        virtual void fillFloat(const std::string& name, float value, unsigned int index)
                         {
-                            for (auto itPair: accessors_)
-                            {
-                                itPair.second->fill(property,itPair.first,*this);
-                            }
-                            fillIndex_++; //TODO: what if user calls this function twice per object?
+                            if (index>=size_) throw cms::Exception("Attempt to fill array index '"+std::to_string(index)+"' which is larger than its size '"+std::to_string(size_)+"'");
+                            floatData_[name][index]=value;
                         }
                         
-                        virtual void fillFloat(const std::string& name, float value)
+                        std::unique_ptr<nanoaod::FlatTable> makeTable()
                         {
-                            if (fillIndex_>=size_) throw cms::Exception("Attempt to fill array index '"+std::to_string(fillIndex_)+"' which is larger than its size '"+std::to_string(size_)+"'");
-                            floatData_[name][fillIndex_]=value;
-                        }
-                        
-                        std::unique_ptr<nanoaod::FlatTable> makeTable(
-                            const std::string& name, 
-                            bool extend
-                        )
-                        {
-                            std::unique_ptr<nanoaod::FlatTable> table = 
-                                std::make_unique<nanoaod::FlatTable>(
-                                    size_, 
-                                    name, 
-                                    false, 
-                                    extend
-                                );
+                            std::unique_ptr<nanoaod::FlatTable> table = std::make_unique<nanoaod::FlatTable>(
+                                size_, 
+                                name_, 
+                                false,  //singleton
+                                false //extend
+                            );
                             for (auto floatData: floatData_)
                             {
                                 table->addColumn<float>(
@@ -138,22 +149,34 @@ class XTagFlatTableProducer:
                         }
                 };
 
-                std::unique_ptr<FlatTableArray> arrayData_;
+                std::vector<std::unique_ptr<FlatTableArray>> arrayData_;
                 
-                FlatTableArchive(bool extend)
+                FlatTableArchive()
                 {
                 }
                 
                 virtual xtag::ArrayInterface& initArray(
+                    const std::string& name,
                     unsigned int size
                 )
                 {
-                    arrayData_.reset(new FlatTableArray(size));
-                    return *arrayData_;
+                    arrayData_.emplace_back(new FlatTableArray(name,size));
+                    return *arrayData_.back();
                 }
                 
-                
+                std::vector<std::unique_ptr<nanoaod::FlatTable>> makeTables()
+                {
+                    std::vector<std::unique_ptr<nanoaod::FlatTable>> output;
+                    
+                    for (auto& array: arrayData_)
+                    {
+                        output.emplace_back(array->makeTable());
+                    }
+                    
+                    return std::move(output);
+                }
         };
+        
  
 
     public:
@@ -170,26 +193,18 @@ class XTagFlatTableProducer:
 //constructors and destructor
 XTagFlatTableProducer::XTagFlatTableProducer(const edm::ParameterSet& iConfig)
 {
-    const edm::ParameterSet& tagDataConfigs = iConfig.getParameter<edm::ParameterSet>("tagData");
-    std::vector<std::string> names = tagDataConfigs.getParameterNames();
-    for (auto name: names)
+    const std::vector<edm::ParameterSet>& tagDataConfigs = iConfig.getParameter<std::vector<edm::ParameterSet>>("tagData");
+    for (const edm::ParameterSet& tagDataConfig: tagDataConfigs)
     {
-        edm::ParameterSet tagDataConfig = tagDataConfigs.getParameter<edm::ParameterSet>(name);
-        TagDataToWrite tagDataToWrite(name);
-        std::vector<edm::InputTag> inputTags = tagDataConfig.getParameter<std::vector<edm::InputTag>>("srcs");
-        for (unsigned int i = 0; i < inputTags.size(); ++i)
-        {
-            tagDataToWrite.addTagData(
-                inputTags[i],
-                consumes<edm::View<xtag::TagData>>(inputTags[i])
-            );
-        }
-        if (tagDataConfig.exists("extend"))
-        {
-            tagDataToWrite.extend = tagDataConfig.getParameter<bool>("extend");
-        }
-        tagDataToWrite_.emplace_back(std::move(tagDataToWrite));
-        produces<nanoaod::FlatTable>(name);
+        edm::InputTag inputTag = tagDataConfig.getParameter<edm::InputTag>("src");
+        std::vector<std::string> arrayNames = tagDataConfig.getParameter<std::vector<std::string>>("arrayNames");
+        tagDataToWrite_.emplace_back(
+            inputTag,
+            arrayNames,
+            *this,
+            this->consumesCollector()
+        );
+        
     }
 }
 
@@ -203,57 +218,19 @@ XTagFlatTableProducer::~XTagFlatTableProducer()
 void
 XTagFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
-    for (const TagDataToWrite& tagDataToWrite: tagDataToWrite_)
+    
+    for (TagDataToWrite& tagDataToWrite: tagDataToWrite_)
     {
-        
-        FlatTableArchive ar(tagDataToWrite.extend);
-        for (unsigned int idata = 0; idata < tagDataToWrite.size(); ++idata)
-        {
-            edm::Handle<edm::View<xtag::TagData>> tagDataCollection;
-            iEvent.getByToken(tagDataToWrite.tokens[idata], tagDataCollection);
+        FlatTableArchive ar;
 
-            const xtag::TagData& tagData = tagDataCollection->at(0);
-            tagData.saveTagData(ar);
-        }
-        iEvent.put(std::move(ar.arrayData_->makeTable(tagDataToWrite.basename,false)),tagDataToWrite.basename);
+        edm::Handle<edm::View<xtag::TagData>> tagDataCollection;
+        iEvent.getByToken(tagDataToWrite.token, tagDataCollection);
+
+        const xtag::TagData& tagData = tagDataCollection->at(0);
+        tagData.saveTagData(ar);
+        
+        tagDataToWrite.put(iEvent,ar.makeTables());
     }
-/*
-    edm::Handle<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexCollection;
-    iEvent.getByToken(_displacedGenVertexToken, displacedGenVertexCollection);
-    
-    edm::Handle<edm::View<pat::Jet>> jetCollection;
-    iEvent.getByToken(_jetToken, jetCollection);
-    
-    std::vector<uint8_t> ncpf(jetCollection->size(),0);
-    std::vector<float> cpf_ptrel;
-    for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
-    {
-        const pat::Jet& jet = jetCollection->at(ijet);
-        unsigned int ncpf_sum = 0;
-        for (unsigned int iconstituent = 0; iconstituent < jet.numberOfDaughters(); ++iconstituent)
-        {
-            const pat::PackedCandidate* constituent = dynamic_cast<const pat::PackedCandidate*>(jet.daughter(iconstituent));
-            if (constituent and constituent->charge ()!=0)
-            {
-                cpf_ptrel.push_back(constituent->pt()/jet.pt());
-                ++ncpf_sum;
-            }
-        }
-        ncpf[ijet] = ncpf_sum;
-    }
-    
-    
-    auto tab  = std::make_unique<nanoaod::FlatTable>(displacedGenVertexCollection->size(), "displaced", false, false);
-    std::vector<float> decayLength(displacedGenVertexCollection->size(),0);
-    
-    auto cpf_size_tab  = std::make_unique<nanoaod::FlatTable>(ncpf.size(), "jets", false, false);
-    cpf_size_tab->addColumn<float>("cpf_size", ncpf, "POG highPt muon ID (1 = tracker high pT, 2 = global high pT, which includes tracker high pT)", nanoaod::FlatTable::FloatColumn);
-    iEvent.put(std::move(cpf_size_tab),"cpfsize");
-    
-    auto cpf_ptrel_tab  = std::make_unique<nanoaod::FlatTable>(cpf_ptrel.size(), "cpf_ptrel", false, false);
-    cpf_ptrel_tab->addColumn<float>("cpf_ptrel", cpf_ptrel, "POG highPt muon ID (1 = tracker high pT, 2 = global high pT, which includes tracker high pT)", nanoaod::FlatTable::FloatColumn);
-    iEvent.put(std::move(cpf_ptrel_tab),"cpfptrel");
-    */
 }
 
 

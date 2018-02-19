@@ -11,30 +11,43 @@ class ChargedPFTagData:
     public TagData
 {
     public:
-        std::vector<float> ptrel;
-        std::vector<unsigned int> ncpf;
-        /*
-        'jet_pt',
-        'jet_eta',
-        'nCpfcand',
-        'nNpfcand',
-        'nsv',
-        'npv',
-        'TagVarCSV_trackSumJetEtRatio', 
-        'TagVarCSV_trackSumJetDeltaR', 
-        'TagVarCSV_vertexCategory', 
-        'TagVarCSV_trackSip2dValAboveCharm', 
-        'TagVarCSV_trackSip2dSigAboveCharm', 
-        'TagVarCSV_trackSip3dValAboveCharm', 
-        'TagVarCSV_trackSip3dSigAboveCharm', 
-        'TagVarCSV_jetNSelectedTracks', 
-        'TagVarCSV_jetNTracksEtaRel'
-        */
+        class Data:
+            public PropertyContainer
+        {
+            public:
+                float ptrel;
+                Data(float ptrel):
+                    ptrel(ptrel)
+                {
+                }
+        };
+        std::vector<std::vector<Data>> jetData;
+
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
-            //archive.saveVectorUInt(ncpf,"ncpf");
-            //archive.saveVectorFloat(ptrel,"cpf_ptrel");
+            
+            ArrayInterface& dataLengthArray = archive.initArray("cpflength",jetData.size());
+            dataLengthArray.bookProperty("length");
+            unsigned int jetDataLength = 0;
+            for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
+            {
+                dataLengthArray.fillFloat("length",jetData[ijet].size(),ijet);
+                jetDataLength+=jetData[ijet].size();
+            }
+            
+            ArrayInterface& cpfDataArray = archive.initArray("cpf",jetDataLength);
+            cpfDataArray.bookProperty("ptrel", &Data::ptrel);
+            
+            unsigned int index = 0;
+            for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
+            {
+                for (unsigned int icpf = 0; icpf < jetData[ijet].size(); ++icpf)
+                {
+                    cpfDataArray.fill(&jetData[ijet][icpf],index);
+                    ++index;
+                }
+            }
         }
         
         virtual ~ChargedPFTagData()
