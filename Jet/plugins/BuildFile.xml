@@ -9,6 +9,7 @@
 <use   name="DataFormats/HepMCCandidate"/>
 <use   name="DataFormats/NanoAOD"/>
 <use   name="FWCore/PluginManager"/>
+<use   name="TrackingTools/IPTools"/>
 <use   name="XTag/XTagProducer"/>
 
 <library file="GlobalJetTagPlugin.cc" name="GlobalJetTagPlugin">

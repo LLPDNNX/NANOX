@@ -15,15 +15,29 @@ class ChargedPFTagData:
             public PropertyContainer
         {
             public:
+                float trackEtaRel;
+                float trackPtRel;
+                float trackPPar;
+                float trackDeltaR;
+                float trackPtRatio;
+                float trackPParRatio;
+                float trackSip2dVal;
+                float trackSip2dSig;
+                float trackSip3dVal;
+                float trackSip3dSig;
+                float trackJetDistVal;
+                float trackJetDistSig;
+                /*
                 float ptrel;
-                Data(float ptrel):
-                    ptrel(ptrel)
-                {
-                }
+                float drminsv;
+                float VTX_ass;
+                float puppiw;
+                float chi2;
+                float quality;
+                */
         };
         std::vector<std::vector<Data>> jetData;
 
-        
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
             
@@ -37,7 +51,7 @@ class ChargedPFTagData:
             }
             
             ArrayInterface& cpfDataArray = archive.initArray("cpf",jetDataLength);
-            cpfDataArray.bookProperty("ptrel", &Data::ptrel);
+            cpfDataArray.bookProperty("trackEtaRel", &Data::trackEtaRel);
             
             unsigned int index = 0;
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)

@@ -1,4 +1,5 @@
 #include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "XTag/DataFormats/interface/GhostFlavourInfo.h"
 #include "XTag/DataFormats/interface/TagData.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
@@ -27,6 +28,14 @@ struct dictionary_ra1
     
     xtag::PropertyContainer dummy14;
     edm::Wrapper<xtag::PropertyContainer> dummy15;
+    
+    
+    
+    xtag::GhostFlavourInfo dummy16;
+    edm::Wrapper<xtag::GhostFlavourInfo> dummy17;
+    
+    edm::ValueMap<xtag::GhostFlavourInfo> dummy18;
+    edm::Wrapper<edm::ValueMap<xtag::GhostFlavourInfo>> dummy19;
 
 };
 

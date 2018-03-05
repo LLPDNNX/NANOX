@@ -27,5 +27,10 @@
     <class name="xtag::PropertyContainer"/>
     <class name="edm::Wrapper<xtag::PropertyContainer>"/>
 
+    <class name="xtag::GhostFlavourInfo"/>
+    <class name="edm::Wrapper<xtag::GhostFlavourInfo>"/>
+    
+    <class name="edm::ValueMap<xtag::GhostFlavourInfo>"/>
+    <class name="edm::Wrapper<edm::ValueMap<xtag::GhostFlavourInfo>>"/>
 
 </lcgdict>

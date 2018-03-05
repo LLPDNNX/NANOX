@@ -24,8 +24,6 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Math/interface/angle.h"
 
-#include "TTree.h"
-
 using xtag::DisplacedGenVertex;
 using xtag::DisplacedGenVertexCollection;
 
@@ -39,9 +37,13 @@ class DisplacedGenVertexProducer:
             return std::sqrt((p1-p2).mag2());
         }
         
-        static int getHadronFlavor(const reco::GenParticle& genParticle)
+        static int getHadronFlavor(const reco::Candidate& genParticle)
         {
             int absPdgId = std::abs(genParticle.pdgId());
+            if (absPdgId<100)
+            {
+                return 0; //not a hadron
+            }
             int nq3 = (absPdgId/     10)%10; //quark content
             int nq2 = (absPdgId/    100)%10; //quark content
             int nq1 = (absPdgId/   1000)%10; //quark content
@@ -50,7 +52,28 @@ class DisplacedGenVertexProducer:
             return std::max({nq1,nq2,nq3})+n*10000+(n>0 and nL==9)*100;
         }
         
-        static bool displacedDecay(const reco::GenParticle& genParticle)
+        static bool ignoreDisplacement(const reco::Candidate& genParticle)
+        {
+            
+            int absPdgId = std::abs(genParticle.pdgId());
+            if (absPdgId==111)
+            {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        static reco::Candidate::Point correctedDisplacement(const reco::Candidate& genParticle)
+        {
+            if (genParticle.mother() and ignoreDisplacement(*genParticle.mother()))
+            {
+                return correctedDisplacement(*genParticle.mother()); //call recursively
+            }
+            return genParticle.vertex();
+        }
+        
+        static bool displacedDecay(const reco::Candidate& genParticle)
         {
             for (unsigned int idaughter = 0; idaughter<genParticle.numberOfDaughters(); ++idaughter)
             {
@@ -138,7 +161,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             {
                 hardInteractionVertex.reset(new reco::Candidate::Point(genParticle.vertex()));
             }
-            else if (distance(*hardInteractionVertex,genParticle.vertex())>10e-10)
+            else if (distance(*hardInteractionVertex,correctedDisplacement(genParticle))>10e-10)
             {
                 std::cout<<"pdg="<<genParticle.pdgId()<<"; ";
                 throw cms::Exception("DisplacedGenVertexProducer: multiple hard interaction vertices found!");
@@ -150,7 +173,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
         for (unsigned int ivertex = 0; ivertex<displacedGenVertices->size(); ++ivertex)
         {
             DisplacedGenVertex& displacedGenVertex = displacedGenVertices->at(ivertex);
-            if (distance(displacedGenVertex.vertex,genParticle.vertex())<10e-10)
+            if (distance(displacedGenVertex.vertex,correctedDisplacement(genParticle))<10e-10)
             {
                 displacedGenVertex.genParticles.push_back(genParticleCollection->ptrAt(igenParticle));
                 genParticleToVertexGroupMap[(size_t)&genParticle]=ivertex;
@@ -191,7 +214,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
         {
             continue;
         }
-        if (not (displacedDecay(genParticle)))
+        if (ignoreDisplacement(genParticle) or (not displacedDecay(genParticle)))
         {
             continue;
         }
@@ -315,7 +338,18 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
         }
     }
     
-    
+    for (const auto& vertex: *displacedGenVertices)
+    {
+        std::cout<<"pos="<<vertex.vertex<<", particle="<<vertex.genParticles.size()<<", njets="<<vertex.genJets.size()<<", llp=";
+        if (vertex.motherLongLivedParticle.isNonnull())
+        {
+            std::cout<<vertex.motherLongLivedParticle->pdgId()<<std::endl;
+        }
+        else
+        {
+            std::cout<<"-"<<std::endl;
+        }
+    } 
     
     //TODO: collaps vertices if llp is stable particle e.g. proton/pion/kaon
     
