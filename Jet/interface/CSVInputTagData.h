@@ -11,29 +11,40 @@ class CSVInputTagData:
     public TagData
 {
     public:
-        std::vector<float> trackSumJetEtRatio;
-        std::vector<float> trackSumJetDeltaR;
-        std::vector<float> vertexCategory;
-        std::vector<float> trackSip2dValAboveCharm;
-        std::vector<float> trackSip2dSigAboveCharm;
-        std::vector<float> trackSip3dValAboveCharm;
-        std::vector<float> trackSip3dSigAboveCharm;
-        std::vector<float> jetNSelectedTracks;
-        std::vector<float> jetNTracksEtaRel;
+        class Data:
+            public PropertyContainer
+        {
+            public:
+                float trackSumJetEtRatio;
+                float trackSumJetDeltaR;
+                float vertexCategory;
+                float trackSip2dValAboveCharm;
+                float trackSip2dSigAboveCharm;
+                float trackSip3dValAboveCharm;
+                float trackSip3dSigAboveCharm;
+                float jetNSelectedTracks;
+                float jetNTracksEtaRel;
+        };
+        
+        std::vector<Data> jetData;
         
         virtual void saveTagData(ArchiveInterface& archive) const override
         {
-            /*
-            archive.saveVectorFloat(trackSumJetEtRatio,"trackSumJetEtRatio");
-            archive.saveVectorFloat(trackSumJetDeltaR,"trackSumJetDeltaR");
-            archive.saveVectorFloat(vertexCategory,"vertexCategory");
-            archive.saveVectorFloat(trackSip2dValAboveCharm,"trackSip2dValAboveCharm");
-            archive.saveVectorFloat(trackSip2dSigAboveCharm,"trackSip2dSigAboveCharm");
-            archive.saveVectorFloat(trackSip3dValAboveCharm,"trackSip3dValAboveCharm");
-            archive.saveVectorFloat(trackSip3dSigAboveCharm,"trackSip3dSigAboveCharm");
-            archive.saveVectorFloat(jetNSelectedTracks,"jetNSelectedTracks");
-            archive.saveVectorFloat(jetNTracksEtaRel,"jetNTracksEtaRel");
-            */
+            ArrayInterface& csvDataArray = archive.initArray("csv",jetData.size());
+            csvDataArray.bookProperty("trackSumJetEtRatio",&Data::trackSumJetEtRatio);
+            csvDataArray.bookProperty("trackSumJetDeltaR",&Data::trackSumJetDeltaR);
+            csvDataArray.bookProperty("vertexCategory",&Data::vertexCategory);
+            csvDataArray.bookProperty("trackSip2dValAboveCharm",&Data::trackSip2dValAboveCharm);
+            csvDataArray.bookProperty("trackSip2dSigAboveCharm",&Data::trackSip2dSigAboveCharm);
+            csvDataArray.bookProperty("trackSip3dValAboveCharm",&Data::trackSip3dValAboveCharm);
+            csvDataArray.bookProperty("trackSip3dSigAboveCharm",&Data::trackSip3dSigAboveCharm);
+            csvDataArray.bookProperty("jetNSelectedTracks",&Data::jetNSelectedTracks);
+            csvDataArray.bookProperty("jetNTracksEtaRel",&Data::jetNTracksEtaRel);
+            
+            for (unsigned int i = 0; i < jetData.size(); ++i)
+            {
+                csvDataArray.fill(&jetData[i],i);
+            }
         }
         
         virtual ~CSVInputTagData()

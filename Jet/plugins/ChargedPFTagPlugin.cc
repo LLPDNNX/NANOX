@@ -21,6 +21,8 @@
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
+
 #include <iostream>
 
 #include "TVector3.h"
@@ -33,7 +35,8 @@ class ChargedPFTagDataPlugin:
 {
     private:
         edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;
-        edm::EDGetTokenT<edm::View<reco::Vertex>> vertexToken_;
+        edm::EDGetTokenT<edm::View<reco::Vertex>> pvToken_;
+        edm::EDGetTokenT<edm::View<reco::VertexCompositePtrCandidate>> svToken_;
         
     public:
         ChargedPFTagDataPlugin(
@@ -44,7 +47,8 @@ class ChargedPFTagDataPlugin:
         ):
             XTagPlugin(name,pset,collector,prod),
             jetToken_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets"))),
-            vertexToken_(collector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("vertices")))
+            pvToken_(collector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("pvVertices"))),
+            svToken_(collector.consumes<edm::View<reco::VertexCompositePtrCandidate>>(pset.getParameter<edm::InputTag>("svVertices")))
         {
             prod.produces<std::vector<xtag::ChargedPFTagData>>(name);
         }
@@ -54,10 +58,13 @@ class ChargedPFTagDataPlugin:
             edm::Handle<edm::View<pat::Jet>> jetCollection;
             event.getByToken(jetToken_, jetCollection);
             
-            edm::Handle<edm::View<reco::Vertex>> vertexCollection;
-            event.getByToken(vertexToken_, vertexCollection);
+            edm::Handle<edm::View<reco::Vertex>> pvCollection;
+            event.getByToken(pvToken_, pvCollection);
             
-            const reco::Vertex& pv = vertexCollection->at(0);
+            edm::Handle<edm::View<reco::VertexCompositePtrCandidate>> svCollection;
+            event.getByToken(svToken_, svCollection);
+            
+            const reco::Vertex& pv = pvCollection->at(0);
             
             edm::ESHandle<TransientTrackBuilder> builder;
             setup.get<TransientTrackRecord>().get("TransientTrackBuilder", builder);
@@ -69,6 +76,9 @@ class ChargedPFTagDataPlugin:
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
+                const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
+                //const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
+                
                 std::vector<xtag::ChargedPFTagData::Data> cpfData;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
                 {
@@ -79,10 +89,26 @@ class ChargedPFTagDataPlugin:
                     }
                     
                     xtag::ChargedPFTagData::Data data;
+                    
+                    data.ptrel = constituent->pt()/jet_pt_uncorr*constituent->pt();
+                    
+                    data.drminsv = 0.4;
+                    for (const auto& sv: *svCollection.product())
+                    {
+                        float dR = reco::deltaR(sv,*constituent);
+                        data.drminsv = std::min(data.drminsv,dR);
+                    }
+                    
+                    data.vertex_association = constituent->pvAssociationQuality();
+                    data.puppi_weight = constituent->puppiWeight();
+                    data.track_chi2 = std::log10(constituent->pseudoTrack().chi2()/constituent->pseudoTrack().ndof()+1);
+                    data.track_quality = constituent->pseudoTrack().qualityMask();
+                    if (jet.mass()<1e-10) data.jetmassdroprel = 0;
+                    else data.jetmassdroprel = std::log10(1-(jet.p4()-constituent->p4()).mass()/jet.mass());
+                    
                     reco::TransientTrack transientTrack = builder->build(constituent->pseudoTrack());
                     reco::Candidate::Vector jetDir = jet.momentum().Unit();
                     GlobalVector jetRefTrackDir(jet.px(),jet.py(),jet.pz());
-                    
                     
                     Measurement1D meas_ip2d=IPTools::signedTransverseImpactParameter(transientTrack, jetRefTrackDir, pv).second;
                     Measurement1D meas_ip3d=IPTools::signedImpactParameter3D(transientTrack, jetRefTrackDir, pv).second;
@@ -93,22 +119,21 @@ class ChargedPFTagDataPlugin:
                     TVector3 jetDir3(jetDir.x(),jetDir.y(),jetDir.z());
 
                     data.trackEtaRel=reco::btau::etaRel(jetDir, trackMom);
-                    data.trackPtRel=trackMom3.Perp(jetDir3);
-                    data.trackPPar=jetDir.Dot(trackMom);
+                    data.trackPtRel=std::log10(trackMom3.Perp(jetDir3));
+                    data.trackPPar=std::log10(1+jetDir.Dot(trackMom));
                     data.trackDeltaR=reco::deltaR(trackMom, jetDir);
-                    data.trackPtRatio=data.trackPtRel / trackMag;
-                    data.trackPParRatio=data.trackPPar / trackMag;
+                    data.trackPtRatio=std::log10(1-data.trackPtRel / trackMag);
+                    data.trackPParRatio=std::log10(1+data.trackPPar / trackMag);
                     
-                    data.trackSip2dVal=(meas_ip2d.value());
-                    data.trackSip2dSig=(meas_ip2d.significance());
-                    data.trackSip3dVal=(meas_ip3d.value());
-                    data.trackSip3dSig=meas_ip3d.significance();
+                    data.trackSip2dVal=std::copysign(std::log10(std::fabs(meas_ip2d.value())),meas_ip2d.value());
+                    data.trackSip2dSig=std::copysign(std::log10(std::fabs(meas_ip2d.significance())),meas_ip2d.significance());
+                    data.trackSip3dVal=std::copysign(std::log10(std::fabs(meas_ip3d.value())),meas_ip3d.value());
+                    data.trackSip3dSig=std::copysign(std::log10(std::fabs(meas_ip3d.significance())),meas_ip3d.significance());
                     
-                    data.trackJetDistVal= jetdist.value();
-                    data.trackJetDistSig= jetdist.significance();
+                    data.trackJetDistVal = jetdist.value();
+                    data.trackJetDistSig = jetdist.significance();
         
                     cpfData.emplace_back(data);
-                    
                 }
                 output->at(0).jetData.push_back(cpfData);
             }

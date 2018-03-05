@@ -52,7 +52,7 @@ class CSVInputTagDataPlugin:
             std::unique_ptr<std::vector<xtag::CSVInputTagData>> output(
                 new std::vector<xtag::CSVInputTagData>(1)
             );
-            /*
+            
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
@@ -69,13 +69,14 @@ class CSVInputTagDataPlugin:
                     availableTagNames+="]";
                     throw cms::Exception("Not shallow tag information '"+tagName_+"' found in jet. Only these tag labels are available: "+availableTagNames);
                 }
+                xtag::CSVInputTagData::Data jetTagData;
                 reco::TaggingVariableList vars = tagInfo->taggingVariables();
                 //http://cmslxr.fnal.gov/source/DataFormats/BTauReco/interface/TaggingVariable.h?v=CMSSW_9_4_0_pre1#0033
-                output->at(0).trackSumJetEtRatio.push_back(vars.get(reco::btau::trackSumJetEtRatio, -1));
-                output->at(0).trackSumJetDeltaR.push_back(vars.get(reco::btau::trackSumJetDeltaR, -1));
-                output->at(0).vertexCategory.push_back(vars.get(reco::btau::vertexCategory, -1));
-                output->at(0).jetNSelectedTracks.push_back(vars.get(reco::btau::jetNSelectedTracks, -1));
-                output->at(0).jetNTracksEtaRel.push_back(vars.get(reco::btau::jetNTracksEtaRel, -1));
+                jetTagData.trackSumJetEtRatio = vars.get(reco::btau::trackSumJetEtRatio, -1);
+                jetTagData.trackSumJetDeltaR = vars.get(reco::btau::trackSumJetDeltaR, -1);
+                jetTagData.vertexCategory = vars.get(reco::btau::vertexCategory, -1);
+                jetTagData.jetNSelectedTracks = vars.get(reco::btau::jetNSelectedTracks, -1);
+                jetTagData.jetNTracksEtaRel = vars.get(reco::btau::jetNTracksEtaRel, -1);
                 
                 float trackSip2dValAboveCharm = vars.get(reco::btau::trackSip2dValAboveCharm, -10);
                 float trackSip2dSigAboveCharm = vars.get(reco::btau::trackSip2dSigAboveCharm, -10);
@@ -86,8 +87,8 @@ class CSVInputTagDataPlugin:
                 {
                     trackSip2dSigAboveCharm = -10;
                 }
-                output->at(0).trackSip2dValAboveCharm.push_back(trackSip2dValAboveCharm);
-                output->at(0).trackSip2dSigAboveCharm.push_back(trackSip2dSigAboveCharm);
+                jetTagData.trackSip2dValAboveCharm = trackSip2dValAboveCharm;
+                jetTagData.trackSip2dSigAboveCharm = trackSip2dSigAboveCharm;
                 
                 float trackSip3dValAboveCharm = vars.get(reco::btau::trackSip2dValAboveCharm, -10);
                 float trackSip3dSigAboveCharm = vars.get(reco::btau::trackSip3dSigAboveCharm, -10);
@@ -95,10 +96,12 @@ class CSVInputTagDataPlugin:
                 {
                     trackSip3dSigAboveCharm = -10;
                 }
-                output->at(0).trackSip3dValAboveCharm.push_back(trackSip3dValAboveCharm);
-                output->at(0).trackSip3dSigAboveCharm.push_back(trackSip3dSigAboveCharm);
+                jetTagData.trackSip3dValAboveCharm = trackSip3dValAboveCharm;
+                jetTagData.trackSip3dSigAboveCharm = trackSip3dSigAboveCharm;
+                
+                output->at(0).jetData.push_back(jetTagData);
             }
-            */
+            
             event.put(std::move(output),this->name());
         }
 };

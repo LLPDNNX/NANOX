@@ -66,7 +66,8 @@ class DisplacedGenVertexProducer:
         
         static reco::Candidate::Point correctedDisplacement(const reco::Candidate& genParticle)
         {
-            if (genParticle.mother() and ignoreDisplacement(*genParticle.mother()))
+            //return mother vertex if displacement is ignored
+            if (genParticle.mother() and ignoreDisplacement(*genParticle.mother()) and  (distance(genParticle.mother()->vertex(),genParticle.vertex())>1e-10))
             {
                 return correctedDisplacement(*genParticle.mother()); //call recursively
             }
@@ -77,7 +78,7 @@ class DisplacedGenVertexProducer:
         {
             for (unsigned int idaughter = 0; idaughter<genParticle.numberOfDaughters(); ++idaughter)
             {
-                if (distance(genParticle.daughter(idaughter)->vertex(),genParticle.vertex())>10e-10)
+                if (distance(genParticle.daughter(idaughter)->vertex(),genParticle.vertex())>1e-10)
                 {
                     return true;
                 }
@@ -161,7 +162,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             {
                 hardInteractionVertex.reset(new reco::Candidate::Point(genParticle.vertex()));
             }
-            else if (distance(*hardInteractionVertex,correctedDisplacement(genParticle))>10e-10)
+            else if (distance(*hardInteractionVertex,correctedDisplacement(genParticle))>1e-10)
             {
                 std::cout<<"pdg="<<genParticle.pdgId()<<"; ";
                 throw cms::Exception("DisplacedGenVertexProducer: multiple hard interaction vertices found!");
@@ -173,7 +174,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
         for (unsigned int ivertex = 0; ivertex<displacedGenVertices->size(); ++ivertex)
         {
             DisplacedGenVertex& displacedGenVertex = displacedGenVertices->at(ivertex);
-            if (distance(displacedGenVertex.vertex,correctedDisplacement(genParticle))<10e-10)
+            if (distance(displacedGenVertex.vertex,correctedDisplacement(genParticle))<1e-10)
             {
                 displacedGenVertex.genParticles.push_back(genParticleCollection->ptrAt(igenParticle));
                 genParticleToVertexGroupMap[(size_t)&genParticle]=ivertex;
@@ -199,7 +200,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
     for (unsigned int ivertex = 0; ivertex<displacedGenVertices->size(); ++ivertex)
     {
         displacedGenVertices->at(ivertex).hardInteraction = *hardInteractionVertex;
-        if (hardInteractionVertex and distance(displacedGenVertices->at(ivertex).vertex,*hardInteractionVertex)<10e-10)
+        if (hardInteractionVertex and distance(displacedGenVertices->at(ivertex).vertex,*hardInteractionVertex)<1e-10)
         {
             displacedGenVertices->at(ivertex).isHardInteraction=true;
         }
@@ -337,7 +338,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             }
         }
     }
-    
+    /*
     for (const auto& vertex: *displacedGenVertices)
     {
         std::cout<<"pos="<<vertex.vertex<<", particle="<<vertex.genParticles.size()<<", njets="<<vertex.genJets.size()<<", llp=";
@@ -350,7 +351,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             std::cout<<"-"<<std::endl;
         }
     } 
-    
+    */
     iEvent.put(std::move(displacedGenVertices));
 }
 

@@ -22,7 +22,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(50)
 )
 
 # Input source
@@ -162,15 +162,16 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             #src = cms.InputTag("linkedObjects","jets")
             src = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
         ),
-        #csvVars = cms.PSet(
-        #    type = cms.string("CSVInputTagData"),
-        #    src = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
-        #    tagName = cms.string('pfDeepCSV')
-        #),
+        csv = cms.PSet(
+            type = cms.string("CSVInputTagData"),
+            src = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            tagName = cms.string('pfDeepCSV')
+        ),
         cpf = cms.PSet(
             type = cms.string("ChargedPFTagData"),
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
-            vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
+            pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
+            svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
         )
     )
 )
@@ -182,11 +183,22 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
             arrayNames = cms.vstring(["global"])
         ),
         cms.PSet(
+            src = cms.InputTag("xtagProducer","csv"),
+            arrayNames = cms.vstring(["csv"])
+        ),
+        cms.PSet(
             src = cms.InputTag("xtagProducer","cpf"),
             arrayNames = cms.vstring(["cpflength","cpf"])
         ),
     ])
 )
+
+#process.eventView = cms.EDAnalyzer(
+#    "EventViewer",
+#    genParticles = cms.InputTag("genParticlesMerged"),
+#    genJets = cms.InputTag("genJetsReclustered"),
+#    selection = cms.string('(abs(pdgId)<6) && (abs(mother.pdgId)==1000021)')
+#)
 
 
 # Path and EndPath definitions
@@ -196,6 +208,7 @@ process.nanoAOD_step = cms.Path(
     +process.DisplacedGenVertexSequence
     +process.xtagProducer
     +process.xtagFlatTable
+    #+process.eventView
 )
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.NANOAODSIMoutput_step = cms.EndPath(

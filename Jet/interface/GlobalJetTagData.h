@@ -17,17 +17,6 @@ class GlobalJetTagData:
         public:
             float pt;
             float eta;
-            /*
-            float trackSumJetEtRatio;
-            float trackSumJetDeltaR;
-            float vertexCategory;
-            float trackSip2dValAboveCharm;
-            float trackSip2dSigAboveCharm;
-            float trackSip3dValAboveCharm;
-            float trackSip3dSigAboveCharm;
-            float jetNSelectedTracks;
-            float jetNTracksEtaRel;
-            */
             Data(float pt, float eta):
                 pt(pt),
                 eta(eta)
