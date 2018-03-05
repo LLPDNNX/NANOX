@@ -167,7 +167,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                 throw cms::Exception("DisplacedGenVertexProducer: multiple hard interaction vertices found!");
             }
         }
-       
+        
         //group particles by vertex position
         bool inserted = false;
         for (unsigned int ivertex = 0; ivertex<displacedGenVertices->size(); ++ivertex)
@@ -350,8 +350,6 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             std::cout<<"-"<<std::endl;
         }
     } 
-    
-    //TODO: collaps vertices if llp is stable particle e.g. proton/pion/kaon
     
     iEvent.put(std::move(displacedGenVertices));
 }
