@@ -16,4 +16,16 @@
     
     <class name="std::vector<xtag::ChargedPFTagData>"/>
     <class name="edm::Wrapper<std::vector<xtag::ChargedPFTagData>>"/>
+    
+    <class name="xtag::NeutralPFTagData"/>
+    <class name="edm::Wrapper<xtag::NeutralPFTagData>"/>
+    
+    <class name="std::vector<xtag::NeutralPFTagData>"/>
+    <class name="edm::Wrapper<std::vector<xtag::NeutralPFTagData>>"/>
+    
+    <class name="xtag::SVTagData"/>
+    <class name="edm::Wrapper<xtag::SVTagData>"/>
+    
+    <class name="std::vector<xtag::SVTagData>"/>
+    <class name="edm::Wrapper<std::vector<xtag::SVTagData>>"/>
 </lcgdict>

@@ -90,7 +90,7 @@ class ChargedPFTagDataPlugin:
                     
                     xtag::ChargedPFTagData::Data data;
                     
-                    data.ptrel = constituent->pt()/jet_pt_uncorr*constituent->pt();
+                    data.ptrel = 0.01/(0.01+constituent->pt()/jet_pt_uncorr);
                     
                     data.drminsv = 0.4;
                     for (const auto& sv: *svCollection.product())
@@ -132,6 +132,17 @@ class ChargedPFTagDataPlugin:
                     
                     data.trackJetDistVal = jetdist.value();
                     data.trackJetDistSig = jetdist.significance();
+                    
+                    float sumPt = 0.;
+                    for (unsigned int jdaughter = 0; jdaughter < jet.numberOfDaughters(); ++jdaughter)
+                    {
+                        const pat::PackedCandidate* other = dynamic_cast<const pat::PackedCandidate*>(jet.daughter(jdaughter));
+                        if (other and other!=constituent and reco::deltaR(*other,*constituent)<0.1)
+                        {
+                            sumPt += other->pt();
+                        }
+                    }
+                    data.relIso01 = 10./(10.+sumPt/constituent->pt());
         
                     cpfData.emplace_back(data);
                 }

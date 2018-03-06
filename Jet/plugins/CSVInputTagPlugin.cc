@@ -71,9 +71,17 @@ class CSVInputTagDataPlugin:
                 }
                 xtag::CSVInputTagData::Data jetTagData;
                 reco::TaggingVariableList vars = tagInfo->taggingVariables();
+                
                 //http://cmslxr.fnal.gov/source/DataFormats/BTauReco/interface/TaggingVariable.h?v=CMSSW_9_4_0_pre1#0033
-                jetTagData.trackSumJetEtRatio = vars.get(reco::btau::trackSumJetEtRatio, -1);
-                jetTagData.trackSumJetDeltaR = vars.get(reco::btau::trackSumJetDeltaR, -1);
+                float trackSumJetEtRatio = vars.get(reco::btau::trackSumJetEtRatio, -1);
+                if (trackSumJetEtRatio>0) trackSumJetEtRatio = 0.1/(0.1+trackSumJetEtRatio);
+                jetTagData.trackSumJetEtRatio = trackSumJetEtRatio;
+                
+                float trackSumJetDeltaR = vars.get(reco::btau::trackSumJetDeltaR, -1);
+                if (trackSumJetDeltaR>0) trackSumJetDeltaR = 0.1/(0.1+trackSumJetDeltaR);
+                jetTagData.trackSumJetDeltaR = trackSumJetDeltaR;
+                
+                
                 jetTagData.vertexCategory = vars.get(reco::btau::vertexCategory, -1);
                 jetTagData.jetNSelectedTracks = vars.get(reco::btau::jetNSelectedTracks, -1);
                 jetTagData.jetNTracksEtaRel = vars.get(reco::btau::jetNTracksEtaRel, -1);
@@ -85,20 +93,29 @@ class CSVInputTagDataPlugin:
                 //cmslxr.fnal.gov/source/RecoBTag/SecondaryVertex/plugins/TemplatedSecondaryVertexProducer.cc?v=CMSSW_9_4_0
                 if (trackSip2dValAboveCharm<0)
                 {
-                    trackSip2dSigAboveCharm = -10;
+                    trackSip2dSigAboveCharm = -1;
+                    jetTagData.trackSip2dValAboveCharm = trackSip2dValAboveCharm;
+                    jetTagData.trackSip2dSigAboveCharm = trackSip2dSigAboveCharm;
                 }
-                jetTagData.trackSip2dValAboveCharm = trackSip2dValAboveCharm;
-                jetTagData.trackSip2dSigAboveCharm = trackSip2dSigAboveCharm;
+                else
+                {
+                    jetTagData.trackSip2dValAboveCharm = trackSip2dValAboveCharm;
+                    jetTagData.trackSip2dSigAboveCharm = std::log10(1+trackSip2dSigAboveCharm);
+                }
                 
-                float trackSip3dValAboveCharm = vars.get(reco::btau::trackSip2dValAboveCharm, -10);
-                float trackSip3dSigAboveCharm = vars.get(reco::btau::trackSip3dSigAboveCharm, -10);
+                float trackSip3dValAboveCharm = vars.get(reco::btau::trackSip2dValAboveCharm, -1);
+                float trackSip3dSigAboveCharm = vars.get(reco::btau::trackSip3dSigAboveCharm, -1);
                 if (trackSip3dValAboveCharm<0)
                 {
-                    trackSip3dSigAboveCharm = -10;
+                    trackSip3dSigAboveCharm = -1;
+                    jetTagData.trackSip3dValAboveCharm = trackSip3dValAboveCharm;
+                    jetTagData.trackSip3dSigAboveCharm = trackSip3dSigAboveCharm;
                 }
-                jetTagData.trackSip3dValAboveCharm = trackSip3dValAboveCharm;
-                jetTagData.trackSip3dSigAboveCharm = trackSip3dSigAboveCharm;
-                
+                else
+                {
+                    jetTagData.trackSip3dValAboveCharm = trackSip3dValAboveCharm;
+                    jetTagData.trackSip3dSigAboveCharm = std::log10(10+trackSip3dSigAboveCharm);
+                }
                 output->at(0).jetData.push_back(jetTagData);
             }
             

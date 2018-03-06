@@ -36,6 +36,7 @@ class ChargedPFTagData:
                 float track_quality;
                
                 float jetmassdroprel;
+                float relIso01;
                 
         };
         std::vector<std::vector<Data>> jetData;
@@ -75,6 +76,7 @@ class ChargedPFTagData:
             cpfDataArray.bookProperty("track_quality",&Data::track_quality);
             
             cpfDataArray.bookProperty("jetmassdroprel",&Data::jetmassdroprel);
+            cpfDataArray.bookProperty("relIso01",&Data::relIso01);
             
             unsigned int index = 0;
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)

@@ -62,7 +62,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('test80X_NANO.root'),
+    fileName = cms.untracked.string('nano.root'),
     outputCommands = cms.untracked.vstring(
         'drop *', 
         'keep nanoaodFlatTable_*Table_*_*', 
@@ -97,7 +97,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         
     )
 )
-
+'''
 process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('output.root'),
     outputCommands = cms.untracked.vstring(
@@ -106,7 +106,7 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
      ),#+process.NANOAODSIMoutput.outputCommands,
     dropMetaData = cms.untracked.string('ALL'),
 )
-
+'''
 # Additional output definition
 
 # Other statements
@@ -172,7 +172,19 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
             svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
-        )
+        ),
+        npf = cms.PSet(
+            type = cms.string("NeutralPFTagData"),
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
+        ),
+        sv = cms.PSet(
+            type = cms.string("SVTagData"),
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
+            svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
+        ),
+        #Add truth labels when MC
     )
 )
 
@@ -189,6 +201,14 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
         cms.PSet(
             src = cms.InputTag("xtagProducer","cpf"),
             arrayNames = cms.vstring(["cpflength","cpf"])
+        ),
+        cms.PSet(
+            src = cms.InputTag("xtagProducer","npf"),
+            arrayNames = cms.vstring(["npflength","npf"])
+        ),
+        cms.PSet(
+            src = cms.InputTag("xtagProducer","sv"),
+            arrayNames = cms.vstring(["svlength","sv"])
         ),
     ])
 )
@@ -212,8 +232,9 @@ process.nanoAOD_step = cms.Path(
 )
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.NANOAODSIMoutput_step = cms.EndPath(
-    process.NANOAODSIMoutput+
-    process.MINIAODoutput)
+    process.NANOAODSIMoutput
+    #+process.MINIAODoutput
+    )
 
 # Schedule definition
 process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODSIMoutput_step)

@@ -23,3 +23,11 @@
 <library file="ChargedPFTagPlugin.cc" name="ChargedPFTagPlugin">
   <flags EDM_PLUGIN="1"/>
 </library>
+
+<library file="NeutralPFTagPlugin.cc" name="NeutralPFTagPlugin">
+  <flags EDM_PLUGIN="1"/>
+</library>
+
+<library file="SVTagPlugin.cc" name="SVTagPlugin">
+  <flags EDM_PLUGIN="1"/>
+</library>
