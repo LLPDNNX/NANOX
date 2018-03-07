@@ -160,11 +160,11 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
         globalVars = cms.PSet(
             type = cms.string("GlobalJetTagData"),
             #src = cms.InputTag("linkedObjects","jets")
-            src = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
         ),
         csv = cms.PSet(
             type = cms.string("CSVInputTagData"),
-            src = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             tagName = cms.string('pfDeepCSV')
         ),
         cpf = cms.PSet(
@@ -184,7 +184,10 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
             svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
         ),
-        #Add truth labels when MC
+        origin = cms.PSet(
+            type = cms.string("JetOriginTagData"),
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag")
+        ),
     )
 )
 
@@ -209,6 +212,10 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
         cms.PSet(
             src = cms.InputTag("xtagProducer","sv"),
             arrayNames = cms.vstring(["svlength","sv"])
+        ),
+        cms.PSet(
+            src = cms.InputTag("xtagProducer","origin"),
+            arrayNames = cms.vstring(["jetorigin"])
         ),
     ])
 )

@@ -3,6 +3,7 @@
 #include "XTag/Jet/interface/ChargedPFTagData.h"
 #include "XTag/Jet/interface/NeutralPFTagData.h"
 #include "XTag/Jet/interface/SVTagData.h"
+#include "XTag/Jet/interface/JetOriginTagData.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
 namespace { 
@@ -23,6 +24,9 @@ struct dictionary_xtag_jet
     
     xtag::SVTagData dummy9;
     edm::Wrapper<xtag::SVTagData> dummy10;
+    
+    xtag::JetOriginTagData dummy11;
+    edm::Wrapper<xtag::JetOriginTagData> dummy12;
 };
 
 }

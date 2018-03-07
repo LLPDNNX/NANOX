@@ -28,4 +28,10 @@
     
     <class name="std::vector<xtag::SVTagData>"/>
     <class name="edm::Wrapper<std::vector<xtag::SVTagData>>"/>
+    
+    <class name="xtag::JetOriginTagData"/>
+    <class name="edm::Wrapper<xtag::JetOriginTagData>"/>
+    
+    <class name="std::vector<xtag::JetOriginTagData>"/>
+    <class name="edm::Wrapper<std::vector<xtag::JetOriginTagData>>"/>
 </lcgdict>

@@ -36,7 +36,7 @@ class CSVInputTagDataPlugin:
             edm::ProducerBase& prod
         ):
             XTagPlugin(name,pset,collector,prod),
-            inputTag_(pset.getParameter<edm::InputTag>("src")),
+            inputTag_(pset.getParameter<edm::InputTag>("jets")),
             token_(collector.consumes<edm::View<pat::Jet>>(inputTag_)),
             tagName_(pset.getParameter<std::string>("tagName"))
         {
