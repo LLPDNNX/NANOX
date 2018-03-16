@@ -16,6 +16,13 @@
 #include "XTag/XTagProducer/interface/XTagPluginFactory.h"
 #include "XTag/Jet/interface/JetOriginTagData.h"
 
+#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+
+#include "DataFormats/Math/interface/angle.h"
+
+#include "TRandom.h"
+#include "TMath.h"
+
 #include <iostream>
 
 namespace xtag
@@ -26,6 +33,10 @@ class JetOriginTagDataPlugin:
 {
     private:
         edm::EDGetTokenT<edm::View<pat::Jet>> token_;
+        
+        edm::EDGetTokenT<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexToken_;
+        
+        
         //edm::EDGetTokenT<edm::View<reco::GenJet>> genJetToken_;
         
         static int getHadronFlavor(const reco::Candidate& genParticle)
@@ -54,20 +65,31 @@ class JetOriginTagDataPlugin:
             token_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets")))
             //genJetToken_(collector.consumes<edm::View<reco::GenJet>>(pset.getParameter<edm::InputTag>("genJets")))
         {
+            if (pset.exists("displacedGenVertices"))
+            {
+                displacedGenVertexToken_ = 
+                    collector.consumes<edm::View<xtag::DisplacedGenVertex>>(pset.getParameter<edm::InputTag>("displacedGenVertices"));
+            }
             prod.produces<std::vector<xtag::JetOriginTagData>>(name);
         }
+        
+        
+        
         
         virtual void produce(edm::Event& event, const edm::EventSetup&) const
         {
             edm::Handle<edm::View<pat::Jet>> jetCollection;
             event.getByToken(token_, jetCollection);
-            
-            //edm::Handle<edm::View<reco::GenJet>> genJetCollection;
-            //event.getByToken(genJetToken_, genJetCollection);
 
             std::unique_ptr<std::vector<xtag::JetOriginTagData>> output(
                 new std::vector<xtag::JetOriginTagData>(1)
             );
+            
+            edm::Handle<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexCollection;
+            if (not displacedGenVertexToken_.isUninitialized())
+            {
+                event.getByToken(displacedGenVertexToken_, displacedGenVertexCollection);
+            }
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
@@ -171,6 +193,35 @@ class JetOriginTagDataPlugin:
                         */
                         data.isUndefined = true;
                     }
+                    
+                    
+                    if (displacedGenVertexCollection.product())
+                    {
+                        float dR_min = 10000;
+                        
+                        for (const auto& vertex: *displacedGenVertexCollection)
+                        {
+                            for(unsigned int igenJet = 0; igenJet<vertex.genJets.size();++igenJet)
+                            {
+                                const reco::GenJet* genJet = vertex.genJets[igenJet].get();
+                                float dR = reco::deltaR(jet,*genJet);
+
+                                if(dR<0.4 and dR<dR_min)
+                                {
+                                    dR_min = dR;
+                                    data.log_displacement = std::log10(vertex.d3d());	    
+                                    data.vertexFraction = vertex.jetFractions[igenJet];
+
+                                    if (not vertex.motherLongLivedParticle.isNull())
+                                    {
+                                        const auto &mother = *(vertex.motherLongLivedParticle);
+                                        data.fromLLP = getHadronFlavor(mother)>10000;
+                                        data.decay_angle = angle(genJet->p4(),mother.p4());
+                                    }
+                                }
+                            }		
+                        }
+                    }
                 }
                 
                 int test = data.isUndefined+data.isPU+data.isB+data.isBB+data.isGBB+data.isLeptonic_B+data.isLeptonic_C+data.isC+data.isCC+data.isGCC+data.isUD+data.isS+data.isG;
@@ -183,9 +234,16 @@ class JetOriginTagDataPlugin:
                         ", isUndefined: "<<data.isUndefined;
                     data.isUndefined = true;
                 }
-                output->at(0).jetData.push_back(data);
                 
+                
+                
+                
+                
+                output->at(0).jetData.push_back(data);
             }
+            
+            
+            
             
             event.put(std::move(output),this->name());
         }

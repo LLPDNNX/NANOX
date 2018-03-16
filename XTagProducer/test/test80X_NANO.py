@@ -22,7 +22,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(50)
+    input = cms.untracked.int32(1000)
 )
 
 # Input source
@@ -155,6 +155,8 @@ process.updatedPatJetsTransientCorrectedXTag.addTagInfos = cms.bool(True)
 
 process.load('XTag.DisplacedVertex.GenDisplacedVertices_cff')
 
+#TODO: should refit SVs and allow for a looser quality
+
 process.xtagProducer = cms.EDProducer("XTagProducer",
     plugins = cms.PSet(
         globalVars = cms.PSet(
@@ -171,22 +173,23 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             type = cms.string("ChargedPFTagData"),
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
-            svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
+            svVertices = cms.InputTag("slimmedSecondaryVertices"),
         ),
         npf = cms.PSet(
             type = cms.string("NeutralPFTagData"),
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
-            svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
+            svVertices = cms.InputTag("slimmedSecondaryVertices"),
         ),
         sv = cms.PSet(
             type = cms.string("SVTagData"),
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
-            svVertices = cms.InputTag("slimmedSecondaryVertices"), #TODO: use refitted SVs with looser quality
+            svVertices = cms.InputTag("slimmedSecondaryVertices"),
         ),
         origin = cms.PSet(
             type = cms.string("JetOriginTagData"),
-            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag")
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            displacedGenVertices = cms.InputTag("displacedGenVertices"),
         ),
     )
 )
@@ -227,6 +230,33 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
 #    selection = cms.string('(abs(pdgId)<6) && (abs(mother.pdgId)==1000021)')
 #)
 
+
+#remove unneeded modules
+for moduleName in [
+    "nanoMetadata",
+    
+    "chsForSATkJets",
+    "softActivityJets",
+    "softActivityJets2",
+    "softActivityJets5",
+    "softActivityJets10",
+    
+    "fatJetTable",
+    "subJetTable",
+    "saJetTable",
+    "saTable",
+    
+    "genJetAK8Table",
+    "genJetAK8FlavourAssociation",
+    "genJetAK8FlavourTable",
+    
+    
+    "particleLevel",
+    "rivetLeptonTable",
+    "rivetMetTable"
+]:
+
+    process.nanoSequenceMC.remove(getattr(process,moduleName))
 
 # Path and EndPath definitions
 process.nanoAOD_step = cms.Path(

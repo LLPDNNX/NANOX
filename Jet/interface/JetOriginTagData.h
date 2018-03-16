@@ -42,6 +42,10 @@ class JetOriginTagData:
                 
                 bool isUndefined;
                 
+                bool fromLLP;
+                float log_displacement;
+                float decay_angle;
+                float vertexFraction;
                 
                 Data():
                     
@@ -60,7 +64,11 @@ class JetOriginTagData:
                     isS(0),
                     isUD(0),
                     isG(0),
-                    isUndefined(0)
+                    isUndefined(0),
+                    fromLLP(0),
+                    log_displacement(-10),
+                    decay_angle(-1),
+                    vertexFraction(-1)
                 {
                 }
                 
@@ -72,29 +80,6 @@ class JetOriginTagData:
             
             
             ArrayInterface& dataArray = archive.initArray("jetorigin",jetData.size());
-            
-            uint8_t partonFlavor;
-                uint8_t hadronFlavor;
-                uint8_t processFlavor; //TODO
-                
-                bool isPU;
-                
-                bool isB;
-                bool isBB;
-                bool isGBB;
-                
-                bool isLeptonic_B;
-                bool isLeptonic_C;
-                
-                bool isC;
-                bool isCC;
-                bool isGCC;
-                
-                bool isS;
-                bool isUD;
-                bool isG;
-                
-                bool isUndefined;
             
             dataArray.bookProperty("partonFlavor",&Data::partonFlavor);
             dataArray.bookProperty("hadronFlavor",&Data::hadronFlavor);
@@ -116,6 +101,10 @@ class JetOriginTagData:
             dataArray.bookProperty("isUD",&Data::isUD);
             dataArray.bookProperty("isG",&Data::isG);
             dataArray.bookProperty("isUndefined",&Data::isUndefined);
+            
+            dataArray.bookProperty("fromLLP",&Data::fromLLP);
+            dataArray.bookProperty("log_displacement",&Data::log_displacement);
+            dataArray.bookProperty("decay_angle",&Data::decay_angle);
             
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
             {

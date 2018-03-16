@@ -86,8 +86,8 @@ class CSVInputTagDataPlugin:
                 jetTagData.jetNSelectedTracks = vars.get(reco::btau::jetNSelectedTracks, -1);
                 jetTagData.jetNTracksEtaRel = vars.get(reco::btau::jetNTracksEtaRel, -1);
                 
-                float trackSip2dValAboveCharm = vars.get(reco::btau::trackSip2dValAboveCharm, -10);
-                float trackSip2dSigAboveCharm = vars.get(reco::btau::trackSip2dSigAboveCharm, -10);
+                float trackSip2dValAboveCharm = vars.get(reco::btau::trackSip2dValAboveCharm, -1);
+                float trackSip2dSigAboveCharm = vars.get(reco::btau::trackSip2dSigAboveCharm, -1);
                 //the significances take often the values -1 
                 //this maybe a bug and happen if trackSip2dValAboveCharm = -1 thus the reset value is ignored
                 //cmslxr.fnal.gov/source/RecoBTag/SecondaryVertex/plugins/TemplatedSecondaryVertexProducer.cc?v=CMSSW_9_4_0

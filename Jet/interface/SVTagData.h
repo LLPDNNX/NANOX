@@ -27,7 +27,6 @@ class SVTagData:
                 float d3dsig;
                 float costhetasvpv;
                 float enratio;
-                
         };
         std::vector<std::vector<Data>> jetData;
 

@@ -112,7 +112,7 @@ class XTagFlatTableProducer:
                         }
                         
                         
-                        virtual void bookProperty(const std::string& name)
+                        virtual void bookProperty(const std::string& name, xtag::ArrayType type=xtag::ArrayType::FLOAT)
                         {
                             floatData_.emplace(
                                 std::piecewise_construct,
@@ -126,6 +126,7 @@ class XTagFlatTableProducer:
                             if (index>=size_) throw cms::Exception("Attempt to fill array index '"+std::to_string(index)+"' which is larger than its size '"+std::to_string(size_)+"'");
                             floatData_[name][index]=value;
                         }
+                        
                         
                         std::unique_ptr<nanoaod::FlatTable> makeTable()
                         {

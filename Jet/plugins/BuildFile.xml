@@ -11,6 +11,7 @@
 <use   name="FWCore/PluginManager"/>
 <use   name="TrackingTools/IPTools"/>
 <use   name="XTag/XTagProducer"/>
+<use   name="XTag/DataFormats"/>
 
 <library file="GlobalJetTagPlugin.cc" name="GlobalJetTagPlugin">
   <flags EDM_PLUGIN="1"/>

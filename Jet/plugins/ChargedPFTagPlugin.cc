@@ -130,7 +130,7 @@ class ChargedPFTagDataPlugin:
                     data.trackSip3dVal=std::copysign(std::log10(std::fabs(meas_ip3d.value())),meas_ip3d.value());
                     data.trackSip3dSig=std::copysign(std::log10(std::fabs(meas_ip3d.significance())),meas_ip3d.significance());
                     
-                    data.trackJetDistVal = jetdist.value();
+                    data.trackJetDistVal = std::log10(1-jetdist.value());
                     data.trackJetDistSig = jetdist.significance();
                     
                     float sumPt = 0.;

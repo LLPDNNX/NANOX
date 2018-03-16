@@ -34,4 +34,5 @@
     
     <class name="std::vector<xtag::JetOriginTagData>"/>
     <class name="edm::Wrapper<std::vector<xtag::JetOriginTagData>>"/>
+    
 </lcgdict>
