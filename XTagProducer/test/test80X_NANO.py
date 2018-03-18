@@ -4,8 +4,15 @@
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
 # with command line options: test80X -s NANO --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --filein /store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/120000/02A210D6-F5C3-E611-B570-008CFA197BD4.root --no_exec --conditions auto:run2_mc -n 1000 --era Run2_2016,run2_miniAOD_80XLegacy
 import FWCore.ParameterSet.Config as cms
+from FWCore.ParameterSet.VarParsing import VarParsing
 
 from Configuration.StandardSequences.Eras import eras
+
+
+options = VarParsing ('analysis')
+options.parseArguments()
+
+
 
 process = cms.Process('NANO',eras.Run2_2016,eras.run2_miniAOD_80XLegacy)
 
@@ -22,18 +29,17 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(100)
 )
 
-# Input source
+
 process.source = cms.Source("PoolSource",
-    #fileNames = cms.untracked.vstring('/store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/120000/02A210D6-F5C3-E611-B570-008CFA197BD4.root'),
     fileNames = cms.untracked.vstring(
         #'file:DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root'
         #'/store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/2C548AA6-91CF-E611-A86B-B083FED429D6.root',
-        'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/10000/000486C0-2588-E711-8E92-0025905A48BA.root',
+        #'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/10000/000486C0-2588-E711-8E92-0025905A48BA.root',
   	    #'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/110000/0C07E448-338A-E711-B877-0CC47A4D75F2.root'
-  	    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/04915DCA-1BB2-E611-8A4B-0CC47A4C8E56.root"
+  	    "root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/04915DCA-1BB2-E611-8A4B-0CC47A4C8E56.root"
   	    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/00898E1E-99B1-E611-8A4A-C81F66C8BA4C.root",
   	    #"/store/mc/RunIISummer16MiniAODv2/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/70000/00E276CA-A6B6-E611-9C22-3417EBE47EBC.root",
 
@@ -153,7 +159,7 @@ process.updatedPatJetsTransientCorrectedXTag.addDiscriminators = cms.bool(True)
 process.updatedPatJetsTransientCorrectedXTag.addJetCorrFactors = cms.bool(True)
 process.updatedPatJetsTransientCorrectedXTag.addTagInfos = cms.bool(True)
 
-process.load('XTag.DisplacedVertex.GenDisplacedVertices_cff')
+
 
 #TODO: should refit SVs and allow for a looser quality
 
@@ -190,7 +196,8 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             type = cms.string("JetOriginTagData"),
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             displacedGenVertices = cms.InputTag("displacedGenVertices"),
-        ),
+        )
+        
     )
 )
 
@@ -219,7 +226,7 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
         cms.PSet(
             src = cms.InputTag("xtagProducer","origin"),
             arrayNames = cms.vstring(["jetorigin"])
-        ),
+        )
     ])
 )
 
@@ -249,16 +256,17 @@ for moduleName in [
     "genJetAK8Table",
     "genJetAK8FlavourAssociation",
     "genJetAK8FlavourTable",
-    
-    
+   
     "particleLevel",
     "rivetLeptonTable",
     "rivetMetTable"
 ]:
+    if hasattr(process,moduleName):
+        print "removing module: ",moduleName
+        process.nanoSequenceMC.remove(getattr(process,moduleName))
 
-    process.nanoSequenceMC.remove(getattr(process,moduleName))
 
-# Path and EndPath definitions
+process.load('XTag.DisplacedVertex.GenDisplacedVertices_cff')
 process.nanoAOD_step = cms.Path(
     process.updatedPatJetsTransientCorrectedXTag
     +process.nanoSequenceMC
@@ -267,6 +275,7 @@ process.nanoAOD_step = cms.Path(
     +process.xtagFlatTable
     #+process.eventView
 )
+
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.NANOAODSIMoutput_step = cms.EndPath(
     process.NANOAODSIMoutput

@@ -246,14 +246,20 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                 decayVertexIndex = idMomentumPair.first;
             }
         }
-        if (decayVertexIndex<0) throw cms::Exception("DisplacedGenVertexProducer: A long lived particle should always connect two vertices");
-        //make link
-        displacedGenVertices->at(originVertexGroupIndex).sharedMassFraction = maxMassRatio;
-        displacedGenVertices->at(originVertexGroupIndex).daughterVertices.push_back(edm::Ref<DisplacedGenVertexCollection>(displacedGenVertices_refProd,decayVertexIndex));
-        edm::Ref<DisplacedGenVertexCollection> motherRef(displacedGenVertices_refProd,originVertexGroupIndex);
-        displacedGenVertices->at(decayVertexIndex).motherVertex = std::move(edm::Ptr<DisplacedGenVertex>(motherRef.id(),motherRef.key(),motherRef.productGetter()));
-        //store long lived particle in daughter vertex
-        displacedGenVertices->at(decayVertexIndex).motherLongLivedParticle = std::move(edm::Ptr<reco::GenParticle>(genParticleCollection,igenParticle));
+        if (decayVertexIndex<0)
+        {
+            edm::LogError("DisplacedGenVertexProducer")<<"A long lived particle should always connect two vertices";
+        }
+        else
+        {
+            //make link
+            displacedGenVertices->at(originVertexGroupIndex).sharedMassFraction = maxMassRatio;
+            displacedGenVertices->at(originVertexGroupIndex).daughterVertices.push_back(edm::Ref<DisplacedGenVertexCollection>(displacedGenVertices_refProd,decayVertexIndex));
+            edm::Ref<DisplacedGenVertexCollection> motherRef(displacedGenVertices_refProd,originVertexGroupIndex);
+            displacedGenVertices->at(decayVertexIndex).motherVertex = std::move(edm::Ptr<DisplacedGenVertex>(motherRef.id(),motherRef.key(),motherRef.productGetter()));
+            //store long lived particle in daughter vertex
+            displacedGenVertices->at(decayVertexIndex).motherLongLivedParticle = std::move(edm::Ptr<reco::GenParticle>(genParticleCollection,igenParticle));
+        }
     }
     
     

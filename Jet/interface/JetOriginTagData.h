@@ -43,7 +43,7 @@ class JetOriginTagData:
                 bool isUndefined;
                 
                 bool fromLLP;
-                float log_displacement;
+                float displacement;
                 float decay_angle;
                 float vertexFraction;
                 
@@ -66,7 +66,7 @@ class JetOriginTagData:
                     isG(0),
                     isUndefined(0),
                     fromLLP(0),
-                    log_displacement(-10),
+                    displacement(-10),
                     decay_angle(-1),
                     vertexFraction(-1)
                 {
@@ -103,8 +103,10 @@ class JetOriginTagData:
             dataArray.bookProperty("isUndefined",&Data::isUndefined);
             
             dataArray.bookProperty("fromLLP",&Data::fromLLP);
-            dataArray.bookProperty("log_displacement",&Data::log_displacement);
+            dataArray.bookProperty("displacement",&Data::displacement);
             dataArray.bookProperty("decay_angle",&Data::decay_angle);
+            
+            dataArray.bookProperty("vertexFraction",&Data::vertexFraction);
             
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
             {

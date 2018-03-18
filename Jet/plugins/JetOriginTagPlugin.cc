@@ -195,28 +195,27 @@ class JetOriginTagDataPlugin:
                     }
                     
                     
+
                     if (displacedGenVertexCollection.product())
                     {
-                        float dR_min = 10000;
                         
                         for (const auto& vertex: *displacedGenVertexCollection)
                         {
+                            float dRmin = 1000;
                             for(unsigned int igenJet = 0; igenJet<vertex.genJets.size();++igenJet)
                             {
                                 const reco::GenJet* genJet = vertex.genJets[igenJet].get();
-                                float dR = reco::deltaR(jet,*genJet);
-
-                                if(dR<0.4 and dR<dR_min)
+                                float dRGenJets = reco::deltaR(*genJet,*jet.genJet());
+                                if(dRGenJets<0.02 and dRGenJets<dRmin) //numerical stability
                                 {
-                                    dR_min = dR;
-                                    data.log_displacement = std::log10(vertex.d3d());	    
-                                    data.vertexFraction = vertex.jetFractions[igenJet];
-
+                                    dRmin = dRGenJets;
                                     if (not vertex.motherLongLivedParticle.isNull())
                                     {
                                         const auto &mother = *(vertex.motherLongLivedParticle);
                                         data.fromLLP = getHadronFlavor(mother)>10000;
                                         data.decay_angle = angle(genJet->p4(),mother.p4());
+                                        data.displacement = std::log10(vertex.d3d());	
+                                        data.vertexFraction = vertex.jetFractions[igenJet];
                                     }
                                 }
                             }		
