@@ -87,7 +87,7 @@ class SVTagDataPlugin:
                     data.pt = std::log10(sv.pt());
                     
                     data.deltaR = reco::deltaR(sv,jet);
-                    data.mass = sv.mass();
+                    data.mass = std::log10(1+sv.mass());
                     data.ntracks = sv.numberOfDaughters();
                     data.chi2 = std::log10(sv.vertexChi2());
                     data.normchi2 = std::log10(sv.vertexChi2()/sv.vertexNdof());

@@ -143,6 +143,8 @@ class ChargedPFTagDataPlugin:
                         }
                     }
                     data.relIso01 = 10./(10.+sumPt/constituent->pt());
+                    
+                    data.lostInnerHits = constituent->lostInnerHits(); //http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_9_4_4/doc/html/d8/d79/classpat_1_1PackedCandidate.html#ab9ef9a12f92e02fa61653ba77ee34274
         
                     cpfData.emplace_back(data);
                 }

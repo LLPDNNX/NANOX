@@ -38,6 +38,8 @@ class ChargedPFTagData:
                 float jetmassdroprel;
                 float relIso01;
                 
+                float lostInnerHits;
+                
         };
         std::vector<std::vector<Data>> jetData;
 
@@ -77,6 +79,8 @@ class ChargedPFTagData:
             
             cpfDataArray.bookProperty("jetmassdroprel",&Data::jetmassdroprel);
             cpfDataArray.bookProperty("relIso01",&Data::relIso01);
+            
+            cpfDataArray.bookProperty("lostInnerHits",&Data::lostInnerHits);
             
             unsigned int index = 0;
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
