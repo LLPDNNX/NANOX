@@ -106,6 +106,46 @@ class NeutralPFTagDataPlugin:
                     
                     npfData.emplace_back(data);
                 }
+                
+                std::stable_sort(npfData.begin(),npfData.end(),[](const auto& d1, const auto& d2)
+                {
+                    if (!std::isnan(d1.drminsv) and !std::isinf(d1.drminsv))
+                    {
+                        if (!std::isnan(d2.drminsv) and !std::isinf(d2.drminsv))
+                        {
+                            if (std::fabs(d1.drminsv-d2.drminsv)>std::numeric_limits<float>::epsilon())
+                            {
+                                return d1.drminsv<d2.drminsv; //sort increasing
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else if (!std::isnan(d2.drminsv) and !std::isinf(d2.drminsv))
+                    {
+                        return true;
+                    }
+                    
+                    if (!std::isnan(d1.ptrel) and !std::isinf(d1.ptrel))
+                    {
+                        if (!std::isnan(d2.ptrel) and !std::isinf(d2.ptrel))
+                        {
+                            return d1.ptrel>d2.ptrel; //sort decreasing
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else if (!std::isnan(d2.ptrel) and !std::isinf(d2.ptrel))
+                    {
+                        return false;
+                    }
+                    return false;
+                });
+                
                 output->at(0).jetData.push_back(npfData);
             }
             

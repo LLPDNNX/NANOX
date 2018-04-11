@@ -114,6 +114,13 @@ class SVTagDataPlugin:
                     
                     svData.emplace_back(data);
                 }
+                
+                
+                std::stable_sort(svData.begin(),svData.end(),[&pv](const auto& d1, const auto& d2)
+                {
+                    return d1.dxysig>d2.dxysig; //sort decreasing
+                });
+
                 output->at(0).jetData.push_back(svData);
             }
             

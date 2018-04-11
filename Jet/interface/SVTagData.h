@@ -46,6 +46,7 @@ class SVTagData:
 
             svDataArray.bookProperty("pt",&Data::pt);
             svDataArray.bookProperty("deltaR",&Data::deltaR);
+            svDataArray.bookProperty("mass",&Data::mass);
             svDataArray.bookProperty("ntracks",&Data::ntracks);
             svDataArray.bookProperty("chi2",&Data::chi2);
             svDataArray.bookProperty("normchi2",&Data::normchi2);

@@ -29,7 +29,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(20)
 )
 
 
@@ -64,6 +64,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(9),
     saveProvenance = cms.untracked.bool(False),
+    fakeNameForCrab = cms.untracked.bool(True),
     dataset = cms.untracked.PSet(
         dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
@@ -197,7 +198,6 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             displacedGenVertices = cms.InputTag("displacedGenVertices"),
         )
-        
     )
 )
 
@@ -240,8 +240,6 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
 
 #remove unneeded modules
 for moduleName in [
-    "nanoMetadata",
-    
     "chsForSATkJets",
     "softActivityJets",
     "softActivityJets2",

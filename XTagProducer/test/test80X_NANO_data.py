@@ -47,6 +47,7 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(9),
     saveProvenance = cms.untracked.bool(False),
+    #fakeNameForCrab = cms.untracked.bool(True),
     dataset = cms.untracked.PSet(
         dataTier = cms.untracked.string('NANOAOD'),
         filterName = cms.untracked.string('')
@@ -190,6 +191,23 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
         )
     ])
 )
+
+#remove unneeded modules
+for moduleName in [
+    "chsForSATkJets",
+    "softActivityJets",
+    "softActivityJets2",
+    "softActivityJets5",
+    "softActivityJets10",
+    
+    "fatJetTable",
+    "subJetTable",
+    "saJetTable",
+    "saTable",
+]:
+    if hasattr(process,moduleName):
+        print "removing module: ",moduleName
+        process.nanoSequenceMC.remove(getattr(process,moduleName))
 
 # Path and EndPath definitions
 process.nanoAOD_step = cms.Path(
