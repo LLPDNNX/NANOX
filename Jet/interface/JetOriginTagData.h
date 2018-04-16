@@ -44,6 +44,8 @@ class JetOriginTagData:
                 
                 bool fromLLP;
                 float displacement;
+                float displacement_xy;
+                float displacement_z;
                 float decay_angle;
                 float vertexFraction;
                 
@@ -67,6 +69,8 @@ class JetOriginTagData:
                     isUndefined(0),
                     fromLLP(0),
                     displacement(-10),
+                    displacement_xy(-10),
+                    displacement_z(-10),
                     decay_angle(-1),
                     vertexFraction(-1)
                 {
@@ -104,6 +108,8 @@ class JetOriginTagData:
             
             dataArray.bookProperty("fromLLP",&Data::fromLLP);
             dataArray.bookProperty("displacement",&Data::displacement);
+            dataArray.bookProperty("displacement_xy",&Data::displacement_xy);
+            dataArray.bookProperty("displacement_z",&Data::displacement_z);
             dataArray.bookProperty("decay_angle",&Data::decay_angle);
             
             dataArray.bookProperty("vertexFraction",&Data::vertexFraction);

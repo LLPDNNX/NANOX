@@ -214,7 +214,9 @@ class JetOriginTagDataPlugin:
                                         const auto &mother = *(vertex.motherLongLivedParticle);
                                         data.fromLLP = getHadronFlavor(mother)>10000;
                                         data.decay_angle = angle(genJet->p4(),mother.p4());
-                                        data.displacement = std::log10(std::max<float>(vertex.d3d(),1e-10));	
+                                        data.displacement = std::log10(std::max<float>(vertex.d3d(),1e-10));
+                                        data.displacement_xy = std::log10(std::max<float>(vertex.dxy(),1e-10));
+                                        data.displacement_z = std::log10(std::max<float>(vertex.dz(),1e-10));	
                                         data.vertexFraction = vertex.jetFractions[igenJet];
                                     }
                                 }
