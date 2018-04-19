@@ -146,6 +146,9 @@ class ChargedPFTagDataPlugin:
                     
                     data.lostInnerHits = constituent->lostInnerHits(); //http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_9_4_4/doc/html/d8/d79/classpat_1_1PackedCandidate.html#ab9ef9a12f92e02fa61653ba77ee34274
         
+                    int pdgId = std::abs(constituent->pdgId());
+                    data.isLepton = pdgId==11 or pdgId==13;
+                
                     cpfData.emplace_back(data);
                 }
                 

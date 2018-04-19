@@ -198,30 +198,42 @@ class JetOriginTagDataPlugin:
 
                     if (displacedGenVertexCollection.product())
                     {
-                        
+                        float dRmin = 0.4;
+                        //float maxDisplacement2 = 0;
+                        //int llpId = 0;
+                        //const reco::GenJet* genJetBest = nullptr;
                         for (const auto& vertex: *displacedGenVertexCollection)
                         {
-                            float dRmin = 1000;
                             for(unsigned int igenJet = 0; igenJet<vertex.genJets.size();++igenJet)
                             {
-                                const reco::GenJet* genJet = vertex.genJets[igenJet].get();
-                                float dRGenJets = reco::deltaR(*genJet,*jet.genJet());
-                                if(dRGenJets<0.02 and dRGenJets<dRmin) //numerical stability
+                                const reco::GenJet& genJet = vertex.genJets.at(igenJet);
+                                float dRGenJets = reco::deltaR(genJet,jet);
+                                //if (vertex.motherVertex.isNull()) continue;
+                                
+                                //float displacement2 = (vertex.motherVertex->vertex-vertex.vertex).mag2();
+                                if(dRGenJets<dRmin)
                                 {
                                     dRmin = dRGenJets;
+                                    //displacement2 = maxDisplacement2;
+                                    //genJetBest = &genJet;
                                     if (not vertex.motherLongLivedParticle.isNull())
                                     {
                                         const auto &mother = *(vertex.motherLongLivedParticle);
                                         data.fromLLP = getHadronFlavor(mother)>10000;
-                                        data.decay_angle = angle(genJet->p4(),mother.p4());
+                                        //llpId = mother.pdgId();
+                                        data.decay_angle = angle(genJet.p4(),mother.p4());
                                         data.displacement = std::log10(std::max<float>(vertex.d3d(),1e-10));
                                         data.displacement_xy = std::log10(std::max<float>(vertex.dxy(),1e-10));
                                         data.displacement_z = std::log10(std::max<float>(vertex.dz(),1e-10));	
-                                        data.vertexFraction = vertex.jetFractions[igenJet];
                                     }
                                 }
                             }		
                         }
+                        /*
+                        if (genJetBest)
+                        {
+                            std::cout<<"found reco match: pt="<<jet.pt()<<", dR="<<dRmin<<" genPt="<<genJetBest->pt()<<", llp="<<llpId<<std::endl;
+                        }*/
                     }
                 }
                 

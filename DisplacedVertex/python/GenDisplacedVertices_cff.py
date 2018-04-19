@@ -19,10 +19,17 @@ genParticlesForGenJets = cms.EDFilter(
 
 #recluster GenJets
 genJetsReclustered = ak4GenJets.clone(
-    src = 'genParticlesForGenJets'
+    src = cms.InputTag('genParticlesForGenJets')
 )
+'''
+genXJetsReclustered = cms.EDProducer(
+    'XJetProducer',
+    src = cms.InputTag('genParticlesForGenJets'),
+    genJets = cms.InputTag("genJetsReclustered")
+)
+'''
 
-
+#TFileService = cms.Service("TFileService", fileName = cms.string("histo5.root") )
 
 #produce DisplacedGenVertices and match to GenJets
 displacedGenVertices = cms.EDProducer(
@@ -31,11 +38,10 @@ displacedGenVertices = cms.EDProducer(
     srcGenJets = cms.InputTag("genJetsReclustered")
 )
 
-
-
 DisplacedGenVertexSequence = cms.Sequence(
     genParticlesMerged     +
     genParticlesForGenJets +
     genJetsReclustered     +
+    #genXJetsReclustered    +
     displacedGenVertices
 )

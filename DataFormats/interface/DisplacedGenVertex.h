@@ -33,7 +33,7 @@ struct DisplacedGenVertex
     edm::PtrVector<reco::GenParticle> genParticles;
     edm::Ptr<reco::GenParticle> motherLongLivedParticle;
     
-    edm::PtrVector<reco::GenJet> genJets;
+    std::vector<reco::GenJet> genJets;
     std::vector<float> jetFractions; 
     
     DisplacedGenVertex():
@@ -49,6 +49,21 @@ struct DisplacedGenVertex
     double dy() const;
     double dz() const;
     double dxy() const;
+    /*
+    void getAllJets(std::vector<const reco::GenJet*>& allJets) const
+    {
+        for (auto jet: genJets)
+        {
+            allJets.push_back(jet.get());
+        }
+        
+        for (auto daughterVertex: *daughterVertices)
+        {
+            daughterVertex->getAllJets(allJets);
+        }
+        
+    }
+    */
 };
 
 typedef std::vector<DisplacedGenVertex> DisplacedGenVertexCollection;

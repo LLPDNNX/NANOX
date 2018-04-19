@@ -47,7 +47,6 @@ class JetOriginTagData:
                 float displacement_xy;
                 float displacement_z;
                 float decay_angle;
-                float vertexFraction;
                 
                 Data():
                     
@@ -71,8 +70,7 @@ class JetOriginTagData:
                     displacement(-10),
                     displacement_xy(-10),
                     displacement_z(-10),
-                    decay_angle(-1),
-                    vertexFraction(-1)
+                    decay_angle(-1)
                 {
                 }
                 
@@ -112,7 +110,6 @@ class JetOriginTagData:
             dataArray.bookProperty("displacement_z",&Data::displacement_z);
             dataArray.bookProperty("decay_angle",&Data::decay_angle);
             
-            dataArray.bookProperty("vertexFraction",&Data::vertexFraction);
             
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
             {
