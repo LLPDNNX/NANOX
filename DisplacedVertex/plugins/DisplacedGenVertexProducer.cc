@@ -149,7 +149,7 @@ class DisplacedGenVertexProducer:
         edm::EDGetTokenT<edm::View<reco::GenJet>> _genJetToken;
         
         //TH1F* massHist;
-        edm::Service<TFileService> fs;
+        //edm::Service<TFileService> fs;
         
         virtual void produce(edm::Event& iEvent, const edm::EventSetup& iSetup) override;
             
@@ -324,12 +324,13 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             displacedGenVertices->at(decayVertexIndex).motherLongLivedParticle = std::move(edm::Ptr<reco::GenParticle>(genParticleCollection,igenParticle));
         }
     }
-    
+    /*
     for (size_t ivertex = 0; ivertex < displacedGenVertices->size(); ++ivertex)
     {
         std::vector<fastjet::PseudoJet> fjInputs;
         //std::vector<edm::Ptr<const reco::GenParticle>> genParticles;
         //gatherDaughters(genParticles,displacedGenVertices,daughterVerticesIndices,ivertex);
+        //for (auto genParticle: genParticles)
         for (auto genParticle: displacedGenVertices->at(ivertex).genParticles)
         {
             if (genParticle->numberOfDaughters()>0) continue;
@@ -343,28 +344,6 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             );
             fjInputs.back().set_user_info(new XJetInfo(genParticle));
         }
-        /*
-        //add daughter particles in case it is a decay chain, i.e. motherFlavor>daughterFlavor
-        if (!displacedGenVertices->at(ivertex).motherLongLivedParticle.isNull())
-        {
-            int motherPdgId = getHadronFlavor(*displacedGenVertices->at(ivertex).motherLongLivedParticle);
-            for (auto daughterVertexIndex: daughterVerticesIndices[ivertex])
-            {
-                if (displacedGenVertices->at(daughterVertexIndex).motherLongLivedParticle.isNull()) continue;
-                auto daughterParticle = displacedGenVertices->at(daughterVertexIndex).motherLongLivedParticle;
-                int daughterPdgId = getHadronFlavor(*daughterParticle);
-                if (motherPdgId<daughterPdgId) continue;
-
-                fjInputs.emplace_back(
-                    daughterParticle->px(),
-                    daughterParticle->py(),
-                    daughterParticle->pz(),
-                    daughterParticle->energy()
-                );
-                fjInputs.back().set_user_info(new XJetInfo(daughterParticle));
-            }
-        }
-        */
         fastjet::ClusterSequence fjClusterSeq(
             fjInputs, 
             fastjet::JetDefinition(fastjet::antikt_algorithm, 0.4)
@@ -390,13 +369,13 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             //std::cout<<"xjet: pt="<<jet.pt()<<", eta="<<jet.eta()<<", phi="<<jet.phi()<<std::endl;
         }
     }
-    
+    */
     
     //calculate overlap of gen particles in gen jets with displaced vertices and associate them
     //IMPORTANT: the following will only work if the GenJets were constructed from the SAME GenParticle collection as the DisplacedGenVertices!!!
     //Note: cannot use ghost tagging since jets may not be pointing along long lived particle direction
     //std::cout<<iEvent.id ()<<std::endl;
-    /*
+    
     for (unsigned int ijet = 0; ijet < genJetCollection->size(); ++ijet)
     {
         
@@ -433,11 +412,11 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             }
         }
         
-        std::cout<<"gen jet pt="<<genJetCollection->at(ijet).pt()<<", eta="<<genJetCollection->at(ijet).eta()<<", phi="<<genJetCollection->at(ijet).phi()<<std::endl;
-        std::cout<<"add jet "<<ijet<<"->";
+        //std::cout<<"gen jet pt="<<genJetCollection->at(ijet).pt()<<", eta="<<genJetCollection->at(ijet).eta()<<", phi="<<genJetCollection->at(ijet).phi()<<" -> ";
+        //std::cout<<"add jet "<<ijet<<"->";
         if (particlesPermatchedVerticesIndex.size()==0)
         {
-            std::cout<<" none"<<std::endl;
+            //std::cout<<" none"<<std::endl;
             continue;
         }
         else
@@ -468,28 +447,43 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                 }
                 
                 
-                std::cout<<indexPair.first<<"("<<shared<<"), ";
-                displacedGenVertices->at(indexPair.first).genJets.push_back(genJetCollection->ptrAt(ijet));
-                displacedGenVertices->at(indexPair.first).jetFractions.push_back(shared);
-            
+                //std::cout<<indexPair.first<<" ("<<shared<<"), ";
+                if (shared>0.1)
+                {
+                    //displacedGenVertices->at(indexPair.first).genJets.push_back(genJetCollection->at(ijet));
+                    
+                    //NOTE: use explicity only part belonging to vertex as genjet momentum -> clear matching of reco to genjets; otherwise dR identical for various vertex fractions
+                    displacedGenVertices->at(indexPair.first).genJets.emplace_back(
+                        p4PermatchedVerticesIndex[indexPair.first],
+                        displacedGenVertices->at(indexPair.first).vertex,
+                        reco::GenJet::Specific(),
+                        reco::Jet::Constituents()
+                    );
+                    displacedGenVertices->at(indexPair.first).jetFractions.push_back(shared);
+                }
+                //displacedGenVertices->at(indexPair.first).jetFractions.push_back(shared);
             }
-            std::cout<<std::endl;
+            //std::cout<<std::endl;
             //std::cout<<"sum: "<<sumF<<std::endl;
             if (maxIndex>=0)
             {
-                //displacedGenVertices->at(maxIndex).genJets.push_back(genJetCollection->ptrAt(ijet));
+                //displacedGenVertices->at(maxIndex).genJets.push_back(genJetCollection->at(ijet));
                 //displacedGenVertices->at(maxIndex).jetFractions.push_back(maxShared);
             }
         }
     }
-    */
+    //std::cout<<std::endl;
+    
     /*
-    for (const auto& vertex: *displacedGenVertices)
+    for (size_t ivertex = 0; ivertex < displacedGenVertices->size(); ++ivertex)
     {
-        std::cout<<"pos="<<vertex.vertex<<", particle="<<vertex.genParticles.size()<<", njets="<<vertex.genJets.size()<<", llp=";
+        auto vertex = displacedGenVertices->at(ivertex);
+        std::cout<<ivertex<<": pos="<<vertex.vertex<<", particle="<<vertex.genParticles.size()<<", njets="<<vertex.genJets.size()<<", llp=";
         if (vertex.motherLongLivedParticle.isNonnull())
         {
             std::cout<<vertex.motherLongLivedParticle->pdgId()<<", mass="<<vertex.motherLongLivedParticle->mass();
+            
+            
             reco::Candidate::LorentzVector vec;
             
             for (auto jet: vertex.genJets)
@@ -510,14 +504,23 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                 //massHist->Fill(vec.mass()/vertex.motherLongLivedParticle->mass());
             }
             
-            std::cout<<", rmass="<<vec.mass()<<std::endl;
+            std::cout<<", rmass="<<vec.mass();
         }
         else
         {
-            std::cout<<"-"<<std::endl;
+            std::cout<<" - ";
         }
-    } 
-    */
+        std::cout<<" -> ";
+        for (auto daughterVertexIndex: daughterVerticesIndices[ivertex])
+        {
+            if (displacedGenVertices->at(daughterVertexIndex).motherLongLivedParticle.isNonnull())
+            {
+                std::cout<<displacedGenVertices->at(daughterVertexIndex).motherLongLivedParticle->pdgId()<<",";
+            }
+        }
+        std::cout<<std::endl;
+    }*/
+    
     iEvent.put(std::move(displacedGenVertices));
 }
 
