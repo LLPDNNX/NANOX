@@ -446,11 +446,11 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                     maxIndex = indexPair.first;
                 }
                 
-                
+                /*
                 //std::cout<<indexPair.first<<" ("<<shared<<"), ";
-                if (shared>0.1)
+                if (shared>0.01)
                 {
-                    //displacedGenVertices->at(indexPair.first).genJets.push_back(genJetCollection->at(ijet));
+                    displacedGenVertices->at(indexPair.first).genJets.push_back(genJetCollection->at(ijet));
                     
                     //NOTE: use explicity only part belonging to vertex as genjet momentum -> clear matching of reco to genjets; otherwise dR identical for various vertex fractions
                     displacedGenVertices->at(indexPair.first).genJets.emplace_back(
@@ -462,13 +462,25 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                     displacedGenVertices->at(indexPair.first).jetFractions.push_back(shared);
                 }
                 //displacedGenVertices->at(indexPair.first).jetFractions.push_back(shared);
+                */
             }
             //std::cout<<std::endl;
             //std::cout<<"sum: "<<sumF<<std::endl;
+            
             if (maxIndex>=0)
             {
-                //displacedGenVertices->at(maxIndex).genJets.push_back(genJetCollection->at(ijet));
-                //displacedGenVertices->at(maxIndex).jetFractions.push_back(maxShared);
+                displacedGenVertices->at(maxIndex).genJets.push_back(genJetCollection->at(ijet));
+                //NOTE: use explicity only part belonging to vertex as genjet momentum -> clear matching of reco to genjets; otherwise dR identical for various vertex fractions
+                /*
+                displacedGenVertices->at(maxIndex).genJets.emplace_back(
+                    p4PermatchedVerticesIndex[maxIndex],
+                    displacedGenVertices->at(maxIndex).vertex,
+                    reco::GenJet::Specific(),
+                    reco::Jet::Constituents()
+                );
+                */
+                displacedGenVertices->at(maxIndex).jetFractions.push_back(maxShared);
+                
             }
         }
     }
@@ -478,10 +490,10 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
     for (size_t ivertex = 0; ivertex < displacedGenVertices->size(); ++ivertex)
     {
         auto vertex = displacedGenVertices->at(ivertex);
-        std::cout<<ivertex<<": pos="<<vertex.vertex<<", particle="<<vertex.genParticles.size()<<", njets="<<vertex.genJets.size()<<", llp=";
+        //std::cout<<ivertex<<": pos="<<vertex.vertex<<", particle="<<vertex.genParticles.size()<<", njets="<<vertex.genJets.size()<<", llp=";
         if (vertex.motherLongLivedParticle.isNonnull())
         {
-            std::cout<<vertex.motherLongLivedParticle->pdgId()<<", mass="<<vertex.motherLongLivedParticle->mass();
+            //std::cout<<vertex.motherLongLivedParticle->pdgId()<<", mass="<<vertex.motherLongLivedParticle->mass();
             
             
             reco::Candidate::LorentzVector vec;
@@ -494,21 +506,23 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             {
                 if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000022)
                 {
-                    std::cout<<", lsp="<<genParticle->mass();
+                    //std::cout<<", lsp="<<genParticle->mass();
                     vec += genParticle->p4();
+                    displacedGenVertices->at(ivertex).lspParticles.push_back(genParticle);
                 }
             }
+            displacedGenVertices->at(ivertex).llp_reco = vec;
             
             if (std::fabs(vertex.motherLongLivedParticle->pdgId())>1000000)
             {
                 //massHist->Fill(vec.mass()/vertex.motherLongLivedParticle->mass());
             }
             
-            std::cout<<", rmass="<<vec.mass();
+            //std::cout<<", rmass="<<vec.mass();
         }
         else
         {
-            std::cout<<" - ";
+            //std::cout<<" - ";
         }
         std::cout<<" -> ";
         for (auto daughterVertexIndex: daughterVerticesIndices[ivertex])
@@ -519,6 +533,7 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
             }
         }
         std::cout<<std::endl;
+        
     }*/
     
     iEvent.put(std::move(displacedGenVertices));

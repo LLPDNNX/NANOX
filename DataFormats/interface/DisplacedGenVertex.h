@@ -31,10 +31,13 @@ struct DisplacedGenVertex
     edm::RefVector<std::vector<DisplacedGenVertex>> daughterVertices;
     
     edm::PtrVector<reco::GenParticle> genParticles;
+    edm::PtrVector<reco::GenParticle> lspParticles;
     edm::Ptr<reco::GenParticle> motherLongLivedParticle;
     
     std::vector<reco::GenJet> genJets;
     std::vector<float> jetFractions; 
+    
+    reco::Candidate::LorentzVector llp_reco;
     
     DisplacedGenVertex():
         isHardInteraction(false),

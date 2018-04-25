@@ -43,6 +43,7 @@ class JetOriginTagData:
                 bool isUndefined;
                 
                 bool fromLLP;
+                
                 float sharedVertexFraction;
                 float displacement;
                 float displacement_xy;
@@ -107,6 +108,7 @@ class JetOriginTagData:
             dataArray.bookProperty("isUndefined",&Data::isUndefined);
             
             dataArray.bookProperty("fromLLP",&Data::fromLLP);
+            
             dataArray.bookProperty("sharedVertexFraction",&Data::sharedVertexFraction);
             dataArray.bookProperty("displacement",&Data::displacement);
             dataArray.bookProperty("displacement_xy",&Data::displacement_xy);
