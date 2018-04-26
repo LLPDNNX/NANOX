@@ -161,7 +161,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
     SelectEvents = cms.untracked.PSet(
         SelectEvents = cms.vstring([
             "filtered*",
-            "plain*",
+            "plain*", #this deactivates filtering
         ])
     ), 
     dataset = cms.untracked.PSet(

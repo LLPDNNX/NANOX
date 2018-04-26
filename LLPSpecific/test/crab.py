@@ -3,55 +3,55 @@ import datetime,sys,os
 import copy
 import math
 
-requestName = "NANOX_180425-v1"
-isData = False
+requestName = "NANOX_180425-v2"
+isData = True
 userName = "mkomm"
 
 if isData==False:
     myJobs = {
         "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         "SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))),
+            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         
@@ -197,7 +197,8 @@ else:
         #NOTE: need to bind by value, not by reference
         myJobs[datasetName] = [
             lambda cfg,dataset=dataset: setattr(cfg.Data,"inputDataset", dataset),
-            lambda cfg,datasetSplit=datasetSplit: setattr(cfg.Data,"outputDatasetTag",datasetSplit[2]+"_"+cfg.Data.outputDatasetTag)
+            lambda cfg,datasetSplit=datasetSplit: setattr(cfg.Data,"outputDatasetTag",datasetSplit[2]+"_"+cfg.Data.outputDatasetTag),
+            lambda cfg,datasetSplit=datasetSplit: cfg.JobType.pyCfgParams.append("isData=True")
         ]
 
 
@@ -208,10 +209,7 @@ configTmpl.General.transferOutputs = True
 configTmpl.General.transferLogs = False
 
 configTmpl.section_('JobType')
-if isData:
-    configTmpl.JobType.psetName = "XTag/XTagProducer/test/test80X_NANO_data.py"
-else:
-    configTmpl.JobType.psetName = "XTag/XTagProducer/test/test80X_NANO.py"
+configTmpl.JobType.psetName = "XTag/LLPSpecific/test/produce_80X_NANOX.py"
 configTmpl.JobType.pluginName = 'Analysis'
 configTmpl.JobType.outputFiles = ['nano.root']
 configTmpl.JobType.maxJobRuntimeMin=22*60
@@ -234,13 +232,13 @@ if isData:
     #configTmpl.Data.lumiMask = 'lumiMask.json'
 else:
     configTmpl.Data.splitting = 'FileBased'
-    configTmpl.Data.unitsPerJob = 7
+    configTmpl.Data.unitsPerJob = 6
 
 
 configTmpl.section_('Site')
 configTmpl.Site.storageSite = 'T2_UK_London_IC'
 #configTmpl.Site.whitelist = ["T2_CH*"]
-
+configTmpl.Site.blacklist = ["T2_US_UCSD","T2_IN_TIFR"]
 
 
 if __name__ == '__main__':
@@ -272,7 +270,7 @@ if __name__ == '__main__':
         config = copy.deepcopy(configTmpl)
         config.General.requestName = requestName
         config.General.workArea = "crab/"+config.General.requestName+"/"+jobName
-        config.Data.outLFNDirBase = "/store/user/"+userName+"/"+config.General.requestName+"/"+jobName
+        config.Data.outLFNDirBase = "/store/user/"+userName+"/LLP/"+config.General.requestName+"/"+jobName
         config.Data.outputDatasetTag = config.General.requestName
         
         for modifier in jobModifiers:
@@ -289,9 +287,9 @@ if __name__ == '__main__':
             continue
         print config
         
-        #p = Process(target=submit, args=(config,))
-        #p.start()
-        #p.join()
+        p = Process(target=submit, args=(config,))
+        p.start()
+        p.join()
         
         #break
         
