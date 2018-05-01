@@ -7,12 +7,9 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="DataFormats/Candidate"/>
 <use   name="DataFormats/HepMCCandidate"/>
-<use   name="XTag/DataFormats"/>
+<use   name="NANOX/DataFormats"/>
 <use name="PhysicsTools/UtilAlgos"/>
-<library file="DisplacedGenVertexProducer.cc" name="XTagInfoDisplacedVertexProducer">
-  <flags EDM_PLUGIN="1"/>
-</library>
-<library file="XJetProducer.cc" name="XJetProducer">
+<library file="DisplacedGenVertexProducer.cc" name="NANOXInfoDisplacedVertexProducer">
   <flags EDM_PLUGIN="1"/>
 </library>
 

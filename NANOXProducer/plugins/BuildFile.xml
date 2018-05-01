@@ -9,12 +9,12 @@
 <use   name="DataFormats/HepMCCandidate"/>
 <use   name="DataFormats/NanoAOD"/>
 <use   name="FWCore/PluginManager"/>
-<use   name="XTag/XTagProducer"/>
-<library file="XTagProducer.cc" name="XTagProducer">
+<use   name="NANOX/NANOXProducer"/>
+<library file="NANOXProducer.cc" name="NANOXProducer">
   <flags EDM_PLUGIN="1"/>
 </library>
 
-<library file="XTagFlatTableProducer.cc" name="XTagFlatTableProducer">
+<library file="NANOXFlatTableProducer.cc" name="NANOXFlatTableProducer">
   <flags EDM_PLUGIN="1"/>
 </library>
 

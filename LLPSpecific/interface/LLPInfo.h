@@ -1,10 +1,10 @@
-#ifndef XTAG_LLPSPECIFIC_LLPINFO_H
-#define XTAG_LLPSPECIFIC_LLPINFO_H
+#ifndef NANOX_LLPSPECIFIC_LLPINFO_H
+#define NANOX_LLPSPECIFIC_LLPINFO_H
 
-#include "XTag/DataFormats/interface/TagData.h"
+#include "NANOX/DataFormats/interface/TagData.h"
 #include <iostream>
 
-namespace xtag
+namespace nanox
 {
 
 class LLPInfo:

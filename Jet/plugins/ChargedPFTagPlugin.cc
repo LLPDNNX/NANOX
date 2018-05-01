@@ -13,9 +13,9 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/ChargedPFTagData.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/Jet/interface/ChargedPFTagData.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
@@ -27,11 +27,11 @@
 
 #include "TVector3.h"
 
-namespace xtag
+namespace nanox
 {
 
 class ChargedPFTagDataPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
         edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;
@@ -45,12 +45,12 @@ class ChargedPFTagDataPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             jetToken_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets"))),
             pvToken_(collector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("pvVertices"))),
             svToken_(collector.consumes<edm::View<reco::VertexCompositePtrCandidate>>(pset.getParameter<edm::InputTag>("svVertices")))
         {
-            prod.produces<std::vector<xtag::ChargedPFTagData>>(name);
+            prod.produces<std::vector<nanox::ChargedPFTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup& setup) const
@@ -69,8 +69,8 @@ class ChargedPFTagDataPlugin:
             edm::ESHandle<TransientTrackBuilder> builder;
             setup.get<TransientTrackRecord>().get("TransientTrackBuilder", builder);
             
-            std::unique_ptr<std::vector<xtag::ChargedPFTagData>> output(
-                new std::vector<xtag::ChargedPFTagData>(1)
+            std::unique_ptr<std::vector<nanox::ChargedPFTagData>> output(
+                new std::vector<nanox::ChargedPFTagData>(1)
             );
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
@@ -79,7 +79,7 @@ class ChargedPFTagDataPlugin:
                 const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
                 //const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
                 
-                std::vector<xtag::ChargedPFTagData::Data> cpfData;
+                std::vector<nanox::ChargedPFTagData::Data> cpfData;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
                 {
                     const pat::PackedCandidate* constituent = dynamic_cast<const pat::PackedCandidate*>(jet.daughter(idaughter));
@@ -88,7 +88,7 @@ class ChargedPFTagDataPlugin:
                         continue;
                     }
                     
-                    xtag::ChargedPFTagData::Data data;
+                    nanox::ChargedPFTagData::Data data;
                     
                     data.ptrel = 0.01/(0.01+constituent->pt()/jet_pt_uncorr);
                     
@@ -220,7 +220,7 @@ class ChargedPFTagDataPlugin:
         }
 };
 
-}
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::ChargedPFTagDataPlugin, "ChargedPFTagData");
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::ChargedPFTagDataPlugin, "ChargedPFTagData");
+}
 

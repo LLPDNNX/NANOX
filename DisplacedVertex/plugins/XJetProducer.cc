@@ -6,7 +6,7 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Utilities/interface/Exception.h"
 
-#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "NANOX/DataFormats/interface/DisplacedGenVertex.h"
 
 #include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"

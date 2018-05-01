@@ -1,5 +1,5 @@
-#ifndef XTAG_DATAFORMATS_GHOSTFLAVOURINFO_H
-#define XTAG_DATAFORMATS_GHOSTFLAVOURINFO_H
+#ifndef NANOX_DATAFORMATS_GHOSTFLAVOURINFO_H
+#define NANOX_DATAFORMATS_GHOSTFLAVOURINFO_H
 
 #include "DataFormats/Common/interface/RefProd.h"
 
@@ -15,7 +15,7 @@
 
 #include <vector>
 
-namespace xtag
+namespace nanox
 {
 
 class GhostFlavourInfo

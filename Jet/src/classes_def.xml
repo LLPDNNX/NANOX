@@ -1,38 +1,38 @@
 <lcgdict>
-    <class name="xtag::GlobalJetTagData"/>
-    <class name="edm::Wrapper<xtag::GlobalJetTagData>"/>
+    <class name="nanox::GlobalJetTagData"/>
+    <class name="edm::Wrapper<nanox::GlobalJetTagData>"/>
     
-    <class name="std::vector<xtag::GlobalJetTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::GlobalJetTagData>>"/>
+    <class name="std::vector<nanox::GlobalJetTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::GlobalJetTagData>>"/>
     
-    <class name="xtag::CSVInputTagData"/>
-    <class name="edm::Wrapper<xtag::CSVInputTagData>"/>
+    <class name="nanox::CSVInputTagData"/>
+    <class name="edm::Wrapper<nanox::CSVInputTagData>"/>
     
-    <class name="std::vector<xtag::CSVInputTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::CSVInputTagData>>"/>
+    <class name="std::vector<nanox::CSVInputTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::CSVInputTagData>>"/>
     
-    <class name="xtag::ChargedPFTagData"/>
-    <class name="edm::Wrapper<xtag::ChargedPFTagData>"/>
+    <class name="nanox::ChargedPFTagData"/>
+    <class name="edm::Wrapper<nanox::ChargedPFTagData>"/>
     
-    <class name="std::vector<xtag::ChargedPFTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::ChargedPFTagData>>"/>
+    <class name="std::vector<nanox::ChargedPFTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::ChargedPFTagData>>"/>
     
-    <class name="xtag::NeutralPFTagData"/>
-    <class name="edm::Wrapper<xtag::NeutralPFTagData>"/>
+    <class name="nanox::NeutralPFTagData"/>
+    <class name="edm::Wrapper<nanox::NeutralPFTagData>"/>
     
-    <class name="std::vector<xtag::NeutralPFTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::NeutralPFTagData>>"/>
+    <class name="std::vector<nanox::NeutralPFTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::NeutralPFTagData>>"/>
     
-    <class name="xtag::SVTagData"/>
-    <class name="edm::Wrapper<xtag::SVTagData>"/>
+    <class name="nanox::SVTagData"/>
+    <class name="edm::Wrapper<nanox::SVTagData>"/>
     
-    <class name="std::vector<xtag::SVTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::SVTagData>>"/>
+    <class name="std::vector<nanox::SVTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::SVTagData>>"/>
     
-    <class name="xtag::JetOriginTagData"/>
-    <class name="edm::Wrapper<xtag::JetOriginTagData>"/>
+    <class name="nanox::JetOriginTagData"/>
+    <class name="edm::Wrapper<nanox::JetOriginTagData>"/>
     
-    <class name="std::vector<xtag::JetOriginTagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::JetOriginTagData>>"/>
+    <class name="std::vector<nanox::JetOriginTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::JetOriginTagData>>"/>
     
 </lcgdict>

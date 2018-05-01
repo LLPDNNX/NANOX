@@ -10,8 +10,8 @@
 <use   name="DataFormats/NanoAOD"/>
 <use   name="FWCore/PluginManager"/>
 <use   name="TrackingTools/IPTools"/>
-<use   name="XTag/XTagProducer"/>
-<use   name="XTag/DataFormats"/>
+<use   name="NANOX/NANOXProducer"/>
+<use   name="NANOX/DataFormats"/>
 
 <library file="LLPInfoPlugin.cc" name="LLPInfoPlugin">
   <flags EDM_PLUGIN="1"/>

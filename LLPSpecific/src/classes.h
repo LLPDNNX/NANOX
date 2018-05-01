@@ -1,12 +1,12 @@
-#include "XTag/LLPSpecific/interface/LLPInfo.h"
+#include "NANOX/LLPSpecific/interface/LLPInfo.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
 namespace { 
 
-struct dictionary_xtag_llp
+struct dictionary_nanox_llp
 {
-    xtag::LLPInfo dummy1;
-    edm::Wrapper<xtag::LLPInfo> dummy2;
+    nanox::LLPInfo dummy1;
+    edm::Wrapper<nanox::LLPInfo> dummy2;
 };
 
 }

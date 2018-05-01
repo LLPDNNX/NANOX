@@ -1,8 +1,8 @@
-#ifndef XTAG_XTAGPRODUCER_XTAGPLUGINFACTORY_H
-#define XTAG_XTAGPRODUCER_XTAGPLUGINFACTORY_H
+#ifndef NANOX_NANOXPRODUCER_NANOXPLUGINFACTORY_H
+#define NANOX_NANOXPRODUCER_NANOXPLUGINFACTORY_H
 
 #include "FWCore/PluginManager/interface/PluginFactory.h"
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
 
 #include <string>
 
@@ -13,16 +13,16 @@ namespace edm
     class ProducerBase;
 }
 
-namespace xtag
+namespace nanox
 {
     typedef edmplugin::PluginFactory<
-        xtag::XTagPlugin*(
+        nanox::NANOXPlugin*(
             const std::string&, 
             const edm::ParameterSet&, 
             edm::ConsumesCollector&,
             edm::ProducerBase&
         )
-    > XTagPluginFactory;
+    > NANOXPluginFactory;
 }
 
 #endif

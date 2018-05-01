@@ -12,17 +12,17 @@
 #include "DataFormats/BTauReco/interface/ShallowTagInfo.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/CSVInputTagData.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/Jet/interface/CSVInputTagData.h"
 
 #include <iostream>
 
-namespace xtag
+namespace nanox
 {
 
 class CSVInputTagDataPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
         edm::InputTag inputTag_;
@@ -35,12 +35,12 @@ class CSVInputTagDataPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             inputTag_(pset.getParameter<edm::InputTag>("jets")),
             token_(collector.consumes<edm::View<pat::Jet>>(inputTag_)),
             tagName_(pset.getParameter<std::string>("tagName"))
         {
-            prod.produces<std::vector<xtag::CSVInputTagData>>(name);
+            prod.produces<std::vector<nanox::CSVInputTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup&) const
@@ -49,8 +49,8 @@ class CSVInputTagDataPlugin:
             event.getByToken(token_, jetCollection);
             
 
-            std::unique_ptr<std::vector<xtag::CSVInputTagData>> output(
-                new std::vector<xtag::CSVInputTagData>(1)
+            std::unique_ptr<std::vector<nanox::CSVInputTagData>> output(
+                new std::vector<nanox::CSVInputTagData>(1)
             );
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
@@ -69,7 +69,7 @@ class CSVInputTagDataPlugin:
                     availableTagNames+="]";
                     throw cms::Exception("Not shallow tag information '"+tagName_+"' found in jet. Only these tag labels are available: "+availableTagNames);
                 }
-                xtag::CSVInputTagData::Data jetTagData;
+                nanox::CSVInputTagData::Data jetTagData;
                 reco::TaggingVariableList vars = tagInfo->taggingVariables();
                 
                 //http://cmslxr.fnal.gov/source/DataFormats/BTauReco/interface/TaggingVariable.h?v=CMSSW_9_4_0_pre1#0033
@@ -125,5 +125,5 @@ class CSVInputTagDataPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::CSVInputTagDataPlugin, "CSVInputTagData");
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::CSVInputTagDataPlugin, "CSVInputTagData");
 

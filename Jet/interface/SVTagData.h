@@ -1,10 +1,10 @@
-#ifndef XTAG_DATAFORMATS_SVTAGDATA_H
-#define XTAG_DATAFORMATS_SVTAGDATA_H
+#ifndef NANOX_DATAFORMATS_SVTAGDATA_H
+#define NANOX_DATAFORMATS_SVTAGDATA_H
 
-#include "XTag/DataFormats/interface/TagData.h"
+#include "NANOX/DataFormats/interface/TagData.h"
 #include <iostream>
 
-namespace xtag
+namespace nanox
 {
 
 class SVTagData:

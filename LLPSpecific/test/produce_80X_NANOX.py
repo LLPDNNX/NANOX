@@ -281,7 +281,7 @@ process.selectJetsInBarrel = cms.EDFilter("PATJetSelector",
 )
 addModule(process.selectJetsInBarrel)
 
-process.xtagProducer = cms.EDProducer("XTagProducer",
+process.nanoxProducer = cms.EDProducer("NANOXProducer",
     plugins = cms.PSet(
         globalVars = cms.PSet(
             type = cms.string("GlobalJetTagData"),
@@ -314,26 +314,26 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
     )
 )
 
-process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
+process.nanoxFlatTable = cms.EDProducer("NANOXFlatTableProducer",
     tagData = cms.VPSet([
         cms.PSet(
-            src = cms.InputTag("xtagProducer","globalVars"),
+            src = cms.InputTag("nanoxProducer","globalVars"),
             arrayNames = cms.vstring(["global"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","csv"),
+            src = cms.InputTag("nanoxProducer","csv"),
             arrayNames = cms.vstring(["csv"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","cpf"),
+            src = cms.InputTag("nanoxProducer","cpf"),
             arrayNames = cms.vstring(["cpflength","cpf"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","npf"),
+            src = cms.InputTag("nanoxProducer","npf"),
             arrayNames = cms.vstring(["npflength","npf"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","sv"),
+            src = cms.InputTag("nanoxProducer","sv"),
             arrayNames = cms.vstring(["svlength","sv"])
         ),
         
@@ -341,24 +341,24 @@ process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
 )
 
 if not options.isData:
-    process.xtagProducer.plugins.origin = cms.PSet(
+    process.nanoxProducer.plugins.origin = cms.PSet(
         type = cms.string("JetOriginTagData"),
         jets = cms.InputTag("selectJetsInBarrel"),
         displacedGenVertices = cms.InputTag("displacedGenVertices"),
     )
     
-    process.xtagFlatTable.tagData.append(cms.PSet(
-        src = cms.InputTag("xtagProducer","origin"),
+    process.nanoxFlatTable.tagData.append(cms.PSet(
+        src = cms.InputTag("nanoxProducer","origin"),
         arrayNames = cms.vstring(["jetorigin"])
     ))
     
     if options.addLLPInfo:
-        process.xtagProducer.plugins.llpinfo = cms.PSet(
+        process.nanoxProducer.plugins.llpinfo = cms.PSet(
             type = cms.string("LLPInfo"),
             displacedGenVertices = cms.InputTag("displacedGenVertices"),
         )
-        process.xtagFlatTable.tagData.append(cms.PSet(
-            src = cms.InputTag("xtagProducer","llpinfo"),
+        process.nanoxFlatTable.tagData.append(cms.PSet(
+            src = cms.InputTag("nanoxProducer","llpinfo"),
             arrayNames = cms.vstring(["llpinfo"])
         ))
     
@@ -403,12 +403,12 @@ else:
     addModule(process.nanoSequenceMC)
 
 if not options.isData:
-    process.load('XTag.DisplacedVertex.GenDisplacedVertices_cff')
+    process.load('NANOX.DisplacedVertex.GenDisplacedVertices_cff')
     addModule(process.DisplacedGenVertexSequence)
 
 process.nanoxSequence = cms.Sequence( 
-    process.xtagProducer
-    +process.xtagFlatTable
+    process.nanoxProducer
+    +process.nanoxFlatTable
     #+process.eventView
 )
 addModule(process.nanoxSequence)

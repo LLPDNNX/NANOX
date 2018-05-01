@@ -1,5 +1,5 @@
-#ifndef XTAG_DATAFORMATS_DISPLACEDGENVERTEX_H
-#define XTAG_DATAFORMATS_DISPLACEDGENVERTEX_H
+#ifndef NANOX_DATAFORMATS_DISPLACEDGENVERTEX_H
+#define NANOX_DATAFORMATS_DISPLACEDGENVERTEX_H
 
 #include "DataFormats/Common/interface/RefProd.h"
 
@@ -17,7 +17,7 @@
 
 #include <vector>
 
-namespace xtag
+namespace nanox
 {
 
 // a simple class

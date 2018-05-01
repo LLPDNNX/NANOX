@@ -1,6 +1,6 @@
-#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "NANOX/DataFormats/interface/DisplacedGenVertex.h"
 
-namespace xtag
+namespace nanox
 {
 
 double DisplacedGenVertex::d3d() const

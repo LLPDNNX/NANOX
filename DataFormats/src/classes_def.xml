@@ -1,36 +1,36 @@
 <lcgdict>
-    <class name="xtag::DisplacedGenVertex"/>
-    <class name="std::vector<xtag::DisplacedGenVertex>"/>
-    <class name="edm::Wrapper<std::vector<xtag::DisplacedGenVertex> >"/>
-    <class name="edm::Ref<std::vector<xtag::DisplacedGenVertex>>"/>
-    <class name="edm::Wrapper<edm::Ref<std::vector<xtag::DisplacedGenVertex>>>"/>
-    <class name="edm::RefVector<std::vector<xtag::DisplacedGenVertex>>"/>
-    <class name="edm::Wrapper<edm::RefVector<std::vector<xtag::DisplacedGenVertex>>>"/>
+    <class name="nanox::DisplacedGenVertex"/>
+    <class name="std::vector<nanox::DisplacedGenVertex>"/>
+    <class name="edm::Wrapper<std::vector<nanox::DisplacedGenVertex> >"/>
+    <class name="edm::Ref<std::vector<nanox::DisplacedGenVertex>>"/>
+    <class name="edm::Wrapper<edm::Ref<std::vector<nanox::DisplacedGenVertex>>>"/>
+    <class name="edm::RefVector<std::vector<nanox::DisplacedGenVertex>>"/>
+    <class name="edm::Wrapper<edm::RefVector<std::vector<nanox::DisplacedGenVertex>>>"/>
 
-    <class name="edm::Ptr<xtag::DisplacedGenVertex>"/>
-    <class name="edm::Wrapper<edm::Ptr<xtag::DisplacedGenVertex>>"/>
+    <class name="edm::Ptr<nanox::DisplacedGenVertex>"/>
+    <class name="edm::Wrapper<edm::Ptr<nanox::DisplacedGenVertex>>"/>
     
-    <class name="edm::Ptr<std::vector<xtag::DisplacedGenVertex>>"/>
-    <class name="edm::Wrapper<edm::Ptr<std::vector<xtag::DisplacedGenVertex>>>"/>
-    <class name="edm::PtrVector<xtag::DisplacedGenVertex>"/>
-    <class name="edm::Wrapper<edm::PtrVector<xtag::DisplacedGenVertex>>"/>
+    <class name="edm::Ptr<std::vector<nanox::DisplacedGenVertex>>"/>
+    <class name="edm::Wrapper<edm::Ptr<std::vector<nanox::DisplacedGenVertex>>>"/>
+    <class name="edm::PtrVector<nanox::DisplacedGenVertex>"/>
+    <class name="edm::Wrapper<edm::PtrVector<nanox::DisplacedGenVertex>>"/>
     
     <class name="edm::PtrVector<reco::GenParticle>"/>
     <class name="edm::Wrapper<edm::PtrVector<reco::GenParticle>>"/>
 
 
-    <class name="xtag::TagData"/>
-    <class name="edm::Wrapper<xtag::TagData>"/>
-    <class name="std::vector<xtag::TagData>"/>
-    <class name="edm::Wrapper<std::vector<xtag::TagData>>"/>
+    <class name="nanox::TagData"/>
+    <class name="edm::Wrapper<nanox::TagData>"/>
+    <class name="std::vector<nanox::TagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::TagData>>"/>
     
-    <class name="xtag::PropertyContainer"/>
-    <class name="edm::Wrapper<xtag::PropertyContainer>"/>
+    <class name="nanox::PropertyContainer"/>
+    <class name="edm::Wrapper<nanox::PropertyContainer>"/>
 
-    <class name="xtag::GhostFlavourInfo"/>
-    <class name="edm::Wrapper<xtag::GhostFlavourInfo>"/>
+    <class name="nanox::GhostFlavourInfo"/>
+    <class name="edm::Wrapper<nanox::GhostFlavourInfo>"/>
     
-    <class name="edm::ValueMap<xtag::GhostFlavourInfo>"/>
-    <class name="edm::Wrapper<edm::ValueMap<xtag::GhostFlavourInfo>>"/>
+    <class name="edm::ValueMap<nanox::GhostFlavourInfo>"/>
+    <class name="edm::Wrapper<edm::ValueMap<nanox::GhostFlavourInfo>>"/>
 
 </lcgdict>

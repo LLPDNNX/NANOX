@@ -13,9 +13,9 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/NeutralPFTagData.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/Jet/interface/NeutralPFTagData.h"
 
 
 #include "DataFormats/Math/interface/deltaR.h"
@@ -24,11 +24,11 @@
 
 #include "TVector3.h"
 
-namespace xtag
+namespace nanox
 {
 
 class NeutralPFTagDataPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
         edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;
@@ -41,11 +41,11 @@ class NeutralPFTagDataPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             jetToken_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets"))),
             svToken_(collector.consumes<edm::View<reco::VertexCompositePtrCandidate>>(pset.getParameter<edm::InputTag>("svVertices")))
         {
-            prod.produces<std::vector<xtag::NeutralPFTagData>>(name);
+            prod.produces<std::vector<nanox::NeutralPFTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup& setup) const
@@ -56,8 +56,8 @@ class NeutralPFTagDataPlugin:
             edm::Handle<edm::View<reco::VertexCompositePtrCandidate>> svCollection;
             event.getByToken(svToken_, svCollection);
            
-            std::unique_ptr<std::vector<xtag::NeutralPFTagData>> output(
-                new std::vector<xtag::NeutralPFTagData>(1)
+            std::unique_ptr<std::vector<nanox::NeutralPFTagData>> output(
+                new std::vector<nanox::NeutralPFTagData>(1)
             );
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
@@ -66,7 +66,7 @@ class NeutralPFTagDataPlugin:
                 const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
                 //const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
                 
-                std::vector<xtag::NeutralPFTagData::Data> npfData;
+                std::vector<nanox::NeutralPFTagData::Data> npfData;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
                 {
                     const pat::PackedCandidate* constituent = dynamic_cast<const pat::PackedCandidate*>(jet.daughter(idaughter));
@@ -75,7 +75,7 @@ class NeutralPFTagDataPlugin:
                         continue;
                     }
                     
-                    xtag::NeutralPFTagData::Data data;
+                    nanox::NeutralPFTagData::Data data;
                     
                     data.ptrel = 0.01/(0.01+constituent->pt()/jet_pt_uncorr);
                     data.puppi_weight = constituent->puppiWeight();
@@ -155,5 +155,5 @@ class NeutralPFTagDataPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::NeutralPFTagDataPlugin, "NeutralPFTagData");
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::NeutralPFTagDataPlugin, "NeutralPFTagData");
 

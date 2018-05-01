@@ -2,10 +2,17 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: test_data_80X -s NANO --data --eventcontent NANOAOD --datatier NANOAOD --filein /store/data/Run2016H/SingleMuon/MINIAOD/03Feb2017_ver2-v1/110000/F836EEF3-E8EA-E611-AB15-0CC47AA9943A.root --conditions auto:run2_data_relval -n 100 --era Run2_2016,run2_miniAOD_80XLegacy
+# with command line options: test80X -s NANO --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --filein /store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/120000/02A210D6-F5C3-E611-B570-008CFA197BD4.root --no_exec --conditions auto:run2_mc -n 1000 --era Run2_2016,run2_miniAOD_80XLegacy
 import FWCore.ParameterSet.Config as cms
+from FWCore.ParameterSet.VarParsing import VarParsing
 
 from Configuration.StandardSequences.Eras import eras
+
+
+options = VarParsing ('analysis')
+options.parseArguments()
+
+
 
 process = cms.Process('NANO',eras.Run2_2016,eras.run2_miniAOD_80XLegacy)
 
@@ -14,19 +21,29 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
+process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('PhysicsTools.NanoAOD.nano_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(1000)
 )
 
-# Input source
+
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('/store/data/Run2016H/SingleMuon/MINIAOD/03Feb2017_ver2-v1/110000/F836EEF3-E8EA-E611-AB15-0CC47AA9943A.root'),
+    fileNames = cms.untracked.vstring(
+        #'file:DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root'
+        #'/store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/2C548AA6-91CF-E611-A86B-B083FED429D6.root',
+        'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/10000/000486C0-2588-E711-8E92-0025905A48BA.root',
+  	    #'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/110000/0C07E448-338A-E711-B877-0CC47A4D75F2.root'
+  	    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/04915DCA-1BB2-E611-8A4B-0CC47A4C8E56.root"
+  	    #"root://cmsxrootd.fnal.gov//store/mc/RunIISummer16MiniAODv2/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/00898E1E-99B1-E611-8A4A-C81F66C8BA4C.root",
+  	    #"/store/mc/RunIISummer16MiniAODv2/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/70000/00E276CA-A6B6-E611-9C22-3417EBE47EBC.root",
+
+    ),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -36,20 +53,20 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('test_data_80X nevts:100'),
+    annotation = cms.untracked.string('test80X nevts:1000'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
 
-process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
+process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(9),
     saveProvenance = cms.untracked.bool(True),
     fakeNameForCrab = cms.untracked.bool(True),
     dataset = cms.untracked.PSet(
-        dataTier = cms.untracked.string('NANOAOD'),
+        dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
     fileName = cms.untracked.string('nano.root'),
@@ -87,15 +104,24 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
         
     )
 )
-
+'''
+process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
+    fileName = cms.untracked.string('output.root'),
+    outputCommands = cms.untracked.vstring(
+        "keep *",
+        
+     ),#+process.NANOAODSIMoutput.outputCommands,
+    dropMetaData = cms.untracked.string('ALL'),
+)
+'''
 # Additional output definition
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data_relval', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-jetCorrectionsAK4 = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'], 'None')
+jetCorrectionsAK4 = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None')
 bTagInfos = [
     'pfImpactParameterTagInfos',
     'pfInclusiveSecondaryVertexFinderTagInfos',
@@ -135,7 +161,10 @@ process.updatedPatJetsTransientCorrectedXTag.addJetCorrFactors = cms.bool(True)
 process.updatedPatJetsTransientCorrectedXTag.addTagInfos = cms.bool(True)
 
 
-process.xtagProducer = cms.EDProducer("XTagProducer",
+
+#TODO: should refit SVs and allow for a looser quality
+
+process.nanoxProducer = cms.EDProducer("NANOXProducer",
     plugins = cms.PSet(
         globalVars = cms.PSet(
             type = cms.string("GlobalJetTagData"),
@@ -163,34 +192,51 @@ process.xtagProducer = cms.EDProducer("XTagProducer",
             jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
             pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
             svVertices = cms.InputTag("slimmedSecondaryVertices"),
+        ),
+        origin = cms.PSet(
+            type = cms.string("JetOriginTagData"),
+            jets = cms.InputTag("updatedPatJetsTransientCorrectedXTag"),
+            displacedGenVertices = cms.InputTag("displacedGenVertices"),
         )
     )
 )
 
-process.xtagFlatTable = cms.EDProducer("XTagFlatTableProducer",
+process.nanoxFlatTable = cms.EDProducer("NANOXFlatTableProducer",
     tagData = cms.VPSet([
         cms.PSet(
-            src = cms.InputTag("xtagProducer","globalVars"),
+            src = cms.InputTag("nanoxProducer","globalVars"),
             arrayNames = cms.vstring(["global"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","csv"),
+            src = cms.InputTag("nanoxProducer","csv"),
             arrayNames = cms.vstring(["csv"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","cpf"),
+            src = cms.InputTag("nanoxProducer","cpf"),
             arrayNames = cms.vstring(["cpflength","cpf"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","npf"),
+            src = cms.InputTag("nanoxProducer","npf"),
             arrayNames = cms.vstring(["npflength","npf"])
         ),
         cms.PSet(
-            src = cms.InputTag("xtagProducer","sv"),
+            src = cms.InputTag("nanoxProducer","sv"),
             arrayNames = cms.vstring(["svlength","sv"])
+        ),
+        cms.PSet(
+            src = cms.InputTag("nanoxProducer","origin"),
+            arrayNames = cms.vstring(["jetorigin"])
         )
     ])
 )
+
+#process.eventView = cms.EDAnalyzer(
+#    "EventViewer",
+#    genParticles = cms.InputTag("genParticlesMerged"),
+#    genJets = cms.InputTag("genJetsReclustered"),
+#    selection = cms.string('(abs(pdgId)<6) && (abs(mother.pdgId)==1000021)')
+#)
+
 
 #remove unneeded modules
 for moduleName in [
@@ -204,32 +250,48 @@ for moduleName in [
     "subJetTable",
     "saJetTable",
     "saTable",
+    
+    "genJetAK8Table",
+    "genJetAK8FlavourAssociation",
+    "genJetAK8FlavourTable",
+   
+    "particleLevel",
+    "rivetLeptonTable",
+    "rivetMetTable"
 ]:
     if hasattr(process,moduleName):
         print "removing module: ",moduleName
         process.nanoSequenceMC.remove(getattr(process,moduleName))
 
-# Path and EndPath definitions
+
+process.load('NANOX.DisplacedVertex.GenDisplacedVertices_cff')
 process.nanoAOD_step = cms.Path(
     process.updatedPatJetsTransientCorrectedXTag
-    +process.nanoSequence
-    +process.xtagProducer
-    +process.xtagFlatTable
+    +process.nanoSequenceMC
+    +process.DisplacedGenVertexSequence
+    +process.nanoxProducer
+    +process.nanoxFlatTable
+    #+process.eventView
 )
-process.NANOAODoutput_step = cms.EndPath(process.NANOAODoutput)
+
+process.endjob_step = cms.EndPath(process.endOfProcess)
+process.NANOAODSIMoutput_step = cms.EndPath(
+    process.NANOAODSIMoutput
+    #+process.MINIAODoutput
+    )
 
 # Schedule definition
-process.schedule = cms.Schedule(process.nanoAOD_step,process.NANOAODoutput_step)
+process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODSIMoutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
-from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeData 
+from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC 
 
-#call to customisation function nanoAOD_customizeData imported from PhysicsTools.NanoAOD.nano_cff
-process = nanoAOD_customizeData(process)
+#call to customisation function nanoAOD_customizeMC imported from PhysicsTools.NanoAOD.nano_cff
+process = nanoAOD_customizeMC(process)
 
 # End of customisation functions
 

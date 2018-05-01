@@ -1,5 +1,5 @@
-#ifndef XTAG_DATAFORMATS_TAGDATA_H
-#define XTAG_DATAFORMATS_TAGDATA_H
+#ifndef NANOX_DATAFORMATS_TAGDATA_H
+#define NANOX_DATAFORMATS_TAGDATA_H
 
 #include "FWCore/Utilities/interface/Exception.h"
 
@@ -11,7 +11,7 @@
 #include "TObject.h"
 #include <unordered_map>
 
-namespace xtag
+namespace nanox
 {
 
 class TagData;
@@ -39,7 +39,7 @@ class ArrayInterface
     public:
         
     protected:
-        std::unordered_map<std::string, std::shared_ptr<xtag::Accessor>> accessors_;
+        std::unordered_map<std::string, std::shared_ptr<nanox::Accessor>> accessors_;
     public:
         virtual unsigned int size() const = 0;
         virtual void bookProperty(const std::string& name, ArrayType type = ArrayType::FLOAT) = 0;

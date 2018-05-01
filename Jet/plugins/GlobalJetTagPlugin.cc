@@ -12,17 +12,17 @@
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/GlobalJetTagData.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/Jet/interface/GlobalJetTagData.h"
 
 #include <iostream>
 
-namespace xtag
+namespace nanox
 {
 
 class GlobalJetTagDataPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
         edm::InputTag inputTag_;
@@ -35,11 +35,11 @@ class GlobalJetTagDataPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             inputTag_(pset.getParameter<edm::InputTag>("jets")),
             token_(collector.consumes<edm::View<pat::Jet>>(inputTag_))
         {
-            prod.produces<std::vector<xtag::GlobalJetTagData>>(name);
+            prod.produces<std::vector<nanox::GlobalJetTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup&) const
@@ -48,8 +48,8 @@ class GlobalJetTagDataPlugin:
             event.getByToken(token_, jetCollection);
             
 
-            std::unique_ptr<std::vector<xtag::GlobalJetTagData>> output(
-                new std::vector<xtag::GlobalJetTagData>(1)
+            std::unique_ptr<std::vector<nanox::GlobalJetTagData>> output(
+                new std::vector<nanox::GlobalJetTagData>(1)
             );
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
@@ -64,5 +64,5 @@ class GlobalJetTagDataPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::GlobalJetTagDataPlugin, "GlobalJetTagData");
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::GlobalJetTagDataPlugin, "GlobalJetTagData");
 

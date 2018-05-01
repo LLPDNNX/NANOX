@@ -15,7 +15,7 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Utilities/interface/Exception.h"
 
-#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "NANOX/DataFormats/interface/DisplacedGenVertex.h"
 
 #include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
@@ -35,8 +35,8 @@
 #include "TH1.h"
 #include "TCanvas.h"
 
-using xtag::DisplacedGenVertex;
-using xtag::DisplacedGenVertexCollection;
+using nanox::DisplacedGenVertex;
+using nanox::DisplacedGenVertexCollection;
 
 class DisplacedGenVertexProducer:
     public edm::stream::EDProducer<>

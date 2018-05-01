@@ -14,7 +14,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 
 
-#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "NANOX/DataFormats/interface/DisplacedGenVertex.h"
 
 #include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
@@ -25,13 +25,13 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 
-#include "XTag/DataFormats/interface/TagData.h"
+#include "NANOX/DataFormats/interface/TagData.h"
 
 #include "DataFormats/NanoAOD/interface/FlatTable.h"
 
 #include <algorithm>
 
-class XTagFlatTableProducer:
+class NANOXFlatTableProducer:
     public edm::stream::EDProducer<>
     
 {
@@ -40,7 +40,7 @@ class XTagFlatTableProducer:
         {
             edm::InputTag inputTag;
             std::vector<std::string> arrayNames;
-            edm::EDGetTokenT<edm::View<xtag::TagData>> token;
+            edm::EDGetTokenT<edm::View<nanox::TagData>> token;
             std::vector<std::string> tableNames;
             
             TagDataToWrite(
@@ -51,7 +51,7 @@ class XTagFlatTableProducer:
             ):
                 inputTag(inputTag),
                 arrayNames(arrayNames),
-                token(collector.consumes<edm::View<xtag::TagData>>(inputTag))
+                token(collector.consumes<edm::View<nanox::TagData>>(inputTag))
             {
                 std::string baseName = inputTag.label()+inputTag.instance();
                 for (auto name: arrayNames)
@@ -88,11 +88,11 @@ class XTagFlatTableProducer:
         
         
         class FlatTableArchive:
-            public xtag::ArchiveInterface
+            public nanox::ArchiveInterface
         {
             public:
                 class FlatTableArray:
-                    public xtag::ArrayInterface
+                    public nanox::ArrayInterface
                 {
                     protected:
                         std::string name_;
@@ -112,7 +112,7 @@ class XTagFlatTableProducer:
                         }
                         
                         
-                        virtual void bookProperty(const std::string& name, xtag::ArrayType type=xtag::ArrayType::FLOAT)
+                        virtual void bookProperty(const std::string& name, nanox::ArrayType type=nanox::ArrayType::FLOAT)
                         {
                             floatData_.emplace(
                                 std::piecewise_construct,
@@ -156,7 +156,7 @@ class XTagFlatTableProducer:
                 {
                 }
                 
-                virtual xtag::ArrayInterface& initArray(
+                virtual nanox::ArrayInterface& initArray(
                     const std::string& name,
                     unsigned int size
                 )
@@ -181,8 +181,8 @@ class XTagFlatTableProducer:
  
 
     public:
-        explicit XTagFlatTableProducer(const edm::ParameterSet&);
-        ~XTagFlatTableProducer();
+        explicit NANOXFlatTableProducer(const edm::ParameterSet&);
+        ~NANOXFlatTableProducer();
 
         virtual void produce(edm::Event& iEvent, const edm::EventSetup& iSetup) override;
         static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
@@ -192,7 +192,7 @@ class XTagFlatTableProducer:
 
 //
 //constructors and destructor
-XTagFlatTableProducer::XTagFlatTableProducer(const edm::ParameterSet& iConfig)
+NANOXFlatTableProducer::NANOXFlatTableProducer(const edm::ParameterSet& iConfig)
 {
     const std::vector<edm::ParameterSet>& tagDataConfigs = iConfig.getParameter<std::vector<edm::ParameterSet>>("tagData");
     for (const edm::ParameterSet& tagDataConfig: tagDataConfigs)
@@ -210,24 +210,24 @@ XTagFlatTableProducer::XTagFlatTableProducer(const edm::ParameterSet& iConfig)
 }
 
 
-XTagFlatTableProducer::~XTagFlatTableProducer()
+NANOXFlatTableProducer::~NANOXFlatTableProducer()
 {
 }
 
 
 // ------------ method called to produce the data  ------------
 void
-XTagFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+NANOXFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     
     for (TagDataToWrite& tagDataToWrite: tagDataToWrite_)
     {
         FlatTableArchive ar;
 
-        edm::Handle<edm::View<xtag::TagData>> tagDataCollection;
+        edm::Handle<edm::View<nanox::TagData>> tagDataCollection;
         iEvent.getByToken(tagDataToWrite.token, tagDataCollection);
 
-        const xtag::TagData& tagData = tagDataCollection->at(0);
+        const nanox::TagData& tagData = tagDataCollection->at(0);
         tagData.saveTagData(ar);
         
         tagDataToWrite.put(iEvent,ar.makeTables());
@@ -238,7 +238,7 @@ XTagFlatTableProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-XTagFlatTableProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NANOXFlatTableProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -249,5 +249,5 @@ XTagFlatTableProducer::fillDescriptions(edm::ConfigurationDescriptions& descript
 
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(XTagFlatTableProducer);
+DEFINE_FWK_MODULE(NANOXFlatTableProducer);
 

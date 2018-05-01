@@ -15,9 +15,9 @@
 #include "RecoVertex/VertexTools/interface/VertexDistanceXY.h"
 #include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/SVTagData.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/Jet/interface/SVTagData.h"
 
 
 #include "DataFormats/Math/interface/deltaR.h"
@@ -26,11 +26,11 @@
 
 #include "TVector3.h"
 
-namespace xtag
+namespace nanox
 {
 
 class SVTagDataPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
         edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;
@@ -44,12 +44,12 @@ class SVTagDataPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             jetToken_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets"))),
             pvToken_(collector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("pvVertices"))),
             svToken_(collector.consumes<edm::View<reco::VertexCompositePtrCandidate>>(pset.getParameter<edm::InputTag>("svVertices")))
         {
-            prod.produces<std::vector<xtag::SVTagData>>(name);
+            prod.produces<std::vector<nanox::SVTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup& setup) const
@@ -65,8 +65,8 @@ class SVTagDataPlugin:
             
             const reco::Vertex& pv = pvCollection->at(0);
            
-            std::unique_ptr<std::vector<xtag::SVTagData>> output(
-                new std::vector<xtag::SVTagData>(1)
+            std::unique_ptr<std::vector<nanox::SVTagData>> output(
+                new std::vector<nanox::SVTagData>(1)
             );
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
@@ -74,7 +74,7 @@ class SVTagDataPlugin:
                 const pat::Jet& jet = jetCollection->at(ijet);
                 const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
                 
-                std::vector<xtag::SVTagData::Data> svData;
+                std::vector<nanox::SVTagData::Data> svData;
                 for (unsigned int isv = 0; isv < svCollection->size(); ++isv)
                 {
                     const reco::VertexCompositePtrCandidate& sv = svCollection->at(isv);
@@ -83,7 +83,7 @@ class SVTagDataPlugin:
                         continue;
                     }
                     
-                    xtag::SVTagData::Data data;
+                    nanox::SVTagData::Data data;
                     data.pt = std::log10(sv.pt());
                     
                     data.deltaR = reco::deltaR(sv,jet);
@@ -130,5 +130,5 @@ class SVTagDataPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::SVTagDataPlugin, "SVTagData");
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::SVTagDataPlugin, "SVTagData");
 

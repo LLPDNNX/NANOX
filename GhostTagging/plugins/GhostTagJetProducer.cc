@@ -16,7 +16,7 @@
 
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/JetReco/interface/JetCollection.h"
-#include "XTag/DataFormats/interface/GhostFlavourInfo.h"
+#include "NANOX/DataFormats/interface/GhostFlavourInfo.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "PhysicsTools/JetMCUtils/interface/CandMCTag.h"
@@ -142,7 +142,7 @@ GhostTagJetProducer::GhostTagJetProducer(const edm::ParameterSet& iConfig) :
 
 {
    // register your products
-   produces<edm::ValueMap<xtag::GhostFlavourInfo>>();
+   produces<edm::ValueMap<nanox::GhostFlavourInfo>>();
 
    // set jet algorithm
    if (jetAlgorithm_=="Kt")
@@ -179,7 +179,7 @@ GhostTagJetProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<reco::GenParticleRefVector> ghosts;
    iEvent.getByToken(ghostToken_, ghosts);
 
-    std::vector<xtag::GhostFlavourInfo> ghostFlavourInfo(jets->size());
+    std::vector<nanox::GhostFlavourInfo> ghostFlavourInfo(jets->size());
 
    
    // vector of constituents for reclustering jets and "ghosts"

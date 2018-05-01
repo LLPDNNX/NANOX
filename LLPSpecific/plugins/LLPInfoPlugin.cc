@@ -12,11 +12,11 @@
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/LLPSpecific/interface/LLPInfo.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/LLPSpecific/interface/LLPInfo.h"
 
-#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "NANOX/DataFormats/interface/DisplacedGenVertex.h"
 
 #include "DataFormats/Math/interface/angle.h"
 
@@ -25,14 +25,14 @@
 
 #include <iostream>
 
-namespace xtag
+namespace nanox
 {
 
 class LLPInfoPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
-        edm::EDGetTokenT<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexToken_;
+        edm::EDGetTokenT<edm::View<nanox::DisplacedGenVertex>> displacedGenVertexToken_;
         
         static int getHadronFlavor(const reco::Candidate& genParticle)
         {
@@ -56,14 +56,14 @@ class LLPInfoPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             displacedGenVertexToken_(
-                collector.consumes<edm::View<xtag::DisplacedGenVertex>>(
+                collector.consumes<edm::View<nanox::DisplacedGenVertex>>(
                     pset.getParameter<edm::InputTag>("displacedGenVertices")
                 )
             )
         {
-            prod.produces<std::vector<xtag::LLPInfo>>(name);
+            prod.produces<std::vector<nanox::LLPInfo>>(name);
         }
         
         
@@ -71,18 +71,18 @@ class LLPInfoPlugin:
         
         virtual void produce(edm::Event& event, const edm::EventSetup&) const
         {
-            edm::Handle<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexCollection;
+            edm::Handle<edm::View<nanox::DisplacedGenVertex>> displacedGenVertexCollection;
             event.getByToken(displacedGenVertexToken_, displacedGenVertexCollection);
             
-            std::unique_ptr<std::vector<xtag::LLPInfo>> output(new std::vector<xtag::LLPInfo>(1));
+            std::unique_ptr<std::vector<nanox::LLPInfo>> output(new std::vector<nanox::LLPInfo>(1));
             
             for (size_t i = 0; i < displacedGenVertexCollection->size(); ++i)
             {
                 
-                xtag::LLPInfo::Data data;
+                nanox::LLPInfo::Data data;
             
                 
-                const xtag::DisplacedGenVertex& vertex = displacedGenVertexCollection->at(i);
+                const nanox::DisplacedGenVertex& vertex = displacedGenVertexCollection->at(i);
                 
                 if (vertex.motherLongLivedParticle.isNull())
                 {
@@ -143,5 +143,5 @@ class LLPInfoPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::LLPInfoPlugin, "LLPInfo");
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::LLPInfoPlugin, "LLPInfo");
 

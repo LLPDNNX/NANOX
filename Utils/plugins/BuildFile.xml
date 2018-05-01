@@ -7,9 +7,9 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="PhysicsTools/UtilAlgos"/>
 <use   name="DataFormats/Candidate"/>
-<use   name="XTag/DataFormats"/>
+<use   name="NANOX/DataFormats"/>
 <use   name="DataFormats/HepMCCandidate"/>
-<library file="*.cc" name="XTagInfoUtilsProducer">
+<library file="*.cc" name="NANOXInfoUtilsProducer">
   <flags EDM_PLUGIN="1"/>
 </library>
 

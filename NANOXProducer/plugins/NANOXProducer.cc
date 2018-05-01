@@ -16,25 +16,25 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
 
 #include <vector>
 #include <iostream>
 
-class XTagProducer:
+class NANOXProducer:
     public edm::one::EDProducer<>
     
 {
     private:
     
-        std::vector<std::shared_ptr<xtag::XTagPlugin>> plugins_;
+        std::vector<std::shared_ptr<nanox::NANOXPlugin>> plugins_;
         
         virtual void produce(edm::Event& iEvent, const edm::EventSetup& iSetup) override;
     public:
     
-        explicit XTagProducer(const edm::ParameterSet&);
-        ~XTagProducer();
+        explicit NANOXProducer(const edm::ParameterSet&);
+        ~NANOXProducer();
 
         static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -43,7 +43,7 @@ class XTagProducer:
 
 //
 //constructors and destructor
-XTagProducer::XTagProducer(const edm::ParameterSet& iConfig)
+NANOXProducer::NANOXProducer(const edm::ParameterSet& iConfig)
 {
     edm::ConsumesCollector consumeCollector = consumesCollector();
     const edm::ParameterSet& tagProducerConfigs = iConfig.getParameter<edm::ParameterSet>("plugins");
@@ -52,7 +52,7 @@ XTagProducer::XTagProducer(const edm::ParameterSet& iConfig)
     {
         edm::ParameterSet tagDataConfig = tagProducerConfigs.getParameter<edm::ParameterSet>(name);
         std::string pluginName = tagDataConfig.getParameter<std::string>("type");
-        xtag::XTagPlugin* plugin = xtag::XTagPluginFactory::get()->tryToCreate(
+        nanox::NANOXPlugin* plugin = nanox::NANOXPluginFactory::get()->tryToCreate(
             pluginName,
             name,
             tagDataConfig,
@@ -68,14 +68,14 @@ XTagProducer::XTagProducer(const edm::ParameterSet& iConfig)
 }
 
 
-XTagProducer::~XTagProducer()
+NANOXProducer::~NANOXProducer()
 {
 }
 
 
 // ------------ method called to produce the data  ------------
 void
-XTagProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+NANOXProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     for (auto plugin: plugins_)
     {
@@ -124,7 +124,7 @@ XTagProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-XTagProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+NANOXProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -135,5 +135,5 @@ XTagProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(XTagProducer);
+DEFINE_FWK_MODULE(NANOXProducer);
 

@@ -12,11 +12,11 @@
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
 
-#include "XTag/XTagProducer/interface/XTagPlugin.h"
-#include "XTag/XTagProducer/interface/XTagPluginFactory.h"
-#include "XTag/Jet/interface/JetOriginTagData.h"
+#include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
+#include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
+#include "NANOX/Jet/interface/JetOriginTagData.h"
 
-#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "NANOX/DataFormats/interface/DisplacedGenVertex.h"
 
 #include "DataFormats/Math/interface/angle.h"
 
@@ -25,16 +25,16 @@
 
 #include <iostream>
 
-namespace xtag
+namespace nanox
 {
 
 class JetOriginTagDataPlugin:
-    public XTagPlugin
+    public NANOXPlugin
 {
     private:
         edm::EDGetTokenT<edm::View<pat::Jet>> token_;
         
-        edm::EDGetTokenT<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexToken_;
+        edm::EDGetTokenT<edm::View<nanox::DisplacedGenVertex>> displacedGenVertexToken_;
         
         
         //edm::EDGetTokenT<edm::View<reco::GenJet>> genJetToken_;
@@ -61,16 +61,16 @@ class JetOriginTagDataPlugin:
             edm::ConsumesCollector& collector,
             edm::ProducerBase& prod
         ):
-            XTagPlugin(name,pset,collector,prod),
+            NANOXPlugin(name,pset,collector,prod),
             token_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets")))
             //genJetToken_(collector.consumes<edm::View<reco::GenJet>>(pset.getParameter<edm::InputTag>("genJets")))
         {
             if (pset.exists("displacedGenVertices"))
             {
                 displacedGenVertexToken_ = 
-                    collector.consumes<edm::View<xtag::DisplacedGenVertex>>(pset.getParameter<edm::InputTag>("displacedGenVertices"));
+                    collector.consumes<edm::View<nanox::DisplacedGenVertex>>(pset.getParameter<edm::InputTag>("displacedGenVertices"));
             }
-            prod.produces<std::vector<xtag::JetOriginTagData>>(name);
+            prod.produces<std::vector<nanox::JetOriginTagData>>(name);
         }
         
         
@@ -81,11 +81,11 @@ class JetOriginTagDataPlugin:
             edm::Handle<edm::View<pat::Jet>> jetCollection;
             event.getByToken(token_, jetCollection);
 
-            std::unique_ptr<std::vector<xtag::JetOriginTagData>> output(
-                new std::vector<xtag::JetOriginTagData>(1)
+            std::unique_ptr<std::vector<nanox::JetOriginTagData>> output(
+                new std::vector<nanox::JetOriginTagData>(1)
             );
             
-            edm::Handle<edm::View<xtag::DisplacedGenVertex>> displacedGenVertexCollection;
+            edm::Handle<edm::View<nanox::DisplacedGenVertex>> displacedGenVertexCollection;
             if (not displacedGenVertexToken_.isUninitialized())
             {
                 event.getByToken(displacedGenVertexToken_, displacedGenVertexCollection);
@@ -95,7 +95,7 @@ class JetOriginTagDataPlugin:
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
                 
-                xtag::JetOriginTagData::Data data;
+                nanox::JetOriginTagData::Data data;
                 if (not jet.genJet())
                 {
                     data.isPU = true;
@@ -269,5 +269,5 @@ class JetOriginTagDataPlugin:
 
 }
 
-DEFINE_EDM_PLUGIN(xtag::XTagPluginFactory, xtag::JetOriginTagDataPlugin, "JetOriginTagData");
+DEFINE_EDM_PLUGIN(nanox::NANOXPluginFactory, nanox::JetOriginTagDataPlugin, "JetOriginTagData");
 
