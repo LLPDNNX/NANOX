@@ -26,4 +26,5 @@ scram b
 * **Jet**: Plugins & data containers to generate and store additional jet variables for training
 * **LLPSpecific**: Gathers and stores additional information about simulated gluinos in events
 * **NANOXProducer**: Convertes data containters into nanoaod flat tables
+* **Unpacker**: Unpacking jets, performing training/validation splitting and adding additional variables for training
 * **Utils**: Helpful scripts/plugins
