@@ -131,7 +131,7 @@ def addFilter(seq,inputTag,cutString,minN=None):
         setattr(process,selectorMinFilterName,selectorMinFilter)
         seq+=selectorMinFilter
         
-        
+'''      
 if not options.noFilter:
     addFilter(skimSingleMuSequence,cms.InputTag("slimmedMuons"),"pt>24.0",minN=1)
     addFilter(skimSingleMuSequence,cms.InputTag("slimmedJets"),"pt>20.0",minN=1)
@@ -139,7 +139,7 @@ if not options.noFilter:
     addFilter(skimSingleEleSequence,cms.InputTag("slimmedElectrons"),"pt>27.0",minN=1)
     addFilter(skimSingleEleSequence,cms.InputTag("slimmedJets"),"pt>20.0",minN=1)
 
-'''
+
 if not options.isData:
     process.TFileService = cms.Service("TFileService", 
         fileName = cms.string("info.root")
