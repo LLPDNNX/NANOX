@@ -6,9 +6,10 @@ CMSSW package for producing NANOaod eXtended (NANOX) files containing additional
 ## Setup
 Requires CMSSW_9_X, e.g.
 ```
-cmsrel CMSSW_9_4_2
-cd CMSSW_9_4_2/src
+cmsrel CMSSW_9_4_8
+cd CMSSW_9_4_8/src
 cmsenv
+git cms-merge-topic cms-nanoAOD:master
 git clone git@github.com:LLPDNNX/NANOX.git
 scram b
 ```
