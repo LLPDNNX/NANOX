@@ -3,7 +3,7 @@ services:
   - docker
 script:
   - docker pull hepsw/cvmfs-cms
-  - docker run -h dev --privileged hepsw/cvmfs-cms /bin/bash -c "yum -y install yum-plugin-ovl && yum -y install glibc-devel.x86_64 --disablerepo=adobe\* && cd ~ && source ~/.bashrc && export SCRAM_ARCH=slc6_amd64_gcc630 && scramv1 project CMSSW CMSSW_9_4_8 && cd CMSSW_9_4_8/src && eval \`scramv1 runtime -sh\` && git cms-merge-topic cms-nanoAOD:master && git clone https://github.com/LLPDNNX/NANOX.git && scram b"
+  - docker run -h dev --privileged hepsw/cvmfs-cms /bin/bash -c "touch /var/lib/rpm/* && yum -y install yum-plugin-ovl && yum -y install glibc-devel.x86_64 --disablerepo=adobe\* && cd ~ && source ~/.bashrc && export SCRAM_ARCH=slc6_amd64_gcc630 && scramv1 project CMSSW CMSSW_9_4_8 && cd CMSSW_9_4_8/src && eval \`scramv1 runtime -sh\` && git cms-merge-topic cms-nanoAOD:master && git clone https://github.com/LLPDNNX/NANOX.git && scram b"
 notifications:
   email:
     recipients:
