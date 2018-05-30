@@ -16,8 +16,10 @@ function run_test()
     scram b || return 1
     
     #requires siteconfig for GT
-    #wget https://github.com/LLPDNNX/test-files/raw/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1
-    #cmsRun NANOX/LLPSpecific/test/produce_80X_NANOX.py inputFiles=file:RunIISummer16MiniAODv2_MC.root || return 1
+    wget https://github.com/LLPDNNX/test-files/raw/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1
+    echo "export CMS_LOCAL_SITE=T2_UK_London_IC" > /etc/cvmfs/config.d/cms.cern.ch.conf
+    service autofs restart 
+    cmsRun NANOX/LLPSpecific/test/produce_80X_NANOX.py inputFiles=file:RunIISummer16MiniAODv2_MC.root || return 1
 }
 
 run_test
