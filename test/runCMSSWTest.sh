@@ -4,7 +4,7 @@ function run_test()
     ls -l /cvmfs/cms.cern.ch/SITECONF | grep local
     
     touch /var/lib/rpm/* || return 1
-    yum -y install wget yum-plugin-ovl || return 1
+    yum -y install wget rsync yum-plugin-ovl || return 1
     yum -y install glibc-devel.x86_64 --disablerepo=adobe* || return 1
     cd ~
     source ~/.bashrc
