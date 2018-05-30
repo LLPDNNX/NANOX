@@ -14,8 +14,10 @@ function run_test()
     git cms-merge-topic cms-nanoAOD:master || return 1
     git clone https://github.com/LLPDNNX/NANOX.git || return 1
     scram b || return 1
-    wget -f https://github.com/LLPDNNX/test-files/blob/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1
-    cmsRun NANOX/LLPSpecific/test/produce_80X_NANOX.py inputFiles=file:RunIISummer16MiniAODv2_MC.root || return 1
+    
+    #requires siteconfig for GT
+    #wget https://github.com/LLPDNNX/test-files/raw/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1
+    #cmsRun NANOX/LLPSpecific/test/produce_80X_NANOX.py inputFiles=file:RunIISummer16MiniAODv2_MC.root || return 1
 }
 
 run_test
