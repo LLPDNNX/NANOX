@@ -1,5 +1,11 @@
 function run_test()
 {
+    #set siteconfig for GT
+    echo "export CMS_LOCAL_SITE=T2_UK_London_IC" > /etc/cvmfs/config.d/cms.cern.ch.conf
+    ls -l /cvmfs/cms.cern.ch/SITECONF | grep local
+    service autofs restart || return 1
+    ls -l /cvmfs/cms.cern.ch/SITECONF | grep local
+    
     touch /var/lib/rpm/* || return 1
     yum -y install wget yum-plugin-ovl || return 1
     yum -y install glibc-devel.x86_64 --disablerepo=adobe* || return 1
@@ -15,10 +21,7 @@ function run_test()
     git clone https://github.com/LLPDNNX/NANOX.git || return 1
     scram b || return 1
     
-    wget https://github.com/LLPDNNX/test-files/raw/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1
-    #set siteconfig for GT
-    echo "export CMS_LOCAL_SITE=T2_UK_London_IC" > /etc/cvmfs/config.d/cms.cern.ch.conf
-    service autofs restart 
+    wget -nv https://github.com/LLPDNNX/test-files/raw/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1
     cmsRun NANOX/LLPSpecific/test/produce_80X_NANOX.py inputFiles=file:RunIISummer16MiniAODv2_MC.root || return 1
 }
 
