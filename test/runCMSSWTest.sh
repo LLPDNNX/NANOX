@@ -1,9 +1,6 @@
 function run_test()
 {
-    #set siteconfig for GT
-    echo "export CMS_LOCAL_SITE=T2_UK_London_IC" > /etc/cvmfs/config.d/cms.cern.ch.conf
-    ls -l /cvmfs/cms.cern.ch/SITECONF | grep local
-    service autofs restart || return 1
+    #check siteconfig for GT
     ls -l /cvmfs/cms.cern.ch/SITECONF | grep local
     
     touch /var/lib/rpm/* || return 1
