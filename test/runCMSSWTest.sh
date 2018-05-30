@@ -15,7 +15,8 @@ function run_test()
     git config --global user.email "root.rooster@chicken.com"
     git config --global user.name "Root rooster"
     git cms-merge-topic cms-nanoAOD:master || return 1
-    git clone https://github.com/LLPDNNX/NANOX.git || return 1
+    #copy files from PR/branch which is tested
+    cp -rv /scripts/* .
     scram b || return 1
     
     wget -nv https://github.com/LLPDNNX/test-files/raw/master/miniaod/RunIISummer16MiniAODv2_MC.root || return 1

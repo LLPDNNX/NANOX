@@ -2,9 +2,6 @@ sudo: required
 services:
   - docker
 script:
-  - env
-  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   - docker pull mattkomm/cvmfs-cms
   - docker run -h dev --privileged -v $PWD:/scripts:ro mattkomm/cvmfs-cms /bin/bash -c /scripts/test/runCMSSWTest.sh
 notifications:
