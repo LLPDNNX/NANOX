@@ -206,7 +206,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         
     )
 )
-'''
+
 process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('output.root'),
     outputCommands = cms.untracked.vstring(
@@ -215,15 +215,15 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
      ),#+process.NANOAODSIMoutput.outputCommands,
     dropMetaData = cms.untracked.string('ALL'),
 )
-'''
+
 
 from Configuration.AlCa.GlobalTag import GlobalTag
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 if options.isData:
-    process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data_relval', '')
+    process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7', '')
     jetCorrectionsAK4 = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'], 'None')
 else:
-    process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
+    process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_TrancheIV_v8', '')
     jetCorrectionsAK4 = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None')
     
 bTagInfos = [
@@ -408,6 +408,10 @@ else:
 if not options.isData:
     process.load('NANOX.DisplacedVertex.GenDisplacedVertices_cff')
     addModule(process.DisplacedGenVertexSequence)
+    
+from PhysicsTools.NanoAOD.common_cff import *
+    
+process.jetTable.variables.myVariable = Var("chargedMultiplicity()", int, doc="n(charged)")
 
 process.nanoxSequence = cms.Sequence( 
     process.nanoxProducer
@@ -419,7 +423,7 @@ addModule(process.nanoxSequence)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.NANOAODSIMoutput_step = cms.EndPath(
     process.NANOAODSIMoutput
-    #+process.MINIAODoutput
+    +process.MINIAODoutput
 )
 
 # Schedule definition
