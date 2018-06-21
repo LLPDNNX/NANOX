@@ -5,9 +5,8 @@
 # with command line options: test80X -s NANO --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --filein /store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/120000/02A210D6-F5C3-E611-B570-008CFA197BD4.root --no_exec --conditions auto:run2_mc -n 1000 --era Run2_2016,run2_miniAOD_80XLegacy
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
-
+from PhysicsTools.NanoAOD.common_cff import *
 from Configuration.StandardSequences.Eras import eras
-
 
 options = VarParsing ('analysis')
 
@@ -408,6 +407,9 @@ else:
 if not options.isData:
     process.load('NANOX.DisplacedVertex.GenDisplacedVertices_cff')
     addModule(process.DisplacedGenVertexSequence)
+
+process.jetTable.variables.CHM = Var("chargedHadronMultiplicity()", int, doc="chargedHadronMultiplicity ")
+#process.jetTable.variables.NumNeutralParticle = Var("numberofDaughters() - chargedHadronMultiplicity()", int, doc = "Number of neutral constituents?")
 
 process.nanoxSequence = cms.Sequence( 
     process.nanoxProducer
