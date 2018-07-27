@@ -27,6 +27,14 @@ options.register(
 )
 
 options.register(
+    'addEdmOutput',
+    False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "add edm root output file"
+)
+
+options.register(
     'noFilter',
     False,
     VarParsing.multiplicity.singleton,
@@ -205,7 +213,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         
     )
 )
-'''
+
 process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('output.root'),
     outputCommands = cms.untracked.vstring(
@@ -214,16 +222,26 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
      ),#+process.NANOAODSIMoutput.outputCommands,
     dropMetaData = cms.untracked.string('ALL'),
 )
-'''
+
+
+#process.load("PhysicsTools.PatAlgos.patSequences_cff")
+
+# load the coreTools of PAT
+from PhysicsTools.PatAlgos.tools.jetTools import *
+
+
+
 
 from Configuration.AlCa.GlobalTag import GlobalTag
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 if options.isData:
-    process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data_relval', '')
-    jetCorrectionsAK4 = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'], 'None')
+    process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7', '')
+    jetCorrectionsAK4PFchs = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'], 'None')
+    jetCorrectionsAK4PF = ('AK4PF', ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'], 'None')
 else:
-    process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
-    jetCorrectionsAK4 = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None')
+    process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_TrancheIV_v8', '')
+    jetCorrectionsAK4PFchs = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None')
+    jetCorrectionsAK4PF = ('AK4PF', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None')
     
 bTagInfos = [
     'pfImpactParameterTagInfos',
@@ -246,7 +264,7 @@ updateJetCollection(
         process,
         labelName = "XTag",
         jetSource = cms.InputTag('slimmedJets'),#'ak4Jets'
-        jetCorrections = jetCorrectionsAK4,
+        jetCorrections = jetCorrectionsAK4PFchs,
         pfCandidates = cms.InputTag('packedPFCandidates'),
         pvSource = cms.InputTag("offlineSlimmedPrimaryVertices"),
         svSource = cms.InputTag('slimmedSecondaryVertices'),
@@ -282,6 +300,43 @@ process.selectJetsInBarrel = cms.EDFilter("PATJetSelector",
     cut = cms.string("pt > 20")
 )
 addModule(process.selectJetsInBarrel)
+'''
+from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
+process.ak4RecoJetsPU = ak4PFJets.clone()
+process.ak4RecoJetsPU.src = cms.InputTag("packedPFCandidates")
+
+addJetCollection(process,
+    labelName = "AK4PF",
+    postfix = "PU",
+    jetSource=cms.InputTag('ak4RecoJetsPU'),
+    algo='AK',
+    rParam = 0.4,
+    #doJTA        = False,
+    #doBTagging   = False,
+    jetCorrections = jetCorrectionsAK4PF,
+    #doType1MET   = False,
+    genJetCollection=cms.InputTag("slimmedGenJets"),
+    pfCandidates = cms.InputTag('packedPFCandidates'),
+    pvSource = cms.InputTag("offlineSlimmedPrimaryVertices"),
+    svSource = cms.InputTag('slimmedSecondaryVertices'),
+    muSource = cms.InputTag('slimmedMuons'),
+    elSource = cms.InputTag('slimmedElectrons'),
+    #btagInfos = bTagInfos,
+    #btagDiscriminators = bTagDiscriminators,
+    explicitJTA = False,
+)
+
+process.jetAK4PFSequence = cms.Sequence(
+    process.ak4RecoJetsPU
+    +process.patJetCorrFactorsAK4PFPU
+    
+    +process.patJetGenJetMatchAK4PFPU
+    +process.patJetPartonMatchAK4PFPU
+    +process.patJetsAK4PFPU
+)
+addModule(process.jetAK4PFSequence)
+'''
+
 
 process.nanoxProducer = cms.EDProducer("NANOXProducer",
     plugins = cms.PSet(
@@ -407,6 +462,10 @@ else:
 if not options.isData:
     process.load('NANOX.DisplacedVertex.GenDisplacedVertices_cff')
     addModule(process.DisplacedGenVertexSequence)
+    
+from PhysicsTools.NanoAOD.common_cff import *
+    
+#process.jetTable.variables.myVariable = Var("chargedMultiplicity()", int, doc="n(charged)")
 
 process.jetTable.variables.CHM = Var("chargedHadronMultiplicity()", int, doc="chargedHadronMultiplicity ")
 #process.jetTable.variables.NumNeutralParticle = Var("numberofDaughters() - chargedHadronMultiplicity()", int, doc = "Number of neutral constituents?")
@@ -421,8 +480,10 @@ addModule(process.nanoxSequence)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.NANOAODSIMoutput_step = cms.EndPath(
     process.NANOAODSIMoutput
-    #+process.MINIAODoutput
 )
+if options.addEdmOutput:
+    print "Adding EDM output besides NANOAOD"
+    process.NANOAODSIMoutput_step+=process.MINIAODoutput
 
 # Schedule definition
 #process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODSIMoutput_step)
@@ -448,3 +509,5 @@ else:
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
 # End adding early deletion
+
+
