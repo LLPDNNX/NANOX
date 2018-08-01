@@ -161,8 +161,8 @@ if isData==False:
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
          ],
 
-        "ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        "ZJetsToNuNu_HT-2500toInf_13TeV-madgraph":[
+            lambda cfg: setattr(cfg.Data,"inputDataset","/ZJetsToNuNu_HT-2500toInf_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
          ],
  
