@@ -273,6 +273,10 @@ if isData==False:
             lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
         ],
 
+        "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+            lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        ],
+
         "TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
         ],
