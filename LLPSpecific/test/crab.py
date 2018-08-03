@@ -20,7 +20,7 @@ if isData==False:
         ],
         
         "T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p01_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER "),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p01_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -33,9 +33,8 @@ if isData==False:
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
         
-        
         "T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1_Madgraph_Pythia_MINIAODSIM_18_01_11-28028af67189b3de7224b79195bd0e1d/USER "),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1_Madgraph_Pythia_MINIAODSIM_18_01_11-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -43,7 +42,7 @@ if isData==False:
         
         
         "T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset"," /T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER "),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -51,7 +50,7 @@ if isData==False:
         
         
         "T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER "),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -59,7 +58,7 @@ if isData==False:
         
         
         "T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset"," /T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1000_Madgraph_Pythia_MINIAODSIM_17_12_23-28028af67189b3de7224b79195bd0e1d/USER"),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1000_Madgraph_Pythia_MINIAODSIM_17_12_23-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -67,7 +66,7 @@ if isData==False:
         
         
         "T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10000_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER "),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10000_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -75,7 +74,7 @@ if isData==False:
         
         
         "T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100000_Madgraph_Pythia_MINIAODSIM_17_12_29-28028af67189b3de7224b79195bd0e1d/USER "),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100000_Madgraph_Pythia_MINIAODSIM_17_12_29-28028af67189b3de7224b79195bd0e1d/USER"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
@@ -161,8 +160,8 @@ if isData==False:
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
          ],
 
-        "ZJetsToNuNu_HT-2500toInf_13TeV-madgraph":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/ZJetsToNuNu_HT-2500toInf_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        "ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph":[
+            lambda cfg: setattr(cfg.Data,"inputDataset","/ZJetsToNuNu_HT-2500ToInf_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
          ],
  
@@ -263,7 +262,7 @@ if isData==False:
         ],
 
         "DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/DYJetsToLL_M-50_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+            lambda cfg: setattr(cfg.Data,"inputDataset","/DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
 
 
@@ -463,6 +462,25 @@ else:
     myJobs = {}
     
     for dataset in [
+
+        '/HTMHT/Run2016B-03Feb2017_ver2-v2/MINIAOD',
+        '/HTMHT/Run2016C-03Feb2017-v1/MINIAOD',
+        '/HTMHT/Run2016D-03Feb2017-v1/MINIAOD',
+        '/HTMHT/Run2016E-03Feb2017-v1/MINIAOD',
+        '/HTMHT/Run2016F-03Feb2017-v1/MINIAOD',
+        '/HTMHT/Run2016G-03Feb2017-v1/MINIAOD',
+        '/HTMHT/Run2016H-03Feb2017_ver2-v1/MINIAOD',
+        '/HTMHT/Run2016H-03Feb2017_ver3-v1/MINIAOD',
+
+        '/SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD',
+        '/SingleElectron/Run2016C-03Feb2017-v1/MINIAOD',
+        '/SingleElectron/Run2016D-03Feb2017-v1/MINIAOD',
+        '/SingleElectron/Run2016E-03Feb2017-v1/MINIAOD',
+        '/SingleElectron/Run2016F-03Feb2017-v1/MINIAOD',
+        '/SingleElectron/Run2016G-03Feb2017-v1/MINIAOD',
+        '/SingleElectron/Run2016H-03Feb2017_ver2-v1/MINIAOD',
+        '/SingleElectron/Run2016H-03Feb2017_ver3-v1/MINIAOD',
+
         '/SingleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD',
         '/SingleMuon/Run2016C-03Feb2017-v1/MINIAOD',
         '/SingleMuon/Run2016D-03Feb2017-v1/MINIAOD',
@@ -511,7 +529,7 @@ configTmpl.section_('JobType')
 configTmpl.JobType.psetName = "NANOX/LLPSpecific/test/produce_80X_NANOX.py"
 configTmpl.JobType.pluginName = 'Analysis'
 configTmpl.JobType.outputFiles = ['nano.root']
-configTmpl.JobType.maxJobRuntimeMin=22*60
+configTmpl.JobType.maxJobRuntimeMin=40*60
 configTmpl.JobType.pyCfgParams = []
 #configTmpl.JobType.inputFiles = ['QGL_cmssw8020_v2.db']
 configTmpl.JobType.allowUndistributedCMSSW = True 
