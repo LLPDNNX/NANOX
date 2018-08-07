@@ -75,7 +75,7 @@ class LLPInfoPlugin:
             event.getByToken(displacedGenVertexToken_, displacedGenVertexCollection);
             
             std::unique_ptr<std::vector<nanox::LLPInfo>> output(new std::vector<nanox::LLPInfo>(1));
-            
+
             for (size_t i = 0; i < displacedGenVertexCollection->size(); ++i)
             {
                 
@@ -105,7 +105,16 @@ class LLPInfoPlugin:
                 
                 for (auto genParticle: vertex.genParticles)
                 {
+                    //std::cout << genParticle->pdgId() << std::endl;
+
                     if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000022)
+                    {
+                        lsp = genParticle.get();
+                        //break;
+                    }
+
+                    // gravitino
+                    else if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000039)
                     {
                         lsp = genParticle.get();
                         //break;
