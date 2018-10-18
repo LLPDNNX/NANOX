@@ -31,7 +31,7 @@ function run_test()
     git config --global user.email "root.rooster@chicken.com"
     git config --global user.name "Root rooster"
     git cms-init --upstream-only
-    cms-merge-commit cms-nanoAOD master a348544b0d03cbf135953ce23c27ea2b4723327c || return 1
+    cms-merge-commit cms-nanoAOD master 113b023b291dd986e00df80a415f6c6549c077a0 || return 1
     git cms-checkdeps -a || return 1
     mkdir NANOX
     rsync -r --stats /scripts/ NANOX/. || return 1
