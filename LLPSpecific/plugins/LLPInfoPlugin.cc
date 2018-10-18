@@ -33,6 +33,7 @@ class LLPInfoPlugin:
 {
     private:
         edm::EDGetTokenT<edm::View<nanox::DisplacedGenVertex>> displacedGenVertexToken_;
+        std::string LLPtype;
         
         static int getHadronFlavor(const reco::Candidate& genParticle)
         {
@@ -60,13 +61,11 @@ class LLPInfoPlugin:
             displacedGenVertexToken_(
                 collector.consumes<edm::View<nanox::DisplacedGenVertex>>(
                     pset.getParameter<edm::InputTag>("displacedGenVertices")
-                )
-            )
+                )),
+            LLPtype(pset.getParameter<std::string>("LLPtype"))
         {
             prod.produces<std::vector<nanox::LLPInfo>>(name);
         }
-        
-        
         
         
         virtual void produce(edm::Event& event, const edm::EventSetup&) const
@@ -80,7 +79,6 @@ class LLPInfoPlugin:
             {
                 
                 nanox::LLPInfo::Data data;
-            
                 
                 const nanox::DisplacedGenVertex& vertex = displacedGenVertexCollection->at(i);
                 
@@ -102,50 +100,91 @@ class LLPInfoPlugin:
                 
                 const reco::Candidate* lsp = nullptr;
                 std::vector<int> quarks;
-                
-                for (auto genParticle: vertex.genParticles)
+ 
+                if (LLPtype == "T1qqqqLL")
                 {
-                    //std::cout << genParticle->pdgId() << std::endl;
+               
+                    for (auto genParticle: vertex.genParticles)
+                    {
 
-                    if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000022)
-                    {
-                        lsp = genParticle.get();
-                        //break;
-                    }
+                        if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000022)
+                        {
+                            lsp = genParticle.get();
+                        }
 
-                    // gravitino
-                    else if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000039)
-                    {
-                        lsp = genParticle.get();
-                        //break;
+                       if (std::abs(genParticle->pdgId())<6 and genParticle->numberOfMothers()==1 and genParticle->mother()->pdgId()==1000021)
+                        {
+                            quarks.push_back(genParticle->pdgId());
+                        }
+
+                       if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
+                        {
+                            data.quarkFlavor = std::abs(quarks[0]);
+                        }
+                        output->at(0).llpData.push_back(data);
+
                     }
-                    if (std::abs(genParticle->pdgId())<6 and genParticle->numberOfMothers()==1 and genParticle->mother()->pdgId()==1000021)
+ 
+                    if (!lsp)
                     {
-                        quarks.push_back(genParticle->pdgId());
+                        continue;
                     }
+                             
+                    data.lsp_mass = lsp->mass();
+                    data.lsp_pt = lsp->pt();
+                    data.lsp_eta = lsp->eta();
+                    data.lsp_phi = lsp->phi();
+
+                    std::cout << "lsp_mass" << lsp->mass() << std::endl;
+                    output->at(0).llpData.push_back(data);
                 }
-                if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
+
+                else if (LLPtype == "GMSB")
                 {
-                    data.quarkFlavor = std::abs(quarks[0]);
+               
+                    for (auto genParticle: vertex.genParticles)
+                    {
+
+                        if (genParticle->numberOfDaughters()==0 and genParticle->pdgId()==1000039)
+                        {
+                            lsp = genParticle.get();
+                        }
+
+                       if (std::abs(genParticle->pdgId())<6 and genParticle->numberOfMothers()==1 and genParticle->mother()->pdgId()==1000021)
+                        {
+                            quarks.push_back(genParticle->pdgId());
+                        }
+
+                       if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
+                        {
+                            data.quarkFlavor = std::abs(quarks[0]);
+                        }
+                        output->at(0).llpData.push_back(data);
+
+                    }
+ 
+                    if (!lsp)
+                    {
+                        continue;
+                    }
+                             
+                    data.lsp_mass = lsp->mass();
+                    data.lsp_pt = lsp->pt();
+                    data.lsp_eta = lsp->eta();
+                    data.lsp_phi = lsp->phi();
+
+                    output->at(0).llpData.push_back(data);
                 }
-                
-                if (!lsp)
+
+                else if (LLPtype == "RPV")
                 {
-                    continue;
+               
+                    output->at(0).llpData.push_back(data);
                 }
                 
-                data.lsp_mass = lsp->mass();
-                data.lsp_pt = lsp->pt();
-                data.lsp_eta = lsp->eta();
-                data.lsp_phi = lsp->phi();
-                
-                
-                output->at(0).llpData.push_back(data);
+                else continue;
             }
-            
-            
-            
-            
+
             event.put(std::move(output),this->name());
         }
 };
