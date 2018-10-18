@@ -9,7 +9,6 @@
 
 #include "FWCore/Framework/interface/ProducerBase.h"
 
-
 #include "DataFormats/PatCandidates/interface/Jet.h"
 
 #include "NANOX/NANOXProducer/interface/NANOXPlugin.h"
@@ -122,8 +121,6 @@ class LLPInfoPlugin:
                     {
                         data.quarkFlavor = std::abs(quarks[0]);
                     }
-                    output->at(0).llpData.push_back(data);
-
  
                     if (!lsp)
                     {
@@ -153,15 +150,13 @@ class LLPInfoPlugin:
                         {
                             quarks.push_back(genParticle->pdgId());
                         }
-
-                       if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
-                        {
-                            data.quarkFlavor = std::abs(quarks[0]);
-                        }
-                        output->at(0).llpData.push_back(data);
-
                     }
- 
+
+                    if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
+                    {
+                        data.quarkFlavor = std::abs(quarks[0]);
+                    }
+
                     if (!lsp)
                     {
                         continue;
