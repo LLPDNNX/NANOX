@@ -25,13 +25,13 @@ function run_test()
     cd ~
     source ~/.bashrc
     export SCRAM_ARCH=slc6_amd64_gcc630 || return 1
-    scramv1 project CMSSW CMSSW_9_4_9 || return 1
-    cd CMSSW_9_4_9/src || return 1
+    scramv1 project CMSSW CMSSW_9_4_8 || return 1
+    cd CMSSW_9_4_8/src || return 1
     eval `scramv1 runtime -sh` || return 1
     git config --global user.email "root.rooster@chicken.com"
     git config --global user.name "Root rooster"
     git cms-init --upstream-only
-    cms-merge-commit cms-nanoAOD master 113b023b291dd986e00df80a415f6c6549c077a0 || return 1
+    cms-merge-commit cms-nanoAOD master 7c6bce65ee16a01c0d991fdbf40c43dbcfa6202a || return 1
     git cms-checkdeps -a || return 1
     mkdir NANOX
     rsync -r --stats /scripts/ NANOX/. || return 1
