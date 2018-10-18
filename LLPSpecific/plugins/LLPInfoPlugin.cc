@@ -116,14 +116,14 @@ class LLPInfoPlugin:
                         {
                             quarks.push_back(genParticle->pdgId());
                         }
-
-                       if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
-                        {
-                            data.quarkFlavor = std::abs(quarks[0]);
-                        }
-                        output->at(0).llpData.push_back(data);
-
                     }
+
+                    if (quarks.size()==2 and std::abs(quarks[0])==std::abs(quarks[1]))
+                    {
+                        data.quarkFlavor = std::abs(quarks[0]);
+                    }
+                    output->at(0).llpData.push_back(data);
+
  
                     if (!lsp)
                     {
@@ -135,7 +135,6 @@ class LLPInfoPlugin:
                     data.lsp_eta = lsp->eta();
                     data.lsp_phi = lsp->phi();
 
-                    std::cout << "lsp_mass" << lsp->mass() << std::endl;
                     output->at(0).llpData.push_back(data);
                 }
 
