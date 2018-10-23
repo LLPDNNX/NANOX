@@ -9,85 +9,12 @@ userName = "vcepaiti"
 
 if isData==False:
     myJobs = {
-
-        # === Private Thomas' ===
-
-        "T1qqqqLL_ctau-0p001_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p001_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p001_Madgraph_Pythia_MINIAODSIM_18_01_11-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        "T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p01_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        "T1qqqqLL_ctau-0p1_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p1_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p1_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        "T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1_Madgraph_Pythia_MINIAODSIM_18_01_11-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        
-        "T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        
-        "T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        
-        "T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1000_Madgraph_Pythia_MINIAODSIM_17_12_23-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        
-        "T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10000_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-        
-        "T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100000_Madgraph_Pythia_MINIAODSIM_17_12_29-28028af67189b3de7224b79195bd0e1d/USER"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-            lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
-            lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-        ],
-        
-
-        # === T1qqqqLL === 
-
         "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
             lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
         ],
+
         "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
