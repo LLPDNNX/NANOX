@@ -55,7 +55,7 @@ class GlobalJetTagDataPlugin:
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
-                output->at(0).jetData.emplace_back(std::log10(jet.pt()),jet.eta());
+                output->at(0).jetData.emplace_back(std::log10(jet.pt()), jet.eta(), jet.phi());
             }
             
             event.put(std::move(output),this->name());

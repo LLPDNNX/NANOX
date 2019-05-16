@@ -3,12 +3,11 @@ import datetime,sys,os
 import copy
 import math
 
-requestName = "NANOX_180727"
+requestName = "NANOX_181121"
 isData = False
 userName = "vcepaiti"
 
-if isData==False:
-    myJobs = {
+'''
         "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
             lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
@@ -179,7 +178,11 @@ if isData==False:
         "DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
- 
+  
+        "DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+            lambda cfg: setattr(cfg.Data,"inputDataset","/DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        ],
+
         "DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
@@ -299,10 +302,8 @@ if isData==False:
         "ZZ_TuneCUETP8M1_13TeV-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/ZZ_TuneCUETP8M1_13TeV-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
         ],
-    }
-
+    
         # === EWK V+jets === #
-    '''
         "EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
@@ -318,16 +319,6 @@ if isData==False:
         "EWKZ2Jets_ZToNuNu_M-50_13TeV-madgraph-pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/EWKZ2Jets_ZToNuNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
-
-
-        # === LEGACY === #
-        "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-        ],
-        
-        
-        
         "QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
@@ -370,82 +361,43 @@ if isData==False:
         "QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM"),
         ],
-        "WToLNu_0J_13TeV-amcatnloFXFX-pythia8":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-        ],
-        "WToLNu_1J_13TeV-amcatnloFXFX-pythia8":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-        ],
-        "WToLNu_2J_13TeV-amcatnloFXFX-pythia8":[
-            lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-            lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-        ],
-   ''' 
-       
-else:
+''' 
 
-    myJobs = {}
-    
-    for dataset in [
+myJobs = {
 
-        '/HTMHT/Run2016B-03Feb2017_ver2-v2/MINIAOD',
-        '/HTMHT/Run2016C-03Feb2017-v1/MINIAOD',
-        '/HTMHT/Run2016D-03Feb2017-v1/MINIAOD',
-        '/HTMHT/Run2016E-03Feb2017-v1/MINIAOD',
-        '/HTMHT/Run2016F-03Feb2017-v1/MINIAOD',
-        '/HTMHT/Run2016G-03Feb2017-v1/MINIAOD',
-        '/HTMHT/Run2016H-03Feb2017_ver2-v1/MINIAOD',
-        '/HTMHT/Run2016H-03Feb2017_ver3-v1/MINIAOD',
+    "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
 
-        '/SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD',
-        '/SingleElectron/Run2016C-03Feb2017-v1/MINIAOD',
-        '/SingleElectron/Run2016D-03Feb2017-v1/MINIAOD',
-        '/SingleElectron/Run2016E-03Feb2017-v1/MINIAOD',
-        '/SingleElectron/Run2016F-03Feb2017-v1/MINIAOD',
-        '/SingleElectron/Run2016G-03Feb2017-v1/MINIAOD',
-        '/SingleElectron/Run2016H-03Feb2017_ver2-v1/MINIAOD',
-        '/SingleElectron/Run2016H-03Feb2017_ver3-v1/MINIAOD',
+    "WToLNu_0J_13TeV-amcatnloFXFX-pythia8_ext1":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+    "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext1":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+    "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext3":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
 
-        '/SingleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD',
-        '/SingleMuon/Run2016C-03Feb2017-v1/MINIAOD',
-        '/SingleMuon/Run2016D-03Feb2017-v1/MINIAOD',
-        '/SingleMuon/Run2016E-03Feb2017-v1/MINIAOD',
-        '/SingleMuon/Run2016F-03Feb2017-v1/MINIAOD',
-        '/SingleMuon/Run2016G-03Feb2017-v1/MINIAOD',
-        '/SingleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD',
-        '/SingleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD',
+    "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext1":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
 
-        '/MET/Run2016B-03Feb2017_ver2-v2/MINIAOD',
-        '/MET/Run2016C-03Feb2017-v1/MINIAOD',
-        '/MET/Run2016D-03Feb2017-v1/MINIAOD',
-        '/MET/Run2016E-03Feb2017-v1/MINIAOD',
-        '/MET/Run2016F-03Feb2017-v1/MINIAOD',
-        '/MET/Run2016G-03Feb2017-v1/MINIAOD',
-        '/MET/Run2016H-03Feb2017_ver2-v1/MINIAOD',
-        '/MET/Run2016H-03Feb2017_ver3-v1/MINIAOD',
-        
+    "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext2":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
 
-        #'/SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD',
-        #'/SingleElectron/Run2016C-03Feb2017-v1/MINIAOD',
-        #'/SingleElectron/Run2016D-03Feb2017-v1/MINIAOD',
-        #'/SingleElectron/Run2016E-03Feb2017-v1/MINIAOD',
-        #'/SingleElectron/Run2016F-03Feb2017-v1/MINIAOD',
-        #'/SingleElectron/Run2016G-03Feb2017-v1/MINIAOD',
-        #'/SingleElectron/Run2016H-03Feb2017_ver2-v1/MINIAOD',
-        #'/SingleElectron/Run2016H-03Feb2017_ver3-v1/MINIAOD'
-    ]:
-        datasetSplit = dataset.split('/')
-        datasetName = datasetSplit[1]+"_"+datasetSplit[2]
-        #NOTE: need to bind by value, not by reference
-        myJobs[datasetName] = [
-            lambda cfg,dataset=dataset: setattr(cfg.Data,"inputDataset", dataset),
-            lambda cfg,datasetSplit=datasetSplit: setattr(cfg.Data,"outputDatasetTag",datasetSplit[2]+"_"+cfg.Data.outputDatasetTag),
-            lambda cfg,datasetSplit=datasetSplit: cfg.JobType.pyCfgParams.append("isData=True")
-        ]
-
-
+    "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext3":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v5/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+}
 configTmpl = Configuration()
 
 configTmpl.section_('General')
@@ -460,7 +412,7 @@ configTmpl.JobType.maxJobRuntimeMin=40*60
 configTmpl.JobType.pyCfgParams = []
 #configTmpl.JobType.inputFiles = ['QGL_cmssw8020_v2.db']
 configTmpl.JobType.allowUndistributedCMSSW = True 
-configTmpl.JobType.maxMemoryMB = 4000
+configTmpl.JobType.maxMemoryMB = 2000
 
 configTmpl.section_('Data')
 configTmpl.Data.inputDataset = ""
@@ -482,8 +434,6 @@ else:
 
 configTmpl.section_('Site')
 configTmpl.Site.storageSite = 'T2_UK_London_IC'
-#configTmpl.Site.whitelist = ["T2_CH*"]
-configTmpl.Site.blacklist = ["T2_US_UCSD","T2_IN_TIFR"]
 
 print(__name__)
 
