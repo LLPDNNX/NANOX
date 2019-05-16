@@ -1,3 +1,19 @@
+function cms-merge-commit()
+{
+    local github_user="${1}"
+    local topic_branch="${2}"
+    local commit_hash="${3}"
+    echo "-----> Merging commit ${commit_hash} on branch ${topic_branch} from ${github_user}"
+
+    git remote add -t "${topic_branch}" "${github_user}" "https://github.com/${github_user}/cmssw.git"
+    git fetch --no-tags "${github_user}" "${topic_branch}:refs/remotes/${github_user}/${topic_branch}" || { echo "Could not fetch branch ${topic_branch} from ${github_user}"; return 1; }
+    local current_branch="$(git rev-parse --abbrev-ref HEAD)"
+    local merge_base="$(git merge-base ${commit_hash} ${current_branch})"
+    git cms-sparse-checkout "${merge_base}" "${commit_hash}" || return 1
+    git read-tree -mu HEAD || return 1
+    git merge --no-ff -m "Merged ${commit_hash} on branch ${topic_branch} from ${github_user} into ${current_branch}" "${commit_hash}" || { echo "Could not merge ${commit_hash} on branch ${topic_branch} from ${github_user} into ${current_branch}"; return 1; }
+}
+
 function run_test()
 {
     #check siteconfig for GT
@@ -9,12 +25,14 @@ function run_test()
     cd ~
     source ~/.bashrc
     export SCRAM_ARCH=slc6_amd64_gcc630 || return 1
-    scramv1 project CMSSW CMSSW_9_4_9 || return 1
-    cd CMSSW_9_4_9/src || return 1
+    scramv1 project CMSSW CMSSW_9_4_10 || return 1
+    cd CMSSW_9_4_10/src || return 1
     eval `scramv1 runtime -sh` || return 1
     git config --global user.email "root.rooster@chicken.com"
     git config --global user.name "Root rooster"
-    git cms-merge-topic cms-nanoAOD:master || return 1
+    git cms-init --upstream-only
+    cms-merge-commit cms-nanoAOD master 7c6bce65ee16a01c0d991fdbf40c43dbcfa6202a || return 1
+    git cms-checkdeps -a || return 1
     mkdir NANOX
     rsync -r --stats /scripts/ NANOX/. || return 1
     scram b || return 1
