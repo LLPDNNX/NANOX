@@ -4,6 +4,7 @@
 #include "NANOX/Jet/interface/NeutralPFTagData.h"
 #include "NANOX/Jet/interface/SVTagData.h"
 #include "NANOX/Jet/interface/JetOriginTagData.h"
+#include "NANOX/Jet/interface/LegacyTagData.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
 namespace { 
@@ -27,6 +28,9 @@ struct dictionary_nanox_jet
     
     nanox::JetOriginTagData dummy11;
     edm::Wrapper<nanox::JetOriginTagData> dummy12;
+
+    nanox::LegacyTagData dummy13;
+    edm::Wrapper<nanox::LegacyTagData> dummy14;
 };
 
 }

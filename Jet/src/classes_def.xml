@@ -34,5 +34,11 @@
     
     <class name="std::vector<nanox::JetOriginTagData>"/>
     <class name="edm::Wrapper<std::vector<nanox::JetOriginTagData>>"/>
+
+    <class name="nanox::LegacyTagData"/>
+    <class name="edm::Wrapper<nanox::LegacyTagData>"/>
+    
+    <class name="std::vector<nanox::LegacyTagData>"/>
+    <class name="edm::Wrapper<std::vector<nanox::LegacyTagData>>"/>
     
 </lcgdict>
