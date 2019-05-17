@@ -31,6 +31,7 @@ class ChargedPFTagData:
                 float ptrel;
                 float drminsv;
                 float vertex_association;
+                float fromPV;
                 float puppi_weight;
                 float track_chi2;
                 float track_quality;
@@ -40,7 +41,8 @@ class ChargedPFTagData:
                 
                 float lostInnerHits;
                 float isLepton;
-                
+
+                float alpha;
         };
         std::vector<std::vector<Data>> jetData;
 
@@ -74,6 +76,7 @@ class ChargedPFTagData:
             cpfDataArray.bookProperty("ptrel",&Data::ptrel);
             cpfDataArray.bookProperty("drminsv",&Data::drminsv);
             cpfDataArray.bookProperty("vertex_association",&Data::vertex_association);
+            cpfDataArray.bookProperty("fromPV",&Data::fromPV);
             cpfDataArray.bookProperty("puppi_weight",&Data::puppi_weight);
             cpfDataArray.bookProperty("track_chi2",&Data::track_chi2);
             cpfDataArray.bookProperty("track_quality",&Data::track_quality);
@@ -83,7 +86,7 @@ class ChargedPFTagData:
             
             cpfDataArray.bookProperty("lostInnerHits",&Data::lostInnerHits);
             cpfDataArray.bookProperty("isLepton",&Data::isLepton);
-            
+
             unsigned int index = 0;
             for (unsigned int ijet = 0; ijet < jetData.size(); ++ijet)
             {

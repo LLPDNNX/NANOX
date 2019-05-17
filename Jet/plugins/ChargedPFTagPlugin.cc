@@ -100,6 +100,7 @@ class ChargedPFTagDataPlugin:
                     }
                     
                     data.vertex_association = constituent->pvAssociationQuality();
+                    data.fromPV = constituent->fromPV();
                     data.puppi_weight = constituent->puppiWeight();
                     data.track_chi2 = std::log10(constituent->pseudoTrack().chi2()/constituent->pseudoTrack().ndof()+1);
                     data.track_quality = constituent->pseudoTrack().qualityMask();
@@ -109,7 +110,7 @@ class ChargedPFTagDataPlugin:
                     reco::TransientTrack transientTrack = builder->build(constituent->pseudoTrack());
                     reco::Candidate::Vector jetDir = jet.momentum().Unit();
                     GlobalVector jetRefTrackDir(jet.px(),jet.py(),jet.pz());
-                    
+
                     Measurement1D meas_ip2d=IPTools::signedTransverseImpactParameter(transientTrack, jetRefTrackDir, pv).second;
                     Measurement1D meas_ip3d=IPTools::signedImpactParameter3D(transientTrack, jetRefTrackDir, pv).second;
                     Measurement1D jetdist=IPTools::jetTrackDistance(transientTrack, jetRefTrackDir, pv).second;
@@ -148,6 +149,7 @@ class ChargedPFTagDataPlugin:
         
                     int pdgId = std::abs(constituent->pdgId());
                     data.isLepton = pdgId==11 or pdgId==13;
+
                 
                     cpfData.emplace_back(data);
                 }
