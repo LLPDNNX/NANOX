@@ -106,7 +106,7 @@ print "input files:",process.source.fileNames
 
 process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool(True),
-    #allowUnscheduled = cms.untracked.bool(True) 
+    allowUnscheduled = cms.untracked.bool(True) 
 )
 
 # Production Info
@@ -262,19 +262,22 @@ bTagInfos = [
     'pfImpactParameterTagInfos',
     'pfInclusiveSecondaryVertexFinderTagInfos',
     'pfDeepCSVTagInfos',
+    'pfDeepFlavourTagInfos',
 ]
 bTagDiscriminators = [
-    #'softPFMuonBJetTags',
-    #'softPFElectronBJetTags',
-    #'pfJetBProbabilityBJetTags',
-    #'pfJetProbabilityBJetTags',
-    'pfCombinedInclusiveSecondaryVertexV2BJetTags',
-    'pfDeepCSVJetTags:probudsg', #to be fixed with new names
-    'pfDeepCSVJetTags:probb',
-    'pfDeepCSVJetTags:probc',
-    'pfDeepCSVJetTags:probbb',
-    #'pfDeepCSVJetTags:probcc',
+      'pfCombinedSecondaryVertexV2BJetTags',
+      'pfDeepCSVJetTags:probudsg', 
+      'pfDeepCSVJetTags:probb', 
+      'pfDeepCSVJetTags:probc', 
+      'pfDeepCSVJetTags:probbb', 
+      'pfDeepFlavourJetTags:probb',
+      'pfDeepFlavourJetTags:probbb',
+      'pfDeepFlavourJetTags:problepb',
+      'pfDeepFlavourJetTags:probc',
+      'pfDeepFlavourJetTags:probuds',
+      'pfDeepFlavourJetTags:probg',
 ]
+
 updateJetCollection(
         process,
         labelName = "XTag",
@@ -287,7 +290,6 @@ updateJetCollection(
         elSource = cms.InputTag('slimmedElectrons'),
         btagInfos = bTagInfos,
         btagDiscriminators = bTagDiscriminators,
-        explicitJTA = False,
 )
 #there seems to be a bug: addTagInfos is set to false despite len(btagInfos)>0
 #to be sure specify included information explicitly here
@@ -304,7 +306,9 @@ process.updateJetXTagSequence = cms.Sequence(
     +process.pfInclusiveSecondaryVertexFinderTagInfosXTag
     +process.pfDeepCSVTagInfosXTag
     +process.pfDeepCSVJetTagsXTag
-    +process.pfCombinedInclusiveSecondaryVertexV2BJetTagsXTag
+    +process.pfDeepFlavourTagInfosXTag
+    +process.pfDeepFlavourJetTagsXTag
+    #+process.pfCombinedInclusiveSecondaryVertexV2BJetTagsXTag
     +process.patJetCorrFactorsTransientCorrectedXTag
     +process.updatedPatJetsTransientCorrectedXTag
 )
