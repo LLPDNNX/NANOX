@@ -117,20 +117,20 @@ process.configurationMetadata = cms.untracked.PSet(
 )
 
 process.plain=cms.Path()
-process.filteredSingleMuCR=cms.Path()
-process.filteredSingleEleCR=cms.Path()
+#process.filteredSingleMuCR=cms.Path()
+#process.filteredSingleEleCR=cms.Path()
 
 
 def addModule(m):
     process.plain+=m
-    process.filteredSingleMuCR+=m
-    process.filteredSingleEleCR+=m
+    #process.filteredSingleMuCR+=m
+    #process.filteredSingleEleCR+=m
 
 ### selectors ###
-skimSingleMuSequence = cms.Sequence()
-process.filteredSingleMuCR+=skimSingleMuSequence
-skimSingleEleSequence = cms.Sequence()
-process.filteredSingleEleCR+=skimSingleEleSequence
+#skimSingleMuSequence = cms.Sequence()
+#process.filteredSingleMuCR+=skimSingleMuSequence
+#skimSingleEleSequence = cms.Sequence()
+#process.filteredSingleEleCR+=skimSingleEleSequence
 
 
 def addFilter(seq,inputTag,cutString,minN=None):
@@ -225,6 +225,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         
         'drop *_rivetMetTable_*_*',
         'drop *_rivetLeptonTable_*_*',
+        'drop *_rivetProducerHTXS_*_*'
         
     )
 )
@@ -308,7 +309,7 @@ process.updateJetXTagSequence = cms.Sequence(
     +process.pfDeepCSVJetTagsXTag
     +process.pfDeepFlavourTagInfosXTag
     +process.pfDeepFlavourJetTagsXTag
-    #+process.pfCombinedInclusiveSecondaryVertexV2BJetTagsXTag
+    +process.pfCombinedSecondaryVertexV2BJetTagsXTag
     +process.patJetCorrFactorsTransientCorrectedXTag
     +process.updatedPatJetsTransientCorrectedXTag
 )
@@ -466,7 +467,9 @@ if not options.isData:
        
         "particleLevel",
         "rivetLeptonTable",
-        "rivetMetTable"
+        "HTXSCategoryTable",
+        "rivetMetTable",
+        "rivetProducerHTXS"
     ]:
         if hasattr(process,moduleName):
             print "removing module: ",moduleName
