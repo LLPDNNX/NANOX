@@ -382,11 +382,9 @@ process.nanoxProducer = cms.EDProducer("NANOXProducer",
             pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
             svVertices = cms.InputTag("slimmedSecondaryVertices"),
         ),
-        legacy = cms.PSet(
+        legacyTag = cms.PSet(
             type = cms.string("LegacyTagData"),
             jets = cms.InputTag("selectJetsInBarrel"),
-            pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
-            svVertices = cms.InputTag("slimmedSecondaryVertices"),
         ),
     )
 )
@@ -412,6 +410,10 @@ process.nanoxFlatTable = cms.EDProducer("NANOXFlatTableProducer",
         cms.PSet(
             src = cms.InputTag("nanoxProducer","sv"),
             arrayNames = cms.vstring(["svlength","sv"])
+        ),
+        cms.PSet(
+            src = cms.InputTag("nanoxProducer","legacyTag"),
+            arrayNames = cms.vstring(["legacyTag"])
         ),
         
     ])

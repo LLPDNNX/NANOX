@@ -29,6 +29,8 @@
 
 double median(std::vector<float> medi) 
 {
+    if (medi.size() == 0) return 0;
+    
     sort(medi.begin(), medi.end());     // sort
             
     double tmedian;
@@ -47,9 +49,8 @@ class LegacyTagDataPlugin:
     public NANOXPlugin
 {
     private:
+        edm::InputTag inputTag_;
         edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;
-        edm::EDGetTokenT<edm::View<reco::Vertex>> pvToken_;
-        edm::EDGetTokenT<edm::View<reco::VertexCompositePtrCandidate>> svToken_;
         
     public:
         LegacyTagDataPlugin(
@@ -59,9 +60,8 @@ class LegacyTagDataPlugin:
             edm::ProducerBase& prod
         ):
             NANOXPlugin(name,pset,collector,prod),
-            jetToken_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets"))),
-            pvToken_(collector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("pvVertices"))),
-            svToken_(collector.consumes<edm::View<reco::VertexCompositePtrCandidate>>(pset.getParameter<edm::InputTag>("svVertices")))
+            inputTag_(pset.getParameter<edm::InputTag>("jets")),
+            jetToken_(collector.consumes<edm::View<pat::Jet>>(inputTag_))
         {
             prod.produces<std::vector<nanox::LegacyTagData>>(name);
         }
@@ -71,27 +71,13 @@ class LegacyTagDataPlugin:
             edm::Handle<edm::View<pat::Jet>> jetCollection;
             event.getByToken(jetToken_, jetCollection);
 
-            edm::Handle<edm::View<reco::Vertex>> pvCollection;
-            event.getByToken(pvToken_, pvCollection);
-
-            const reco::Vertex& pv = pvCollection->at(0);
-            
-            edm::Handle<edm::View<reco::VertexCompositePtrCandidate>> svCollection;
-            event.getByToken(svToken_, svCollection);
-            
             std::unique_ptr<std::vector<nanox::LegacyTagData>> output(
                 new std::vector<nanox::LegacyTagData>(1)
             );
-
-            std::vector<nanox::LegacyTagData::Data> legacyTagData;
-            
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
-                const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
-
-                std::vector<nanox::LegacyTagData::Data> legacyTagData;
                 float pvtracks_ = 0;
                 float alltracks_ = 0;
                 std::vector<float> dxy_;
@@ -117,13 +103,8 @@ class LegacyTagDataPlugin:
                         pvtracks_ += constituent->pt();
                     }
 
-
-
                     dxy_.emplace_back(constituent->dxy());
-
-                    nanox::LegacyTagData::Data data;
                     
-                    legacyTagData.emplace_back(data);
                 } 
 
                 float alpha = 1.;
@@ -131,17 +112,10 @@ class LegacyTagDataPlugin:
                     alpha = pvtracks_/alltracks_;
                 }
 
-                float median_dxy = median(dxy_);
-                std::cout << median_dxy << std::endl;
-
-                
-                std::cout << alpha << std::endl;
-                //output->at(0).jetData.push_back(legacyTagData);
+                output->at(0).legacyTagData.emplace_back(median(dxy_), median(trackSip2dSig_), alpha);
             }
-            
 
-            
-            //event.put(std::move(output),this->name());
+            event.put(std::move(output),this->name());
         }
 };
 

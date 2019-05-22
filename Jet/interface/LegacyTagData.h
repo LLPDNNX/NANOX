@@ -15,22 +15,35 @@ class LegacyTagData:
             public PropertyContainer
         {
             public:
-                float _;
-        };
-        
-        std::vector<Data> jetData;
-        
-        virtual void saveTagData(ArchiveInterface& archive) const override
-        {
-            ArrayInterface& legacyDataArray = archive.initArray("_",jetData.size());
-            //legacyDataArray.bookProperty("_",&Data::_);
-            
-            for (unsigned int i = 0; i < jetData.size(); ++i)
+                float median_dxy;
+                float median_trackSip2dSig;
+                float alpha;
+                Data(float median_dxy, float median_trackSip2dSig, float alpha):
+                    median_dxy(median_dxy),
+                    median_trackSip2dSig(median_trackSip2dSig),
+                    alpha(alpha)
             {
-                //legacyDataArray.fill(&jetData[i],i);
             }
-        }
         
+        };
+
+        public:
+            std::vector<Data> legacyTagData;
+           
+            virtual void saveTagData(ArchiveInterface& archive) const override
+            {
+                ArrayInterface& legacyDataArray = archive.initArray("legacyTag",legacyTagData.size());
+                legacyDataArray.bookProperty("median_dxy",&Data::median_dxy);
+                legacyDataArray.bookProperty("median_trackSip2dSig",&Data::median_trackSip2dSig);
+                legacyDataArray.bookProperty("alpha",&Data::alpha);
+
+                for (unsigned int i = 0; i < legacyTagData.size(); ++i)
+                {
+                    legacyDataArray.fill(&legacyTagData[i],i);
+                }
+            }
+                        
+ 
         virtual ~LegacyTagData()
         {
         }
