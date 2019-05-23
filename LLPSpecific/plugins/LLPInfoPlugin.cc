@@ -87,15 +87,31 @@ class LLPInfoPlugin:
                 }
                 
                 auto llp = *vertex.motherLongLivedParticle.get();
-                if (getHadronFlavor(llp)<10000)
+
+                if (LLPtype == "T1qqqqLL" || LLPtype == "GMSB" ||  LLPtype == "RPV")
                 {
-                    continue;
+                    if (getHadronFlavor(llp)<10000)
+                    {
+                        continue;
+                    }
                 }
+
+                else if (LLPtype == "HToSS")
+                {
+                    if (llp.mother()->pdgId()!=9000006)
+                    {
+                        continue;
+                    }
+
+                }
+
+                else continue;
                 
                 data.llp_mass = llp.mass();
                 data.llp_pt = llp.pt();
                 data.llp_eta = llp.eta();
                 data.llp_phi = llp.phi();
+
                 
                 const reco::Candidate* lsp = nullptr;
                 std::vector<int> quarks;
@@ -170,7 +186,7 @@ class LLPInfoPlugin:
                     output->at(0).llpData.push_back(data);
                 }
 
-                else if (LLPtype == "RPV")
+                else if (LLPtype == "RPV" || LLPtype == "HToSS")
                 {
                
                     output->at(0).llpData.push_back(data);

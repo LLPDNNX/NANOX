@@ -30,9 +30,10 @@ function run_test()
     eval `scramv1 runtime -sh` || return 1
     git config --global user.email "root.rooster@chicken.com"
     git config --global user.name "Root rooster"
-    git cms-init --upstream-only
+    #git cms-init --upstream-only
+    git cms-init
     cms-merge-commit cms-nanoAOD master-94X be91ae18a66c9d09d30618280262d22a3015412d|| return 1
-    git cms-checkdeps -a || return 1
+    #git cms-checkdeps -a || return 1
     mkdir NANOX
     rsync -r --stats /scripts/ NANOX/. || return 1
     scram b || return 1
