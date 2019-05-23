@@ -24,12 +24,13 @@
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include <iostream>
+#include <cmath>
 
 #include "TVector3.h"
 
 double median(std::vector<float> medi) 
 {
-    if (medi.size() == 0) return 0;
+    if (medi.size() == 0) return 1;
     
     sort(medi.begin(), medi.end());     // sort
             
@@ -107,12 +108,12 @@ class LegacyTagDataPlugin:
                     
                 } 
 
-                float alpha = 1.;
+                float alpha = 0.;
                 if (alltracks_ > 0.) {
                     alpha = pvtracks_/alltracks_;
                 }
 
-                output->at(0).legacyTagData.emplace_back(median(dxy_), median(trackSip2dSig_), alpha);
+                output->at(0).legacyTagData.emplace_back(std::log10(median(dxy_)), std::log10(median(trackSip2dSig_)), alpha);
             }
 
             event.put(std::move(output),this->name());
