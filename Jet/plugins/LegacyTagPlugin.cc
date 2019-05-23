@@ -30,7 +30,7 @@
 
 double median(std::vector<float> medi) 
 {
-    if (medi.size() == 0) return 1;
+    if (medi.size() == 0) return 1e-6;
     
     sort(medi.begin(), medi.end());     // sort
             
@@ -94,7 +94,7 @@ class LegacyTagDataPlugin:
 
                     if (constituent->hasTrackDetails())
                     {
-                        trackSip2dSig_.emplace_back(constituent->dxyError());
+                        trackSip2dSig_.push_back(std::abs(constituent->dxyError()));
 
                     }
 
@@ -104,7 +104,7 @@ class LegacyTagDataPlugin:
                         pvtracks_ += constituent->pt();
                     }
 
-                    dxy_.emplace_back(constituent->dxy());
+                    dxy_.push_back(std::abs(constituent->dxy()));
                     
                 } 
 
