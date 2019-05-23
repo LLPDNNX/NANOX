@@ -42,7 +42,6 @@ class ChargedPFTagData:
                 float lostInnerHits;
                 float isLepton;
 
-                float alpha;
         };
         std::vector<std::vector<Data>> jetData;
 

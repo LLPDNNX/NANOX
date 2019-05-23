@@ -17,7 +17,6 @@
 #include "NANOX/NANOXProducer/interface/NANOXPluginFactory.h"
 #include "NANOX/Jet/interface/NeutralPFTagData.h"
 
-
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include <iostream>
