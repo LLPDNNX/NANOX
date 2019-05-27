@@ -73,10 +73,9 @@ class LLPInfoPlugin:
             event.getByToken(displacedGenVertexToken_, displacedGenVertexCollection);
             
             std::unique_ptr<std::vector<nanox::LLPInfo>> output(new std::vector<nanox::LLPInfo>(1));
-
             for (size_t i = 0; i < displacedGenVertexCollection->size(); ++i)
             {
-                
+             
                 nanox::LLPInfo::Data data;
                 
                 const nanox::DisplacedGenVertex& vertex = displacedGenVertexCollection->at(i);
@@ -98,7 +97,12 @@ class LLPInfoPlugin:
 
                 else if (LLPtype == "HToSS")
                 {
-                    if (llp.mother()->pdgId()!=9000006)
+                    if (llp.numberOfMothers()!=1) 
+                    {
+                        continue;
+                    }
+
+                    if (llp.mother()->pdgId()!=25)
                     {
                         continue;
                     }
