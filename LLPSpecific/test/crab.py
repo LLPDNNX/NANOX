@@ -3,7 +3,7 @@ import datetime,sys,os
 import copy
 import math
 
-requestName = "NANOX_181121"
+requestName = "NANOX_23_05_2019"
 isData = False
 userName = "vcepaiti"
 
@@ -289,8 +289,6 @@ userName = "vcepaiti"
             lambda cfg: setattr(cfg.Data,"inputDataset","/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         ],
 
-        # === TTX === #
-
         # === DiBoson == #
         
         "WW_TuneCUETP8M1_13TeV-pythia8":[
@@ -361,9 +359,6 @@ userName = "vcepaiti"
         "QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8":[
             lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM"),
         ],
-''' 
-
-myJobs = {
 
     "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
@@ -397,6 +392,243 @@ myJobs = {
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v5/MINIAODSIM"),
         lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
+   # === Private Thomas' ===
+
+    "T1qqqqLL_ctau-0p001_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p001_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p001_Madgraph_Pythia_MINIAODSIM_18_01_11-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    "T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p01_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p01_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    "T1qqqqLL_ctau-0p1_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-0p1_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-0p1_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    "T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1_Madgraph_Pythia_MINIAODSIM_18_01_11-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    
+    "T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    
+    "T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    
+    "T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-1000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-1000_Madgraph_Pythia_MINIAODSIM_17_12_23-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    
+    "T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-10000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-10000_Madgraph_Pythia_MINIAODSIM_18_01_12-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+    
+    
+    "T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/T1qqqqLL_ctau-100000_Madgraph_Pythia_GEN-SIM/tstreble-T1qqqqLL_ctau-100000_Madgraph_Pythia_MINIAODSIM_17_12_29-28028af67189b3de7224b79195bd0e1d/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 100),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+'''
+
+myJobs = {
+
+    # === Topping Up the Grid ===
+
+    "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+
+    "SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob", 5),
+        lambda cfg: setattr(cfg.Data,"inputDBS", 'phys03'),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=T1qqqqLL")
+    ],
+
+ 
+
+    # === Gluino decay to gravitino (GMSB model) === 
+
+    "gluinoGMSB_M2500_ctau1000p0_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/gluinoGMSB_M2500_ctau1000p0_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=GMSB")
+    ],
+
+    "gluinoGMSB_M2500_ctau1p0_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/gluinoGMSB_M2500_ctau1p0_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=GMSB")
+    ],
+    ## === RPV SUSY STOP TO B L === #
+
+    "DisplacedSUSY_StopToBL_M-1200_CTau-1_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/DisplacedSUSY_StopToBL_M-1200_CTau-1_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=RPV")
+    ],
+
+    "DisplacedSUSY_StopToBL_M-1200_CTau-1000_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/DisplacedSUSY_StopToBL_M-1200_CTau-1000_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=RPV")
+    ],
+
+    # Long-lived higgs resonance
+
+    "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=HToSS")
+    ],
+
+    "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=HToSS")
+    ],
+
+    "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=HToSS")
+    ],
+
+    "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=HToSS")
+    ],
+
+    "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=HToSS")
+    ],
+
+    "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("LLPtype=HToSS")
+    ],
+
+    "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+
 }
 configTmpl = Configuration()
 
@@ -410,15 +642,12 @@ configTmpl.JobType.pluginName = 'Analysis'
 configTmpl.JobType.outputFiles = ['nano.root']
 configTmpl.JobType.maxJobRuntimeMin=40*60
 configTmpl.JobType.pyCfgParams = []
-#configTmpl.JobType.inputFiles = ['QGL_cmssw8020_v2.db']
 configTmpl.JobType.allowUndistributedCMSSW = True 
-configTmpl.JobType.maxMemoryMB = 2000
+configTmpl.JobType.maxMemoryMB = 4000
 
 configTmpl.section_('Data')
 configTmpl.Data.inputDataset = ""
-#configTmpl.Data.ignoreLocality = True
 configTmpl.Data.inputDBS = 'global'
-#configTmpl.Data.allowNonValidInputDataset = True
 configTmpl.Data.publication = True
 configTmpl.Data.useParent = False
 

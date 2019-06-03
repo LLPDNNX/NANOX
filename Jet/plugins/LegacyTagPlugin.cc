@@ -50,8 +50,8 @@ class LegacyTagDataPlugin:
     public NANOXPlugin
 {
     private:
-        edm::InputTag inputTag_;
         edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;
+        edm::EDGetTokenT<edm::View<reco::Vertex>> pvToken_;
         
     public:
         LegacyTagDataPlugin(
@@ -61,20 +61,29 @@ class LegacyTagDataPlugin:
             edm::ProducerBase& prod
         ):
             NANOXPlugin(name,pset,collector,prod),
-            inputTag_(pset.getParameter<edm::InputTag>("jets")),
-            jetToken_(collector.consumes<edm::View<pat::Jet>>(inputTag_))
+            jetToken_(collector.consumes<edm::View<pat::Jet>>(pset.getParameter<edm::InputTag>("jets"))),
+            pvToken_(collector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("pvVertices")))
         {
             prod.produces<std::vector<nanox::LegacyTagData>>(name);
         }
         
         virtual void produce(edm::Event& event, const edm::EventSetup& setup) const
         {
+
             edm::Handle<edm::View<pat::Jet>> jetCollection;
             event.getByToken(jetToken_, jetCollection);
+            
+            edm::Handle<edm::View<reco::Vertex>> pvCollection;
+            event.getByToken(pvToken_, pvCollection);
 
             std::unique_ptr<std::vector<nanox::LegacyTagData>> output(
                 new std::vector<nanox::LegacyTagData>(1)
             );
+
+            const reco::Vertex& pv = pvCollection->at(0);
+
+            edm::ESHandle<TransientTrackBuilder> builder;
+            setup.get<TransientTrackRecord>().get("TransientTrackBuilder", builder);
             
             for (unsigned int ijet = 0; ijet < jetCollection->size(); ++ijet)
             {
@@ -83,6 +92,7 @@ class LegacyTagDataPlugin:
                 float alltracks_ = 0;
                 std::vector<float> dxy_;
                 std::vector<float> trackSip2dSig_;
+                GlobalVector jetRefTrackDir(jet.px(),jet.py(),jet.pz());
 
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
                 {
@@ -94,7 +104,9 @@ class LegacyTagDataPlugin:
 
                     if (constituent->hasTrackDetails())
                     {
-                        trackSip2dSig_.push_back(std::abs(constituent->dxyError()));
+                        reco::TransientTrack transientTrack = builder->build(constituent->pseudoTrack());
+                        Measurement1D meas_ip2d=IPTools::signedTransverseImpactParameter(transientTrack, jetRefTrackDir, pv).second;
+                        trackSip2dSig_.push_back(std::abs(meas_ip2d.significance()));
 
                     }
 

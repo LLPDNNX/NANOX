@@ -28,7 +28,7 @@ options.register(
 
 options.register(
     'LLPtype',
-    "T1qqqqLL",
+    "HToSS",
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
     "add llp type"
@@ -86,10 +86,11 @@ else:
         ]
     else:
         process.source.fileNames = [
-           # 'root://gfe02.grid.hep.ph.ic.ac.uk/pnfs/hep.ph.ic.ac.uk/data/cms/store/user/mkomm/LLP/LLP_miniaodv190128/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/LLP_miniaodv190128/190130_170658/0000/T1qqqqLL_MINIAODSIM_1.root',
-           'root://gfe02.grid.hep.ph.ic.ac.uk/pnfs/hep.ph.ic.ac.uk/data/cms/store/user/mkomm/LLP/LLP_miniaodv190128/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/LLP_miniaodv190128/190130_170609/0000/T1qqqqLL_MINIAODSIM_1.root'
+             'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/100000/E8B41C42-95D1-E611-9066-002590DE6E32.root'
+            # 'root://gfe02.grid.hep.ph.ic.ac.uk/pnfs/hep.ph.ic.ac.uk/data/cms/store/user/mkomm/LLP/LLP_miniaodv190128/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/LLP_miniaodv190128/190130_170658/0000/T1qqqqLL_MINIAODSIM_1.root',
+            #'root://gfe02.grid.hep.ph.ic.ac.uk/pnfs/hep.ph.ic.ac.uk/data/cms/store/user/mkomm/LLP/LLP_miniaodv190128/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/LLP_miniaodv190128/190130_170609/0000/T1qqqqLL_MINIAODSIM_1.root'
             #'file:DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root'
-            #'/store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/2C548AA6-91CF-E611-A86B-B083FED429D6.root',
+            #'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/2C548AA6-91CF-E611-A86B-B083FED429D6.root',
             #'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DisplacedSUSY_StopToBL_M-1000_CTau-10_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/2A1590D3-16CC-E611-9460-B083FECFF52E.root'
             #'root://cmsxrootd.fnal.gov//store/user/mkomm/LLP/LLP_miniaodv180920/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/LLP_miniaodv180920/180926_190406/0000/T1qqqqLL_MINIAODSIM_10.root'
             #'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/gluinoGMSB_M2000_ctau300p0_TuneCUETP8M1_13TeV_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/DC2F0032-5BC9-E611-BC7B-D48564593FA8.root'
@@ -106,7 +107,7 @@ print "input files:",process.source.fileNames
 
 process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool(True),
-    #allowUnscheduled = cms.untracked.bool(True) 
+    allowUnscheduled = cms.untracked.bool(True) 
 )
 
 # Production Info
@@ -117,20 +118,20 @@ process.configurationMetadata = cms.untracked.PSet(
 )
 
 process.plain=cms.Path()
-process.filteredSingleMuCR=cms.Path()
-process.filteredSingleEleCR=cms.Path()
+#process.filteredSingleMuCR=cms.Path()
+#process.filteredSingleEleCR=cms.Path()
 
 
 def addModule(m):
     process.plain+=m
-    process.filteredSingleMuCR+=m
-    process.filteredSingleEleCR+=m
+    #process.filteredSingleMuCR+=m
+    #process.filteredSingleEleCR+=m
 
 ### selectors ###
-skimSingleMuSequence = cms.Sequence()
-process.filteredSingleMuCR+=skimSingleMuSequence
-skimSingleEleSequence = cms.Sequence()
-process.filteredSingleEleCR+=skimSingleEleSequence
+#skimSingleMuSequence = cms.Sequence()
+#process.filteredSingleMuCR+=skimSingleMuSequence
+#skimSingleEleSequence = cms.Sequence()
+#process.filteredSingleEleCR+=skimSingleEleSequence
 
 
 def addFilter(seq,inputTag,cutString,minN=None):
@@ -225,6 +226,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         
         'drop *_rivetMetTable_*_*',
         'drop *_rivetLeptonTable_*_*',
+        'drop *_rivetProducerHTXS_*_*'
         
     )
 )
@@ -262,19 +264,22 @@ bTagInfos = [
     'pfImpactParameterTagInfos',
     'pfInclusiveSecondaryVertexFinderTagInfos',
     'pfDeepCSVTagInfos',
+    'pfDeepFlavourTagInfos',
 ]
 bTagDiscriminators = [
-    #'softPFMuonBJetTags',
-    #'softPFElectronBJetTags',
-    #'pfJetBProbabilityBJetTags',
-    #'pfJetProbabilityBJetTags',
-    'pfCombinedInclusiveSecondaryVertexV2BJetTags',
-    'pfDeepCSVJetTags:probudsg', #to be fixed with new names
-    'pfDeepCSVJetTags:probb',
-    'pfDeepCSVJetTags:probc',
-    'pfDeepCSVJetTags:probbb',
-    #'pfDeepCSVJetTags:probcc',
+      'pfCombinedSecondaryVertexV2BJetTags',
+      'pfDeepCSVJetTags:probudsg', 
+      'pfDeepCSVJetTags:probb', 
+      'pfDeepCSVJetTags:probc', 
+      'pfDeepCSVJetTags:probbb', 
+      'pfDeepFlavourJetTags:probb',
+      'pfDeepFlavourJetTags:probbb',
+      'pfDeepFlavourJetTags:problepb',
+      'pfDeepFlavourJetTags:probc',
+      'pfDeepFlavourJetTags:probuds',
+      'pfDeepFlavourJetTags:probg',
 ]
+
 updateJetCollection(
         process,
         labelName = "XTag",
@@ -287,7 +292,6 @@ updateJetCollection(
         elSource = cms.InputTag('slimmedElectrons'),
         btagInfos = bTagInfos,
         btagDiscriminators = bTagDiscriminators,
-        explicitJTA = False,
 )
 #there seems to be a bug: addTagInfos is set to false despite len(btagInfos)>0
 #to be sure specify included information explicitly here
@@ -304,7 +308,9 @@ process.updateJetXTagSequence = cms.Sequence(
     +process.pfInclusiveSecondaryVertexFinderTagInfosXTag
     +process.pfDeepCSVTagInfosXTag
     +process.pfDeepCSVJetTagsXTag
-    +process.pfCombinedInclusiveSecondaryVertexV2BJetTagsXTag
+    +process.pfDeepFlavourTagInfosXTag
+    +process.pfDeepFlavourJetTagsXTag
+    +process.pfCombinedSecondaryVertexV2BJetTagsXTag
     +process.patJetCorrFactorsTransientCorrectedXTag
     +process.updatedPatJetsTransientCorrectedXTag
 )
@@ -385,6 +391,7 @@ process.nanoxProducer = cms.EDProducer("NANOXProducer",
         legacyTag = cms.PSet(
             type = cms.string("LegacyTagData"),
             jets = cms.InputTag("selectJetsInBarrel"),
+            pvVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
         ),
     )
 )
@@ -469,7 +476,9 @@ if not options.isData:
        
         "particleLevel",
         "rivetLeptonTable",
-        "rivetMetTable"
+        "HTXSCategoryTable",
+        "rivetMetTable",
+        "rivetProducerHTXS"
     ]:
         if hasattr(process,moduleName):
             print "removing module: ",moduleName
