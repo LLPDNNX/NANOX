@@ -20,7 +20,7 @@ class SVTagData:
                 float mass;
                 float ntracks;
                 float chi2;
-                float normchi2;
+                float ndof;
                 float dxy;
                 float dxysig;
                 float d3d;
@@ -49,7 +49,7 @@ class SVTagData:
             svDataArray.bookProperty("mass",&Data::mass);
             svDataArray.bookProperty("ntracks",&Data::ntracks);
             svDataArray.bookProperty("chi2",&Data::chi2);
-            svDataArray.bookProperty("normchi2",&Data::normchi2);
+            svDataArray.bookProperty("ndof",&Data::ndof);
             svDataArray.bookProperty("dxy",&Data::dxy);
             svDataArray.bookProperty("dxysig",&Data::dxysig);
             svDataArray.bookProperty("d3d",&Data::d3d);

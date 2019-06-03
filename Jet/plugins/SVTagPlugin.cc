@@ -87,10 +87,10 @@ class SVTagDataPlugin:
                     data.pt = std::log10(sv.pt());
                     
                     data.deltaR = reco::deltaR(sv,jet);
-                    data.mass = std::log10(1+sv.mass());
+                    data.mass = sv.mass();
                     data.ntracks = sv.numberOfDaughters();
-                    data.chi2 = std::log10(sv.vertexChi2());
-                    data.normchi2 = std::log10(sv.vertexChi2()/sv.vertexNdof());
+                    data.chi2 = sv.vertexChi2();
+                    data.ndof = sv.vertexNdof();
                     
                     reco::Vertex::CovarianceMatrix covsv; 
                     sv.fillVertexCovariance(covsv);
@@ -98,18 +98,18 @@ class SVTagDataPlugin:
                     
                     VertexDistanceXY distXY;
                     Measurement1D distanceXY = distXY.distance(svtx, pv);
-                    data.dxy = 0.1/(0.1+distanceXY.value());
-                    data.dxysig = std::log10(distanceXY.value()/distanceXY.error());
+                    data.dxy = distanceXY.value();
+                    data.dxysig = distanceXY.value()/distanceXY.error();
                     
                     VertexDistance3D dist3D;
                     Measurement1D distance3D = dist3D.distance(svtx, pv);
-                    data.d3d = 0.1/(0.1+distance3D.value());
-                    data.d3dsig = std::log10(distance3D.value()/distance3D.error());
+                    data.d3d = distance3D.value();
+                    data.d3dsig = distance3D.value()/distance3D.error();
                     
                     reco::Candidate::Vector distance(sv.vx() - pv.x(), sv.vy() - pv.y(), sv.vz() - pv.z());
-                    data.costhetasvpv = 0.01/(1.01-sv.momentum().Unit().Dot(distance.Unit()));
+                    data.costhetasvpv = sv.momentum().Unit().Dot(distance.Unit());
 
-                    data.enratio = 0.1/(0.1+sv.energy()/jet_e_uncorr);
+                    data.enratio = sv.energy()/jet_e_uncorr;
                     
                     
                     svData.emplace_back(data);
