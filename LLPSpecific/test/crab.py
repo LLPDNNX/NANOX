@@ -6,7 +6,7 @@ import math
 requestName = "NANOX_190604"
 isData = False
 userName = "vcepaiti"
-#userName = "vcepaiti"
+#userName = "mkomm"
 
 myJobs = {
 
