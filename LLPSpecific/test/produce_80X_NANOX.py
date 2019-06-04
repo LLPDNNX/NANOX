@@ -274,7 +274,14 @@ bTagDiscriminators = [
     'pfDeepCSVJetTags:probc',
     'pfDeepCSVJetTags:probbb',
     #'pfDeepCSVJetTags:probcc',
+    'pfDeepFlavourJetTags:probb',
+    'pfDeepFlavourJetTags:probbb',
+    'pfDeepFlavourJetTags:problepb',
+    #'pfDeepFlavourJetTags:probc',
+    #'pfDeepFlavourJetTags:probuds',
+    #'pfDeepFlavourJetTags:probg'
 ]
+
 updateJetCollection(
         process,
         labelName = "XTag",
