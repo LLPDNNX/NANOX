@@ -3,7 +3,7 @@ import datetime,sys,os
 import copy
 import math
 
-requestName = "NANOX_190604"
+requestName = "NANOX_190606"
 isData = False
 userName = "vcepaiti"
 #userName = "mkomm"
@@ -148,11 +148,24 @@ myJobs = {
     "QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM"),
     ],
- 
-  
+    
+    
+    # WJets
+    "WToLNu_0J_13TeV-amcatnloFXFX-pythia8_ext1":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+    "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext1":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+    "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext1":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
     
     # Evaluation samples
-    
+    '''
     # split SUSY
     # official samples
     
@@ -364,28 +377,17 @@ myJobs = {
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
-    "WToLNu_0J_13TeV-amcatnloFXFX-pythia8_ext1":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-    ],
-    
     "WToLNu_1J_13TeV-amcatnloFXFX-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
-    "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext1":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-    ],
+
     "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext3":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v1/MINIAODSIM"),
         lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     
-    "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext1":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-    ],
+
     "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext2":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM"),
         lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
@@ -470,7 +472,7 @@ myJobs = {
     "ZZ_TuneCUETP8M1_13TeV-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/ZZ_TuneCUETP8M1_13TeV-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
     ],
-
+    '''
 }
 
 # DATA
@@ -483,7 +485,7 @@ for dataset in [
     '/SingleMuon/Run2016G-03Feb2017-v1/MINIAOD',
     '/SingleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD',
     '/SingleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD',
-    
+    '''
     '/MET/Run2016B-03Feb2017_ver2-v2/MINIAOD',
     '/MET/Run2016C-03Feb2017-v1/MINIAOD',
     '/MET/Run2016D-03Feb2017-v1/MINIAOD',
@@ -492,6 +494,7 @@ for dataset in [
     '/MET/Run2016G-03Feb2017-v1/MINIAOD',
     '/MET/Run2016H-03Feb2017_ver2-v1/MINIAOD',
     '/MET/Run2016H-03Feb2017_ver3-v1/MINIAOD',
+    '''
 ]:
     datasetSplit = dataset.split('/')
     datasetName = datasetSplit[1]+"_"+datasetSplit[2]
