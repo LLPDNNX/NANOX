@@ -79,37 +79,77 @@ myJobs = {
     ],
 
     # ttbar
-    
-    "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+
+    "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
+    ],
+        
+   "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    
+
+    "TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+
+    "TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+
+    "TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+
+    "TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+        
     # QCD
+     "QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    ],
+    "QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM"),
+    ],
+ 
   
-    "QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
     
     # Evaluation samples
     
@@ -287,60 +327,35 @@ myJobs = {
 
     
     # ttbar
-
-    "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
-    ],
-
-
     "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
         lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
 
     # QCD
-    "QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    "QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    "QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM"),
+    "QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    "QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    "QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
+    "QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
+    "QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
-    "QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-    ],
-    "QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-    ],
-    "QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-    ],
-    "QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-    ],
-    "QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-    ],
-    "QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-    ],
-    "QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM"),
+    "QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
     ],
 
     # wjets
@@ -381,7 +396,6 @@ myJobs = {
     ],
     
     # DYjets
-    
     "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM"),
     ],
