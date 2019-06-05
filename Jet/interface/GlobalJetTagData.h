@@ -38,7 +38,7 @@ class GlobalJetTagData:
             array.bookProperty("pt", &Data::pt);
             array.bookProperty("eta", &Data::eta);
             array.bookProperty("phi", &Data::phi);
-            array.bookProperty("jetIdx", &Data::phi);
+            array.bookProperty("jetIdx", &Data::jetIdx);
             for (unsigned int i = 0; i < jetData.size(); ++i)
             {
                 array.fill(&jetData[i], i);

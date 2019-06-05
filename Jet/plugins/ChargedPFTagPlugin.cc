@@ -77,7 +77,6 @@ class ChargedPFTagDataPlugin:
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
                 const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
-                //const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
                 
                 std::vector<nanox::ChargedPFTagData::Data> cpfData;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
@@ -90,7 +89,7 @@ class ChargedPFTagDataPlugin:
 
                     nanox::ChargedPFTagData::Data data;
                     
-                    data.ptrel = 0.01/(0.01+constituent->pt()/jet_pt_uncorr);
+                    data.ptrel = constituent->pt()/jet_pt_uncorr;
                     
                     data.drminsv = 0.4;
                     for (const auto& sv: *svCollection.product())
@@ -102,10 +101,12 @@ class ChargedPFTagDataPlugin:
                     data.vertex_association = constituent->pvAssociationQuality();
                     data.fromPV = constituent->fromPV();
                     data.puppi_weight = constituent->puppiWeight();
-                    data.track_chi2 = std::log10(constituent->pseudoTrack().chi2()/constituent->pseudoTrack().ndof()+1);
+                    data.track_chi2 = constituent->pseudoTrack().chi2();
+                    data.track_ndof = constituent->pseudoTrack().ndof();
                     data.track_quality = constituent->pseudoTrack().qualityMask();
+
                     if (jet.mass()<1e-10) data.jetmassdroprel = 0;
-                    else data.jetmassdroprel = std::log10(1-(jet.p4()-constituent->p4()).mass()/jet.mass());
+                    else data.jetmassdroprel = (jet.p4()-constituent->p4()).mass()/jet.mass();
                     
                     reco::TransientTrack transientTrack = builder->build(constituent->pseudoTrack());
                     reco::Candidate::Vector jetDir = jet.momentum().Unit();
@@ -120,18 +121,18 @@ class ChargedPFTagDataPlugin:
                     TVector3 jetDir3(jetDir.x(),jetDir.y(),jetDir.z());
 
                     data.trackEtaRel=reco::btau::etaRel(jetDir, trackMom);
-                    data.trackPtRel=std::log10(trackMom3.Perp(jetDir3));
-                    data.trackPPar=std::log10(1+jetDir.Dot(trackMom));
+                    data.trackPtRel=trackMom3.Perp(jetDir3);
+                    data.trackPPar=jetDir.Dot(trackMom);
                     data.trackDeltaR=reco::deltaR(trackMom, jetDir);
-                    data.trackPtRatio=std::log10(1-data.trackPtRel / trackMag);
-                    data.trackPParRatio=std::log10(1+data.trackPPar / trackMag);
+                    data.trackPtRatio=data.trackPtRel / trackMag;
+                    data.trackPParRatio=data.trackPPar / trackMag;
                     
-                    data.trackSip2dVal=std::copysign(std::log10(std::fabs(meas_ip2d.value())),meas_ip2d.value());
-                    data.trackSip2dSig=std::copysign(std::log10(std::fabs(meas_ip2d.significance())),meas_ip2d.significance());
-                    data.trackSip3dVal=std::copysign(std::log10(std::fabs(meas_ip3d.value())),meas_ip3d.value());
-                    data.trackSip3dSig=std::copysign(std::log10(std::fabs(meas_ip3d.significance())),meas_ip3d.significance());
+                    data.trackSip2dVal=std::abs(meas_ip2d.value());
+                    data.trackSip2dSig=std::abs(meas_ip2d.significance());
+                    data.trackSip3dVal=std::abs(meas_ip3d.value());
+                    data.trackSip3dSig=std::abs(meas_ip3d.significance());
                     
-                    data.trackJetDistVal = std::log10(1-jetdist.value());
+                    data.trackJetDistVal = jetdist.value();
                     data.trackJetDistSig = jetdist.significance();
                     
                     float sumPt = 0.;
@@ -143,7 +144,7 @@ class ChargedPFTagDataPlugin:
                             sumPt += other->pt();
                         }
                     }
-                    data.relIso01 = 10./(10.+sumPt/constituent->pt());
+                    data.relIso01 = sumPt/constituent->pt();
                     
                     data.lostInnerHits = constituent->lostInnerHits(); //http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_9_4_4/doc/html/d8/d79/classpat_1_1PackedCandidate.html#ab9ef9a12f92e02fa61653ba77ee34274
         
