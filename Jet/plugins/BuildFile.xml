@@ -36,3 +36,7 @@
 <library file="JetOriginTagPlugin.cc" name="JetOriginTagPlugin">
   <flags EDM_PLUGIN="1"/>
 </library>
+
+<library file="LegacyTagPlugin.cc" name="LegacyTagPlugin">
+  <flags EDM_PLUGIN="1"/>
+</library>

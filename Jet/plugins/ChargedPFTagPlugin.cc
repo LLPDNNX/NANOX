@@ -87,7 +87,7 @@ class ChargedPFTagDataPlugin:
                     {
                         continue;
                     }
-                    
+
                     nanox::ChargedPFTagData::Data data;
                     
                     data.ptrel = 0.01/(0.01+constituent->pt()/jet_pt_uncorr);
@@ -153,7 +153,7 @@ class ChargedPFTagDataPlugin:
                 
                     cpfData.emplace_back(data);
                 }
-                
+
                 std::stable_sort(cpfData.begin(),cpfData.end(),[](const auto& d1, const auto& d2)
                 {
                     if (!std::isnan(d1.trackSip2dSig) and !std::isinf(d1.trackSip2dSig))
