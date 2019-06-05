@@ -34,6 +34,7 @@ class ChargedPFTagData:
                 float fromPV;
                 float puppi_weight;
                 float track_chi2;
+                float track_ndof;
                 float track_quality;
                
                 float jetmassdroprel;
@@ -78,6 +79,7 @@ class ChargedPFTagData:
             cpfDataArray.bookProperty("fromPV",&Data::fromPV);
             cpfDataArray.bookProperty("puppi_weight",&Data::puppi_weight);
             cpfDataArray.bookProperty("track_chi2",&Data::track_chi2);
+            cpfDataArray.bookProperty("track_ndof",&Data::track_ndof);
             cpfDataArray.bookProperty("track_quality",&Data::track_quality);
             
             cpfDataArray.bookProperty("jetmassdroprel",&Data::jetmassdroprel);
