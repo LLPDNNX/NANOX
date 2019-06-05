@@ -74,14 +74,11 @@ class CSVInputTagDataPlugin:
                 
                 //http://cmslxr.fnal.gov/source/DataFormats/BTauReco/interface/TaggingVariable.h?v=CMSSW_9_4_0_pre1#0033
                 float trackSumJetEtRatio = vars.get(reco::btau::trackSumJetEtRatio, -1);
-                if (trackSumJetEtRatio>0) trackSumJetEtRatio = 0.1/(0.1+trackSumJetEtRatio);
                 jetTagData.trackSumJetEtRatio = trackSumJetEtRatio;
                 
                 float trackSumJetDeltaR = vars.get(reco::btau::trackSumJetDeltaR, -1);
-                if (trackSumJetDeltaR>0) trackSumJetDeltaR = 0.1/(0.1+trackSumJetDeltaR);
                 jetTagData.trackSumJetDeltaR = trackSumJetDeltaR;
-                
-                
+                 
                 jetTagData.vertexCategory = vars.get(reco::btau::vertexCategory, -1);
                 jetTagData.jetNSelectedTracks = vars.get(reco::btau::jetNSelectedTracks, -1);
                 jetTagData.jetNTracksEtaRel = vars.get(reco::btau::jetNTracksEtaRel, -1);

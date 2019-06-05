@@ -120,7 +120,7 @@ class JetOriginTagDataPlugin:
                         {
                             mother = mother->mother();
                         }
-                        //find gluon anchestor
+                        //find gluon ancestor
                         if (mother->mother() and mother->mother()->pdgId()==21)
                         {
                             nGluons+=1;

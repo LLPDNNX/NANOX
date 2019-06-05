@@ -63,7 +63,6 @@ class NeutralPFTagDataPlugin:
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
                 const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
-                //const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
                 
                 std::vector<nanox::NeutralPFTagData::Data> npfData;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
@@ -89,7 +88,7 @@ class NeutralPFTagDataPlugin:
                         data.drminsv = std::min(data.drminsv,dR);
                     }
                     
-                    if (jet.mass()<1e-10) data.jetmassdroprel = 0;
+                    if (jet.mass()<1e-10) data.jetmassdroprel = -9;
                     else data.jetmassdroprel = (jet.p4()- constituent->p4()).mass()/jet.mass();
 
                   

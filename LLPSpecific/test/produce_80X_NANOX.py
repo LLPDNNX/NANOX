@@ -271,7 +271,7 @@ bTagDiscriminators = [
     #'softPFElectronBJetTags',
     #'pfJetBProbabilityBJetTags',
     #'pfJetProbabilityBJetTags',
-    'pfCombinedInclusiveSecondaryVertexV2BJetTags',
+    'pfCombinedSecondaryVertexV2BJetTags',
     'pfDeepCSVJetTags:probudsg', #to be fixed with new names
     'pfDeepCSVJetTags:probb',
     'pfDeepCSVJetTags:probc',

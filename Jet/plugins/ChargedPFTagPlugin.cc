@@ -77,7 +77,6 @@ class ChargedPFTagDataPlugin:
             {
                 const pat::Jet& jet = jetCollection->at(ijet);
                 const float jet_pt_uncorr = jet.correctedJet("Uncorrected").pt();
-                //const float jet_e_uncorr = jet.correctedJet("Uncorrected").energy();
                 
                 std::vector<nanox::ChargedPFTagData::Data> cpfData;
                 for (unsigned int idaughter = 0; idaughter < jet.numberOfDaughters(); ++idaughter)
