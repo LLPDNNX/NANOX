@@ -12,7 +12,7 @@ options = VarParsing ('analysis')
 
 options.register(
     'isData',
-    False,
+    True,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
     "is data"
@@ -28,7 +28,7 @@ options.register(
 
 options.register(
     'LLPtype',
-    "HToSS",
+    "T1qqqqLL",
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
     "add llp type"
@@ -68,7 +68,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(100)
 )
 
 
@@ -107,7 +107,7 @@ print "input files:",process.source.fileNames
 
 process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool(True),
-    allowUnscheduled = cms.untracked.bool(True) 
+    #allowUnscheduled = cms.untracked.bool(True) 
 )
 
 # Production Info
@@ -247,8 +247,6 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
 from PhysicsTools.PatAlgos.tools.jetTools import *
 
 
-
-
 from Configuration.AlCa.GlobalTag import GlobalTag
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 if options.isData:
@@ -264,25 +262,16 @@ bTagInfos = [
     'pfImpactParameterTagInfos',
     'pfInclusiveSecondaryVertexFinderTagInfos',
     'pfDeepCSVTagInfos',
-    'pfDeepFlavourTagInfos',
+    #'pfDeepFlavourTagInfos',
 ]
 bTagDiscriminators = [
-    #'softPFMuonBJetTags',
-    #'softPFElectronBJetTags',
-    #'pfJetBProbabilityBJetTags',
-    #'pfJetProbabilityBJetTags',
     'pfCombinedSecondaryVertexV2BJetTags',
-    'pfDeepCSVJetTags:probudsg', #to be fixed with new names
     'pfDeepCSVJetTags:probb',
     'pfDeepCSVJetTags:probc',
     'pfDeepCSVJetTags:probbb',
-    #'pfDeepCSVJetTags:probcc',
-    'pfDeepFlavourJetTags:probb',
-    'pfDeepFlavourJetTags:probbb',
-    'pfDeepFlavourJetTags:problepb',
-    #'pfDeepFlavourJetTags:probc',
-    #'pfDeepFlavourJetTags:probuds',
-    #'pfDeepFlavourJetTags:probg'
+    #'pfDeepFlavourJetTags:probb',
+    #'pfDeepFlavourJetTags:probbb',
+    #'pfDeepFlavourJetTags:problepb',
 ]
 
 updateJetCollection(
@@ -313,10 +302,10 @@ process.updateJetXTagSequence = cms.Sequence(
     +process.pfInclusiveSecondaryVertexFinderTagInfosXTag
     +process.pfDeepCSVTagInfosXTag
     +process.pfDeepCSVJetTagsXTag
-    +process.pfDeepFlavourTagInfosXTag
-    +process.pfDeepFlavourJetTagsXTag
     +process.pfCombinedSecondaryVertexV2BJetTagsXTag
     +process.patJetCorrFactorsTransientCorrectedXTag
+    #+process.pfDeepFlavourTagInfosXTag
+    #+process.pfDeepFlavourJetTagsXTag
     +process.updatedPatJetsTransientCorrectedXTag
 )
 addModule(process.updateJetXTagSequence)
@@ -326,6 +315,7 @@ process.selectJetsInBarrel = cms.EDFilter("PATJetSelector",
     cut = cms.string("pt > 20")
 )
 addModule(process.selectJetsInBarrel)
+
 '''
 from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
 process.ak4RecoJetsPU = ak4PFJets.clone()
@@ -361,8 +351,8 @@ process.jetAK4PFSequence = cms.Sequence(
     +process.patJetsAK4PFPU
 )
 addModule(process.jetAK4PFSequence)
-'''
 
+'''
 
 process.nanoxProducer = cms.EDProducer("NANOXProducer",
     plugins = cms.PSet(
