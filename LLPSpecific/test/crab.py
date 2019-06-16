@@ -2,12 +2,11 @@ from WMCore.Configuration import Configuration
 import datetime,sys,os
 import copy
 import math
+from CRABClient.UserUtilities import getUsernameFromSiteDB
 
 requestName = "NANOX_190613"
 isData = False
-userName = "vcepaiti"
-#userName = "mkomm"
-
+userName = getUsernameFromSiteDB() 
 myJobs = {
     
     # Training samples
