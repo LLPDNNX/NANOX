@@ -4,122 +4,17 @@ import copy
 import math
 from CRABClient.UserUtilities import getUsernameFromSiteDB
 
-requestName = "NANOX_190613"
+requestName = "NANOX_190619"
 isData = False
 userName = getUsernameFromSiteDB() 
 myJobs = {
     
     # Training samples
-    # split SUSY
- 
-    "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[ lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2))),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    
-    #Top-up
-    
-    "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-    "SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
-        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",15),
-        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
-        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
-    ],
-
  
        # ttbar
 
     "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-evtgen/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
         
    "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
@@ -190,15 +85,12 @@ myJobs = {
     # WJets
     "WToLNu_0J_13TeV-amcatnloFXFX-pythia8_ext1":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext1":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext1":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
 }
     
@@ -207,6 +99,94 @@ myJobs2 = {
     # Evaluation samples
     # Other LL models
     # Gluino decay to gravitino (GMSB model)
+
+    # split SUSY
+ 
+    "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[ lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_GridpackScan_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    
+    #Top-up
+    
+    "SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p001_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p01_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-10000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+    "SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_extra":[
+        lambda cfg: setattr(cfg.Data,"inputDataset","/SMS-T1qqqq_ctau-100000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/mkomm-LLP_miniaodv180920-312db0fc9b855c6adca5525185ce0591/USER"),
+        lambda cfg: setattr(cfg.Data,"inputDBS","phys03"),
+        lambda cfg: cfg.JobType.pyCfgParams.append("addLLPInfo=True")
+    ],
+
+
 
     "gluinoGMSB_M2500_ctau1000p0_TuneCUETP8M1_13TeV_pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/gluinoGMSB_M2500_ctau1000p0_TuneCUETP8M1_13TeV_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
@@ -275,7 +255,6 @@ myJobs2 = {
     # ttbar
     "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
 
     # QCD
@@ -308,26 +287,21 @@ myJobs2 = {
     
     "WToLNu_0J_13TeV-amcatnloFXFX-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_0J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     "WToLNu_1J_13TeV-amcatnloFXFX-pythia8":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
 
     "WToLNu_1J_13TeV-amcatnloFXFX-pythia8_ext3":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_1J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     
 
     "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext2":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     "WToLNu_2J_13TeV-amcatnloFXFX-pythia8_ext3":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/WToLNu_2J_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v5/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     
     # DYjets
@@ -379,11 +353,9 @@ myJobs2 = {
     # Single-top
     "ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     "ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM"),
-        lambda cfg: setattr(cfg.Data,"unitsPerJob",int(math.ceil(cfg.Data.unitsPerJob/3.*2)))
     ],
     "ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1":[
         lambda cfg: setattr(cfg.Data,"inputDataset","/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM"),
@@ -456,11 +428,11 @@ configTmpl.section_('JobType')
 configTmpl.JobType.psetName = "NANOX/LLPSpecific/test/produce_80X_NANOX.py"
 configTmpl.JobType.pluginName = 'Analysis'
 configTmpl.JobType.outputFiles = ['nano.root']
-configTmpl.JobType.maxJobRuntimeMin= 47*60
+configTmpl.JobType.maxJobRuntimeMin= 12*60
 configTmpl.JobType.pyCfgParams = []
 configTmpl.JobType.inputFiles = []#'QGL_cmssw8020_v2.db']
 configTmpl.JobType.allowUndistributedCMSSW = True
-configTmpl.JobType.maxMemoryMB = 2500
+configTmpl.JobType.maxMemoryMB = 2000
 
 configTmpl.section_('Data')
 configTmpl.Data.inputDataset = ""
@@ -470,13 +442,13 @@ configTmpl.Data.useParent = False
 
 if isData:
     configTmpl.Data.splitting = 'LumiBased'
-    configTmpl.Data.unitsPerJob = 75
+    configTmpl.Data.unitsPerJob = 5
     #configTmpl.Data.runRange = '306091,306092,306095' #fill: 6358, maxpu: 78
     configTmpl.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification//Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'
     #configTmpl.Data.lumiMask = 'lumiMask.json'
 else:
     configTmpl.Data.splitting = 'FileBased'
-    configTmpl.Data.unitsPerJob = 4
+    configTmpl.Data.unitsPerJob = 1
 
 configTmpl.section_('Site')
 configTmpl.Site.storageSite = 'T2_UK_London_IC'
@@ -503,14 +475,15 @@ if __name__ == '__main__':
     #############################################################################################
 
 
+    #myJobs = myJobs2
     for i,jobName in enumerate(sorted(myJobs.keys())):
 
         jobModifiers=myJobs[jobName]
         i=i+1
         config = copy.deepcopy(configTmpl)
-        config.General.requestName = requestName+"_"+jobName
-        config.General.workArea = "crab/"+config.General.requestName+"/"+jobName
-        config.Data.outLFNDirBase = "/store/user/"+userName+"/LLP/"+config.General.requestName+"/"+jobName
+        config.General.requestName = jobName+"_"+requestName
+        config.General.workArea = "crab/"+requestName+"/"+jobName
+        config.Data.outLFNDirBase = "/store/user/"+userName+"/LLP/"+requestName+"/"+jobName
         config.Data.outputDatasetTag = config.General.requestName
         
         for modifier in jobModifiers:
