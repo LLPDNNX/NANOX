@@ -27,6 +27,7 @@
 namespace nanox
 {
 
+
 class LLPInfoPlugin:
     public NANOXPlugin
 {
@@ -95,19 +96,47 @@ class LLPInfoPlugin:
                     }
                 }
 
-                else if (LLPtype == "HToSS")
+                else if (LLPtype == "HToSS" || LLPtype == "HNL")
                 {
-                    if (llp.numberOfMothers()!=1) 
-                    {
-                        continue;
+
+                    //std::cout << "llp is : "<< llp.pdgId() <<", it coems from: " << llp.numberOfMothers() << "mothers: " << std::endl;
+
+                    //for (unsigned int i = 0; i < llp.numberOfMothers(); i++){
+                        //std::cout << i << ": " << llp.mother(i)->pdgId() << std::endl;
+                    //}
+
+                    //while (llp.numberOfMothers()>0){
+                        //std::cout << " -> " << llp.mother(0)->pdgId(); 
+                        //auto mother = (const reco::GenParticle*) llp.mother(0);
+                        //llp = *mother;
+                    //}
+                    //std::cout << std::endl;
+                    if (llp.numberOfMothers() == 0) continue;
+                    if (LLPtype == "HToSS"){
+
+                        if (llp.mother()->pdgId()!=25)
+                        {
+                            continue;
+                        }
                     }
 
-                    if (llp.mother()->pdgId()!=25)
-                    {
-                        continue;
+                    else if (LLPtype == "HNL"){
+                        if (abs(llp.mother()->pdgId())!=24) 
+                        {
+                            continue;
+                        }
                     }
+
 
                 }
+
+
+                //else if (LLPtype == "HNL")
+                //{
+                
+                //}
+
+
 
                 else continue;
                 
@@ -190,7 +219,7 @@ class LLPInfoPlugin:
                     output->at(0).llpData.push_back(data);
                 }
 
-                else if (LLPtype == "RPV" || LLPtype == "HToSS")
+                else if (LLPtype == "RPV" || LLPtype == "HToSS" || LLPtype == "HNL")
                 {
                
                     output->at(0).llpData.push_back(data);

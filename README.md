@@ -4,21 +4,21 @@ CMSSW package for producing NANOaod eXtended (NANOX) files containing additional
 ![build tests](https://travis-ci.org/LLPDNNX/NANOX.svg?branch=master)
 
 ## Setup
-Requires CMSSW_9_4_>=13, e.g.
+Requires CMSSW_10_2_18
 ```
-cmsrel CMSSW_9_4_13
-cd CMSSW_9_4_13/src
+cmsrel CMSSW_10_2_18
+cd CMSSW_10_2_18/src
 cmsenv
-git cms-merge-topic cms-nanoAOD:master-94X
-git checkout -b nanoAOD cms-nanoAOD/master-94X
+git cms-merge-topic cms-nanoAOD:master-102X
+git checkout -b nanoAOD cms-nanoAOD/master-102X
 git clone git@github.com:llpdnnx/nanox.git
 scram b
 ```
 
 ## Example configurations
-* generic MC: `cmsRun NANOX/NANOXProducer/test/test80X_NANO.py`
-* generic data: `cmsRun NANOX/NANOXProducer/test/test80X_NANO_data.py`
-* for LLP analysis: `cmsRun NANOX/LLPSpecific/test/produce_80X_NANOX.py` (see avaiable options in file)
+* generic MC: `cmsRun NANOX/NANOXProducer/test/test102X_NANO.py`
+* generic data: `cmsRun NANOX/NANOXProducer/test/test102X_NANO_data.py`
+* for LLP analysis: `cmsRun NANOX/LLPSpecific/test/produce_102X_NANOX.py`
 
 ## Short description
 
