@@ -1,6 +1,8 @@
 # NANOX
 CMSSW package for producing NANOaod eXtended (NANOX) files containing additional jet data required for training and evaluation.
 
+**This is now deprecated. Please refer to the LLPReco package.**
+
 ![build tests](https://travis-ci.org/LLPDNNX/NANOX.svg?branch=master)
 
 ## Setup
